@@ -11,7 +11,7 @@ Collect biomedical reranking results with a simple benchmark × method notebook.
 
 Each method runs across all selected benchmarks before the next method starts. Choices are listed roughly from heavier to lighter: Clef Flash 9B, Qwen3 reranker 8B/4B, BioDecision 4B and its matched Qwen3.5 backbone, Jina v3.5, MedCPT, then CPU controls and hosted JEV/OpenAI Decisions.
 
-Missing datasets and weights download automatically from pinned sources. Every method receives the same natural BM25 top-100 candidates and frozen short evidence; labels are read only by the evaluator.
+Missing datasets and weights download automatically from pinned sources. Pass `verify=False` to `benchmark(...)` to skip data SHA comparisons; result fingerprints then use the actual runtime files, so changed data cannot reuse an old checkpoint. Every method receives the same natural BM25 top-100 candidates and frozen short evidence; labels are read only by the evaluator.
 
 | Benchmark | Full queries | Frozen panel | Primary metric |
 | --- | ---: | ---: | --- |

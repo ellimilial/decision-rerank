@@ -37,19 +37,19 @@ def read_range(request: Request, offset: int, end: int, size: int) -> bytes:
     raise AssertionError("Unreachable")
 
 
-def check_file(path: Path, expected_sha256: str) -> None:
-    if sha256(path.read_bytes()).hexdigest() != expected_sha256:
+def check_file(path: Path, expected_sha256: str, *, verify: bool = True) -> None:
+    if verify and sha256(path.read_bytes()).hexdigest() != expected_sha256:
         raise ValueError(f"Artifact hash changed: {path}")
 
 
-def download_file(root: Path, source: dict) -> Path:
-    """Cache a pinned source atomically. Existing corrupt files are never overwritten."""
+def download_file(root: Path, source: dict, *, verify: bool = True) -> Path:
+    """Cache a source atomically, verifying its SHA unless explicitly disabled."""
     relative = Path(source["path"])
     if relative.is_absolute() or ".." in relative.parts:
         raise ValueError(f"Invalid data path: {relative}")
     path = Path(root) / relative
     if path.exists():
-        check_file(path, source["sha256"])
+        check_file(path, source["sha256"], verify=verify)
         return path
     path.parent.mkdir(parents=True, exist_ok=True)
     size = source["bytes"]
@@ -67,7 +67,7 @@ def download_file(root: Path, source: dict) -> Path:
                 stream.write(body)
                 offset += len(body)
             stream.flush()
-            check_file(temporary, source["sha256"])
+            check_file(temporary, source["sha256"], verify=verify)
         except BaseException:
             temporary.unlink(missing_ok=True)
             raise
@@ -75,18 +75,18 @@ def download_file(root: Path, source: dict) -> Path:
     return path
 
 
-def ensure_benchmark_data(root: Path, name: str, *, offline: bool = False) -> None:
+def ensure_benchmark_data(root: Path, name: str, *, offline: bool = False, verify: bool = True) -> None:
     """Download/build only the requested benchmark, using the repository's manifests.
 
     Cached runtime files need no network or preparation imports. Missing files are
-    rebuilt in a temporary directory, verified, then installed without changing
+    rebuilt in a temporary directory, verified unless verify=False, then installed without changing
     the authoritative manifests or existing files.
     """
     root = Path(root).resolve()
     directory = root / "research/benchmarks"
     prepared = json.loads((directory / "prepared-manifest.json").read_text())
     evidence = json.loads((directory / "evidence-manifest.json").read_text())
-    check_file(root / evidence["prepared_manifest"]["path"], evidence["prepared_manifest"]["sha256"])
+    check_file(root / evidence["prepared_manifest"]["path"], evidence["prepared_manifest"]["sha256"], verify=verify)
     collections = [c for c in prepared["collections"] if c["benchmark"] == name]
     if not collections:
         raise ValueError(f"Unknown benchmark: {name}")
@@ -98,7 +98,7 @@ def ensure_benchmark_data(root: Path, name: str, *, offline: bool = False) -> No
         for descriptor in descriptors:
             path = root / descriptor["path"]
             if path.exists():
-                check_file(path, descriptor["sha256"])
+                check_file(path, descriptor["sha256"], verify=verify)
             else:
                 missing.append(collection["name"])
     if not missing:
@@ -108,24 +108,24 @@ def ensure_benchmark_data(root: Path, name: str, *, offline: bool = False) -> No
     from .preparation import check_dependencies, prepare_collection
     check_dependencies(prepared["dependencies"], evidence["library_version"])
     for source in evidence["tokenizer_files"]:
-        download_file(root, source)
+        download_file(root, source, verify=verify)
     for collection in collections:
         if collection["name"] not in missing:
             continue
         logger.info("Preparing %s", collection["name"])
         for source in collection["sources"]:
-            download_file(root, source)
+            download_file(root, source, verify=verify)
         with tempfile.TemporaryDirectory(prefix="decision-rerank-prepare-", dir=root / "data") as folder:
             staged = Path(folder)
             prepare_collection(root, staged, collection, shared[collection["name"]])
             descriptors = [collection["files"][key] for key in ["candidates", "qrels"]]
             descriptors += [shared[collection["name"]]["files"][key] for key in ["documents", "queries"]]
             for descriptor in descriptors:
-                check_file(staged / descriptor["path"], descriptor["sha256"])
+                check_file(staged / descriptor["path"], descriptor["sha256"], verify=verify)
             for descriptor in descriptors:
                 target = root / descriptor["path"]
                 if target.exists():
-                    check_file(target, descriptor["sha256"])
+                    check_file(target, descriptor["sha256"], verify=verify)
                 else:
                     target.parent.mkdir(parents=True, exist_ok=True)
                     (staged / descriptor["path"]).replace(target)

@@ -14,10 +14,10 @@ SUPPORTED_METHODS = {'bm25', 'tfidf-cpu', 'medcpt-cpu', 'qwen3-4b', 'qwen3-8b', 
                      'jina-v35', 'biodecision', 'qwen35-base', 'clef-flash', 'jev', 'openai-decisions'}
 
 
-def benchmark(name, *, panel=None, limit=None, root=None, offline=False):
-    """Load one benchmark selection, downloading missing data through the public loader."""
+def benchmark(name, *, panel=None, limit=None, root=None, offline=False, verify=True):
+    """Load a selection; verify=False skips artifact SHA comparisons."""
     root = root or os.environ.get('DECISION_RERANK_ROOT', Path(__file__).resolve().parents[2])
-    return load_benchmark(root, name, panel=panel, limit=limit, offline=offline)
+    return load_benchmark(root, name, panel=panel, limit=limit, offline=offline, verify=verify)
 
 
 def _ensure_api_key(name):
