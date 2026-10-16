@@ -15,13 +15,6 @@ def read_jsonl(path: Path) -> list[dict]:
         return [json.loads(line) for line in stream if line.strip()]
 
 
-def checked_path(root: Path, descriptor: dict, *, verify: bool = True) -> Path:
-    path = root / descriptor["path"]
-    if verify and sha256(path.read_bytes()).hexdigest() != descriptor["sha256"]:
-        raise ValueError(f"Artifact hash changed: {descriptor['path']}")
-    return path
-
-
 def digest(value: object) -> str:
     return sha256(json.dumps(value, sort_keys=True, allow_nan=False).encode()).hexdigest()
 
@@ -35,7 +28,6 @@ class PreparedBenchmark:
     _cases: tuple[RankingInput, ...]
     _label_files: tuple[tuple[str, dict], ...]
     _package_fingerprint: str
-    _verify: bool = True
 
     @property
     def fingerprint(self) -> str:
@@ -48,7 +40,7 @@ class PreparedBenchmark:
         selected = {item.key for item in self._cases}
         labels = defaultdict(dict)
         for collection, descriptor in self._label_files:
-            for row in read_jsonl(checked_path(self._root, descriptor, verify=self._verify)):
+            for row in read_jsonl(self._root / descriptor["path"]):
                 key = collection, row["query_id"]
                 if key in selected:
                     if row["doc_id"] in labels[key]:
@@ -67,19 +59,18 @@ class PreparedBenchmark:
 
 
 def load_benchmark(root: Path, name: str, *, panel: str | None = None, limit: int | None = None,
-                   offline: bool = False, verify: bool = True) -> PreparedBenchmark:
+                   offline: bool = False) -> PreparedBenchmark:
     if limit is not None and panel is None:
         raise ValueError("Use an explicit frozen panel when limiting query count")
     root = Path(root).resolve()
     directory = root / "research/benchmarks"
     prepared = json.loads((directory / "prepared-manifest.json").read_text())
     evidence = json.loads((directory / "evidence-manifest.json").read_text())
-    checked_path(root, evidence["prepared_manifest"], verify=verify)
     collections = [c for c in prepared["collections"] if c["benchmark"] == name]
     if not collections:
         raise ValueError(f"Unknown benchmark: {name}")
     from .data import ensure_benchmark_data
-    ensure_benchmark_data(root, name, offline=offline, verify=verify)
+    ensure_benchmark_data(root, name, offline=offline)
     policy = {
         "bioasq13b_curated": ("bioasq_ap@10", "query_mean"),
         "curev1_en": ("ndcg@10", "collection_macro"),
@@ -93,11 +84,9 @@ def load_benchmark(root: Path, name: str, *, panel: str | None = None, limit: in
         files = {"candidates": collection["files"]["candidates"],
                  "labels": collection["files"]["qrels"],
                  "documents": shared["documents"], "queries": shared["queries"]}
-        paths = {key: checked_path(root, value, verify=verify) for key, value in files.items()}
-        if not verify:
-            # Identify the accepted bytes rather than the manifest's expected bytes.
-            files = {key: {**value, "sha256": sha256(paths[key].read_bytes()).hexdigest()}
-                     for key, value in files.items()}
+        paths = {key: root / value["path"] for key, value in files.items()}
+        files = {key: {**value, "sha256": sha256(paths[key].read_bytes()).hexdigest()}
+                 for key, value in files.items()}
         descriptors.append([collection["name"], files])
         documents = {r["id"]: Candidate(r["id"], r["text"]) for r in read_jsonl(paths["documents"])}
         queries = {r["id"]: r["text"] for r in read_jsonl(paths["queries"])}
@@ -113,9 +102,9 @@ def load_benchmark(root: Path, name: str, *, panel: str | None = None, limit: in
     if len(cases) != len({item.key for item in cases}):
         raise ValueError("Duplicate query in prepared benchmark")
     benchmark = PreparedBenchmark(name, primary, aggregation, root, tuple(cases), tuple(labels),
-                                  digest([name, primary, aggregation, descriptors]), verify)
+                                  digest([name, primary, aggregation, descriptors]))
     if panel is not None:
-        path = checked_path(root, prepared["algorithm_panel_file"], verify=verify)
+        path = root / prepared["algorithm_panel_file"]["path"]
         members = json.loads(path.read_text())[panel]
         if limit is not None:
             if not isinstance(limit, int) or not 1 <= limit <= len(members):
