@@ -1,0 +1,491 @@
+{
+  "prepared_manifest": {
+    "path": "research/benchmarks/prepared-manifest.json",
+    "sha256": "bc86ed5795549c096afcfe59c97850098f5729ea229afb88016dc17d6d2b1575",
+    "bytes": 71129
+  },
+  "prepared_at": "2026-10-15T14:37:39.890842+00:00",
+  "tokenizer": "ncbi/MedCPT-Cross-Encoder",
+  "revision": "71caf65d4927987813984f54c284405a13fcca49",
+  "library_version": "0.22.2",
+  "tokenizer_files": [
+    {
+      "dataset": "ncbi/MedCPT-Cross-Encoder tokenizer only",
+      "revision": "71caf65d4927987813984f54c284405a13fcca49",
+      "path": "data/raw/medcpt-tokenizer/added_tokens.json",
+      "url": "https://huggingface.co/ncbi/MedCPT-Cross-Encoder/resolve/71caf65d4927987813984f54c284405a13fcca49/added_tokens.json",
+      "expected_bytes": 74,
+      "expected_sha256": null,
+      "expected_git_blob_id": "e97f8f93bfdfff48a98fde37a3cd61007272f226",
+      "checked_at": "2026-10-15T14:36:52.453019+00:00",
+      "status": "obtained",
+      "bytes": 74,
+      "sha256": "691a5ce0135045c12b8410af8d472ff8de864094df40ac9af418d6c644c7588d"
+    },
+    {
+      "dataset": "ncbi/MedCPT-Cross-Encoder tokenizer only",
+      "revision": "71caf65d4927987813984f54c284405a13fcca49",
+      "path": "data/raw/medcpt-tokenizer/special_tokens_map.json",
+      "url": "https://huggingface.co/ncbi/MedCPT-Cross-Encoder/resolve/71caf65d4927987813984f54c284405a13fcca49/special_tokens_map.json",
+      "expected_bytes": 228,
+      "expected_sha256": null,
+      "expected_git_blob_id": "8e5082c800f715935ea0eb822faad62f4fac1ada",
+      "checked_at": "2026-10-15T14:36:52.460694+00:00",
+      "status": "obtained",
+      "bytes": 228,
+      "sha256": "cb63d0cbbf45160dc9cd786a257759593b798ae0c72957011016dbc3972df4e4"
+    },
+    {
+      "dataset": "ncbi/MedCPT-Cross-Encoder tokenizer only",
+      "revision": "71caf65d4927987813984f54c284405a13fcca49",
+      "path": "data/raw/medcpt-tokenizer/tokenizer.json",
+      "url": "https://huggingface.co/ncbi/MedCPT-Cross-Encoder/resolve/71caf65d4927987813984f54c284405a13fcca49/tokenizer.json",
+      "expected_bytes": 706277,
+      "expected_sha256": null,
+      "expected_git_blob_id": "e68fee3b6ebe7cc02f2b5f9753071bdf2c401ecf",
+      "checked_at": "2026-10-15T14:36:52.491942+00:00",
+      "status": "obtained",
+      "bytes": 706277,
+      "sha256": "6e046044df8a2fcedb10607075dca187cae61d806c0d80a96c5b81017edc90c9"
+    },
+    {
+      "dataset": "ncbi/MedCPT-Cross-Encoder tokenizer only",
+      "revision": "71caf65d4927987813984f54c284405a13fcca49",
+      "path": "data/raw/medcpt-tokenizer/tokenizer_config.json",
+      "url": "https://huggingface.co/ncbi/MedCPT-Cross-Encoder/resolve/71caf65d4927987813984f54c284405a13fcca49/tokenizer_config.json",
+      "expected_bytes": 1556,
+      "expected_sha256": null,
+      "expected_git_blob_id": "85ae100df867ca6a1387ae02918eb02fdc03383e",
+      "checked_at": "2026-10-15T14:36:52.493943+00:00",
+      "status": "obtained",
+      "bytes": 1556,
+      "sha256": "25e63abb25f637aa24981117b13394370693dd7bc140903d95008599b3abc1a9"
+    },
+    {
+      "dataset": "ncbi/MedCPT-Cross-Encoder tokenizer only",
+      "revision": "71caf65d4927987813984f54c284405a13fcca49",
+      "path": "data/raw/medcpt-tokenizer/vocab.txt",
+      "url": "https://huggingface.co/ncbi/MedCPT-Cross-Encoder/resolve/71caf65d4927987813984f54c284405a13fcca49/vocab.txt",
+      "expected_bytes": 226150,
+      "expected_sha256": null,
+      "expected_git_blob_id": "9d595d9c20feef7012f174efaaa5eb621910588e",
+      "checked_at": "2026-10-15T14:36:52.841370+00:00",
+      "status": "obtained",
+      "bytes": 226150,
+      "sha256": "79489a52be45e6fa033521e8ce8e4f62aedc0a742ee2aa6fc04667e5b0b1454d"
+    }
+  ],
+  "policy": "Preserve original character prefix. Documents concatenate title, newline, text once. Cap document/query at 384/96 wordpieces excluding special tokens. Indexing used full text. Adapter formatting/context checks remain.",
+  "collections": [
+    {
+      "name": "bioasq13b_curated",
+      "files": {
+        "documents": {
+          "path": "data/benchmarks/bioasq13b_curated/evidence/documents-short.jsonl",
+          "sha256": "36024b9ee98df32cda6cd4091c806595fa818c303375ec705965e752ebf4894c",
+          "bytes": 30011640
+        },
+        "queries": {
+          "path": "data/benchmarks/bioasq13b_curated/evidence/queries-short.jsonl",
+          "sha256": "166eebcabed8f08ff7be41c9b9347f4b78296e1b1d8ab6acfc1cd40c102509c9",
+          "bytes": 34871
+        },
+        "diagnostics": {
+          "path": "data/benchmarks/bioasq13b_curated/labels/evidence-diagnostics.jsonl",
+          "sha256": "f86ef0ee1be5bbb72076b1f367c459aa6a8cb2b33893919aa0205c79f4f512a3",
+          "bytes": 1860283
+        }
+      },
+      "counts": {
+        "documents": {
+          "records": 19469,
+          "cap": 384,
+          "truncated": 4023,
+          "max_tokens_after": 384
+        },
+        "queries": {
+          "records": 340,
+          "cap": 96,
+          "truncated": 0,
+          "max_tokens_after": 35
+        }
+      }
+    },
+    {
+      "name": "curev1_en/dentistry_and_oral_health",
+      "files": {
+        "documents": {
+          "path": "data/benchmarks/curev1_en/dentistry_and_oral_health/evidence/documents-short.jsonl",
+          "sha256": "82df68387f2ae0fdbb08a4a3501e7e7bacda5974802bd9ef368f14b8afa41ae7",
+          "bytes": 6242246
+        },
+        "queries": {
+          "path": "data/benchmarks/curev1_en/dentistry_and_oral_health/evidence/queries-short.jsonl",
+          "sha256": "32847198182a28f56669c134d9de7a0df042c4bc595260882900ce1df485696a",
+          "bytes": 26378
+        },
+        "diagnostics": {
+          "path": "data/benchmarks/curev1_en/dentistry_and_oral_health/labels/evidence-diagnostics.jsonl",
+          "sha256": "0237e8df1fdbf0ddb723f90bbfcc91705a8c70af32e0974d1a80c9e0cb4fa88e",
+          "bytes": 1037492
+        }
+      },
+      "counts": {
+        "documents": {
+          "records": 8375,
+          "cap": 384,
+          "truncated": 94,
+          "max_tokens_after": 384
+        },
+        "queries": {
+          "records": 200,
+          "cap": 96,
+          "truncated": 0,
+          "max_tokens_after": 29
+        }
+      }
+    },
+    {
+      "name": "curev1_en/dermatology",
+      "files": {
+        "documents": {
+          "path": "data/benchmarks/curev1_en/dermatology/evidence/documents-short.jsonl",
+          "sha256": "2f59eabc5a6277a31943cbdaaabfc0df5290f1dd4ab7626dec514e9396145c6f",
+          "bytes": 4104372
+        },
+        "queries": {
+          "path": "data/benchmarks/curev1_en/dermatology/evidence/queries-short.jsonl",
+          "sha256": "51a77093932ca6fdfeb8379ed081553cd406bfc6133ca86ecd273afc0b3ff41b",
+          "bytes": 22929
+        },
+        "diagnostics": {
+          "path": "data/benchmarks/curev1_en/dermatology/labels/evidence-diagnostics.jsonl",
+          "sha256": "9d80eaa3d42d1c3c9114dd337f7f6b4ba09fb601ad9fb5013264b0a93752c52c",
+          "bytes": 705147
+        }
+      },
+      "counts": {
+        "documents": {
+          "records": 5634,
+          "cap": 384,
+          "truncated": 55,
+          "max_tokens_after": 384
+        },
+        "queries": {
+          "records": 200,
+          "cap": 96,
+          "truncated": 0,
+          "max_tokens_after": 23
+        }
+      }
+    },
+    {
+      "name": "curev1_en/gastroenterology",
+      "files": {
+        "documents": {
+          "path": "data/benchmarks/curev1_en/gastroenterology/evidence/documents-short.jsonl",
+          "sha256": "f777926be4b52b5c0b8c8b2cbe45bc4295c8d643cea675f0d6d37823679f83d2",
+          "bytes": 6813950
+        },
+        "queries": {
+          "path": "data/benchmarks/curev1_en/gastroenterology/evidence/queries-short.jsonl",
+          "sha256": "81cc03bb33f5b299539c2fcb27d0c9bf0e58572f21cd067aaba503fab925847e",
+          "bytes": 27409
+        },
+        "diagnostics": {
+          "path": "data/benchmarks/curev1_en/gastroenterology/labels/evidence-diagnostics.jsonl",
+          "sha256": "b0953b8306c61023affe8dba29e0a5b61b369eec11ce949a130211a6c170a025",
+          "bytes": 1120273
+        }
+      },
+      "counts": {
+        "documents": {
+          "records": 9064,
+          "cap": 384,
+          "truncated": 67,
+          "max_tokens_after": 384
+        },
+        "queries": {
+          "records": 200,
+          "cap": 96,
+          "truncated": 0,
+          "max_tokens_after": 31
+        }
+      }
+    },
+    {
+      "name": "curev1_en/genetics",
+      "files": {
+        "documents": {
+          "path": "data/benchmarks/curev1_en/genetics/evidence/documents-short.jsonl",
+          "sha256": "d3d9c9b28c5e1e22ffd6e42646f9750ece87b1970b81315a66487ebcf7fdcfb8",
+          "bytes": 8837340
+        },
+        "queries": {
+          "path": "data/benchmarks/curev1_en/genetics/evidence/queries-short.jsonl",
+          "sha256": "415deca9e4541b0cd60b6f428d6f9f70b4cb6135d549323252d018fcbd6d4b4f",
+          "bytes": 25652
+        },
+        "diagnostics": {
+          "path": "data/benchmarks/curev1_en/genetics/labels/evidence-diagnostics.jsonl",
+          "sha256": "24f877bd1ae5e255f11909e8838dc57ff57cf98979df77d8a86155a5757a22e6",
+          "bytes": 1215177
+        }
+      },
+      "counts": {
+        "documents": {
+          "records": 9823,
+          "cap": 384,
+          "truncated": 142,
+          "max_tokens_after": 384
+        },
+        "queries": {
+          "records": 200,
+          "cap": 96,
+          "truncated": 0,
+          "max_tokens_after": 35
+        }
+      }
+    },
+    {
+      "name": "curev1_en/neuroscience_and_neurology",
+      "files": {
+        "documents": {
+          "path": "data/benchmarks/curev1_en/neuroscience_and_neurology/evidence/documents-short.jsonl",
+          "sha256": "ea0a4059e082b5edbc08b578522d4d1e5a6783d0a466bcff953f4196bb65d627",
+          "bytes": 8275830
+        },
+        "queries": {
+          "path": "data/benchmarks/curev1_en/neuroscience_and_neurology/evidence/queries-short.jsonl",
+          "sha256": "2c1205e720ee9437e747545aea680c691529b575a575914fdf758af30bc6458f",
+          "bytes": 27274
+        },
+        "diagnostics": {
+          "path": "data/benchmarks/curev1_en/neuroscience_and_neurology/labels/evidence-diagnostics.jsonl",
+          "sha256": "bd7f7ded1e55e62496a3d4b404fa473e0cd3408ea648c86e6a882603f1022eeb",
+          "bytes": 1212466
+        }
+      },
+      "counts": {
+        "documents": {
+          "records": 9810,
+          "cap": 384,
+          "truncated": 135,
+          "max_tokens_after": 384
+        },
+        "queries": {
+          "records": 200,
+          "cap": 96,
+          "truncated": 0,
+          "max_tokens_after": 30
+        }
+      }
+    },
+    {
+      "name": "curev1_en/orthopedic_surgery",
+      "files": {
+        "documents": {
+          "path": "data/benchmarks/curev1_en/orthopedic_surgery/evidence/documents-short.jsonl",
+          "sha256": "0ed14b3ee5d8e647360fefd4ad8272e5b24fa067a3ec8f90fed0c63c5244a077",
+          "bytes": 6602557
+        },
+        "queries": {
+          "path": "data/benchmarks/curev1_en/orthopedic_surgery/evidence/queries-short.jsonl",
+          "sha256": "4f8bc4e87babf618b8ba974264cfb456ced3fd4a5eb69a8aa3ff3d65410b816b",
+          "bytes": 28487
+        },
+        "diagnostics": {
+          "path": "data/benchmarks/curev1_en/orthopedic_surgery/labels/evidence-diagnostics.jsonl",
+          "sha256": "0306255eb64402fe632c39e29c6a52288e91a26975a61f6d9ec2dff410609585",
+          "bytes": 1045658
+        }
+      },
+      "counts": {
+        "documents": {
+          "records": 8438,
+          "cap": 384,
+          "truncated": 93,
+          "max_tokens_after": 384
+        },
+        "queries": {
+          "records": 200,
+          "cap": 96,
+          "truncated": 0,
+          "max_tokens_after": 42
+        }
+      }
+    },
+    {
+      "name": "curev1_en/otorhinolaryngology",
+      "files": {
+        "documents": {
+          "path": "data/benchmarks/curev1_en/otorhinolaryngology/evidence/documents-short.jsonl",
+          "sha256": "69d459b8741504b85ddba9641521e0802903925b9f86cae4ba512a47438bd67e",
+          "bytes": 5793211
+        },
+        "queries": {
+          "path": "data/benchmarks/curev1_en/otorhinolaryngology/evidence/queries-short.jsonl",
+          "sha256": "3e4852ff4682ad06031ff8b6c5cd5f06cd9f915cfe9bfb2e6f154c4c37b34779",
+          "bytes": 27025
+        },
+        "diagnostics": {
+          "path": "data/benchmarks/curev1_en/otorhinolaryngology/labels/evidence-diagnostics.jsonl",
+          "sha256": "7f24f5cead735d1416477a57d4c1433cd0b5b44e781d8b9164d79b3dbfce1aa5",
+          "bytes": 964903
+        }
+      },
+      "counts": {
+        "documents": {
+          "records": 7777,
+          "cap": 384,
+          "truncated": 57,
+          "max_tokens_after": 384
+        },
+        "queries": {
+          "records": 200,
+          "cap": 96,
+          "truncated": 0,
+          "max_tokens_after": 32
+        }
+      }
+    },
+    {
+      "name": "curev1_en/plastic_surgery",
+      "files": {
+        "documents": {
+          "path": "data/benchmarks/curev1_en/plastic_surgery/evidence/documents-short.jsonl",
+          "sha256": "fb773c8c109b2d73dc1a3e22b535213977b01ad75ec871f535c17738b6230a57",
+          "bytes": 5998474
+        },
+        "queries": {
+          "path": "data/benchmarks/curev1_en/plastic_surgery/evidence/queries-short.jsonl",
+          "sha256": "27ac40da689d1eac3cee38377d060307ff01231cde386cfc81d22b487fab7b8c",
+          "bytes": 27722
+        },
+        "diagnostics": {
+          "path": "data/benchmarks/curev1_en/plastic_surgery/labels/evidence-diagnostics.jsonl",
+          "sha256": "151786abde247adca081454387ba3a566c1ca789fa85f7824e37e1879f97a8eb",
+          "bytes": 995289
+        }
+      },
+      "counts": {
+        "documents": {
+          "records": 8026,
+          "cap": 384,
+          "truncated": 59,
+          "max_tokens_after": 384
+        },
+        "queries": {
+          "records": 200,
+          "cap": 96,
+          "truncated": 0,
+          "max_tokens_after": 31
+        }
+      }
+    },
+    {
+      "name": "curev1_en/psychiatry_and_psychology",
+      "files": {
+        "documents": {
+          "path": "data/benchmarks/curev1_en/psychiatry_and_psychology/evidence/documents-short.jsonl",
+          "sha256": "8c9225389632181d2dd2dc43a89de819ddabdfb1b9e310fe785a48fb02c09275",
+          "bytes": 9812802
+        },
+        "queries": {
+          "path": "data/benchmarks/curev1_en/psychiatry_and_psychology/evidence/queries-short.jsonl",
+          "sha256": "528dba4d0d653bd38dbc5703271d9bce933fe0850009c9cc8e671aef44373f30",
+          "bytes": 29731
+        },
+        "diagnostics": {
+          "path": "data/benchmarks/curev1_en/psychiatry_and_psychology/labels/evidence-diagnostics.jsonl",
+          "sha256": "e0a5ff896a4c01a5772f8ed838180227ad6f360b442ebce5017f56b92e9a0835",
+          "bytes": 1351415
+        }
+      },
+      "counts": {
+        "documents": {
+          "records": 10945,
+          "cap": 384,
+          "truncated": 135,
+          "max_tokens_after": 384
+        },
+        "queries": {
+          "records": 200,
+          "cap": 96,
+          "truncated": 0,
+          "max_tokens_after": 43
+        }
+      }
+    },
+    {
+      "name": "curev1_en/pulmonology",
+      "files": {
+        "documents": {
+          "path": "data/benchmarks/curev1_en/pulmonology/evidence/documents-short.jsonl",
+          "sha256": "47d21b51870830abcc6d2b60b010ab563ff95b7e51235ccc04f5e41c3df1b2f6",
+          "bytes": 8197902
+        },
+        "queries": {
+          "path": "data/benchmarks/curev1_en/pulmonology/evidence/queries-short.jsonl",
+          "sha256": "6d6b3a81b636bd28ea5d2ce0bb29f07307f64b9f46f35571de1b9c1d4713f93c",
+          "bytes": 27313
+        },
+        "diagnostics": {
+          "path": "data/benchmarks/curev1_en/pulmonology/labels/evidence-diagnostics.jsonl",
+          "sha256": "158b1c869ddb894213d4dc49c260c77cca956c1445114601de57c06d48a09e8c",
+          "bytes": 1263499
+        }
+      },
+      "counts": {
+        "documents": {
+          "records": 10233,
+          "cap": 384,
+          "truncated": 101,
+          "max_tokens_after": 384
+        },
+        "queries": {
+          "records": 200,
+          "cap": 96,
+          "truncated": 0,
+          "max_tokens_after": 40
+        }
+      }
+    },
+    {
+      "name": "nfcorpus_dev",
+      "files": {
+        "documents": {
+          "path": "data/benchmarks/nfcorpus_dev/evidence/documents-short.jsonl",
+          "sha256": "42c195946108f3135e112f5647731ebda4f5e72584dd38416ef909353d45efed",
+          "bytes": 5473329
+        },
+        "queries": {
+          "path": "data/benchmarks/nfcorpus_dev/evidence/queries-short.jsonl",
+          "sha256": "ee66e9d90f797219fbb11ffe57adb523fbd8035c10a0754f6406811a35bb10b5",
+          "bytes": 16860
+        },
+        "diagnostics": {
+          "path": "data/benchmarks/nfcorpus_dev/labels/evidence-diagnostics.jsonl",
+          "sha256": "86ac35b048ef70c8d991f1f1b70bcfcce26878905a0e712f1f678d02d3833b54",
+          "bytes": 363514
+        }
+      },
+      "counts": {
+        "documents": {
+          "records": 3570,
+          "cap": 384,
+          "truncated": 861,
+          "max_tokens_after": 384
+        },
+        "queries": {
+          "records": 324,
+          "cap": 96,
+          "truncated": 0,
+          "max_tokens_after": 20
+        }
+      }
+    }
+  ],
+  "model_weights_downloaded": false,
+  "inference_calls": 0
+}

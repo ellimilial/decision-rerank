@@ -1,0 +1,330 @@
+{
+  "seed": 42,
+  "selection": "SHA256(seed|namespace|query_id), no labels or model outputs",
+  "bioasq": [
+    {
+      "collection": "bioasq13b_curated",
+      "query_id": "67d7fe6a18b1e36f2e000046"
+    },
+    {
+      "collection": "bioasq13b_curated",
+      "query_id": "67f857eb18b1e36f2e000105"
+    },
+    {
+      "collection": "bioasq13b_curated",
+      "query_id": "67cddce881b102733300001c"
+    },
+    {
+      "collection": "bioasq13b_curated",
+      "query_id": "67e56f2018b1e36f2e0000b0"
+    },
+    {
+      "collection": "bioasq13b_curated",
+      "query_id": "67cc826c81b102733300000b"
+    },
+    {
+      "collection": "bioasq13b_curated",
+      "query_id": "67d74cde18b1e36f2e00003c"
+    },
+    {
+      "collection": "bioasq13b_curated",
+      "query_id": "67d721d118b1e36f2e000031"
+    },
+    {
+      "collection": "bioasq13b_curated",
+      "query_id": "67e5541718b1e36f2e0000ab"
+    },
+    {
+      "collection": "bioasq13b_curated",
+      "query_id": "67d03a2581b1027333000028"
+    },
+    {
+      "collection": "bioasq13b_curated",
+      "query_id": "67d1a36781b102733300002b"
+    },
+    {
+      "collection": "bioasq13b_curated",
+      "query_id": "67e6d1b518b1e36f2e0000d3"
+    },
+    {
+      "collection": "bioasq13b_curated",
+      "query_id": "67e457ed18b1e36f2e0000a8"
+    },
+    {
+      "collection": "bioasq13b_curated",
+      "query_id": "67eb822e18b1e36f2e0000f1"
+    },
+    {
+      "collection": "bioasq13b_curated",
+      "query_id": "67df18f518b1e36f2e000064"
+    },
+    {
+      "collection": "bioasq13b_curated",
+      "query_id": "67e090be18b1e36f2e00006c"
+    },
+    {
+      "collection": "bioasq13b_curated",
+      "query_id": "67ed575b18b1e36f2e0000f7"
+    },
+    {
+      "collection": "bioasq13b_curated",
+      "query_id": "67fce38c18b1e36f2e000135"
+    },
+    {
+      "collection": "bioasq13b_curated",
+      "query_id": "67e573f418b1e36f2e0000b4"
+    },
+    {
+      "collection": "bioasq13b_curated",
+      "query_id": "67ded26a18b1e36f2e00005d"
+    },
+    {
+      "collection": "bioasq13b_curated",
+      "query_id": "67e4590e18b1e36f2e0000a9"
+    },
+    {
+      "collection": "bioasq13b_curated",
+      "query_id": "6810f6f0353a4a2e6b000015"
+    },
+    {
+      "collection": "bioasq13b_curated",
+      "query_id": "67e5749b18b1e36f2e0000b5"
+    },
+    {
+      "collection": "bioasq13b_curated",
+      "query_id": "67dae2d018b1e36f2e000056"
+    },
+    {
+      "collection": "bioasq13b_curated",
+      "query_id": "67d7203018b1e36f2e00002d"
+    },
+    {
+      "collection": "bioasq13b_curated",
+      "query_id": "67cc9d4c81b1027333000015"
+    },
+    {
+      "collection": "bioasq13b_curated",
+      "query_id": "67eb55f418b1e36f2e0000e7"
+    },
+    {
+      "collection": "bioasq13b_curated",
+      "query_id": "67cec6e781b1027333000021"
+    },
+    {
+      "collection": "bioasq13b_curated",
+      "query_id": "67e288d518b1e36f2e00007c"
+    },
+    {
+      "collection": "bioasq13b_curated",
+      "query_id": "67e4165d18b1e36f2e0000a6"
+    },
+    {
+      "collection": "bioasq13b_curated",
+      "query_id": "67e6b93718b1e36f2e0000be"
+    }
+  ],
+  "cure": [
+    {
+      "collection": "curev1_en/dentistry_and_oral_health",
+      "query_id": "e63943ed-c640-4f28-ab81-547bc6a09283"
+    },
+    {
+      "collection": "curev1_en/dentistry_and_oral_health",
+      "query_id": "4c5cd59f-8130-40a3-9b1e-398efc62f69e"
+    },
+    {
+      "collection": "curev1_en/dentistry_and_oral_health",
+      "query_id": "0ceb8fb1-58e4-4a66-86db-73bff3ead564"
+    },
+    {
+      "collection": "curev1_en/dermatology",
+      "query_id": "753fe4c2-3b74-4530-8963-d2ac9037b467"
+    },
+    {
+      "collection": "curev1_en/dermatology",
+      "query_id": "c100a4d3-f3ef-4d71-b8d2-8036e0b18196"
+    },
+    {
+      "collection": "curev1_en/dermatology",
+      "query_id": "6438473e-f814-43e5-911d-ab3a9096b31d"
+    },
+    {
+      "collection": "curev1_en/gastroenterology",
+      "query_id": "104a5c92-9f4a-4df5-99b0-3815e9ececfb"
+    },
+    {
+      "collection": "curev1_en/gastroenterology",
+      "query_id": "17d27231-b85b-48e3-93af-284b12fe5593"
+    },
+    {
+      "collection": "curev1_en/gastroenterology",
+      "query_id": "b689d365-e18f-4862-a452-22cc8cc35690"
+    },
+    {
+      "collection": "curev1_en/genetics",
+      "query_id": "c40367de-a5ea-45ac-b56c-24cd404f6f9e"
+    },
+    {
+      "collection": "curev1_en/genetics",
+      "query_id": "659c8eb1-8bfb-4dc3-8c7b-b6dc3d32bfba"
+    },
+    {
+      "collection": "curev1_en/genetics",
+      "query_id": "7bf37101-4b6c-4da0-b3dd-05880db74240"
+    },
+    {
+      "collection": "curev1_en/neuroscience_and_neurology",
+      "query_id": "d8606941-9d0e-4cb5-8e3f-36b6c3cce9b6"
+    },
+    {
+      "collection": "curev1_en/neuroscience_and_neurology",
+      "query_id": "71f486f7-5904-4df6-be01-cecb081fedd7"
+    },
+    {
+      "collection": "curev1_en/neuroscience_and_neurology",
+      "query_id": "f8fcec46-2672-42bc-9241-83a96d5e62c0"
+    },
+    {
+      "collection": "curev1_en/orthopedic_surgery",
+      "query_id": "ca7e5ed0-18c5-4aa3-a4c0-225004d8a8f3"
+    },
+    {
+      "collection": "curev1_en/orthopedic_surgery",
+      "query_id": "51068ef0-c252-493c-becd-962e66c3a495"
+    },
+    {
+      "collection": "curev1_en/orthopedic_surgery",
+      "query_id": "f5cc635d-547b-488f-b923-a80d0a3840da"
+    },
+    {
+      "collection": "curev1_en/otorhinolaryngology",
+      "query_id": "11aef413-3aa8-4906-aa68-493017289887"
+    },
+    {
+      "collection": "curev1_en/otorhinolaryngology",
+      "query_id": "0e45f83b-0b7e-4506-bd7c-78f8621d3c78"
+    },
+    {
+      "collection": "curev1_en/otorhinolaryngology",
+      "query_id": "d6f32b68-a101-4717-8068-a6caa4cf6f45"
+    },
+    {
+      "collection": "curev1_en/plastic_surgery",
+      "query_id": "d6f1f5cb-c549-433a-b500-4a15a07fe943"
+    },
+    {
+      "collection": "curev1_en/plastic_surgery",
+      "query_id": "9c806057-3e8c-4c46-a79a-27ce8ca3dd9a"
+    },
+    {
+      "collection": "curev1_en/plastic_surgery",
+      "query_id": "f2c9d1f5-0a59-4f22-826f-cd86c7290f9b"
+    },
+    {
+      "collection": "curev1_en/psychiatry_and_psychology",
+      "query_id": "cb4d0534-b599-4fc0-83b8-7abb4d51997b"
+    },
+    {
+      "collection": "curev1_en/psychiatry_and_psychology",
+      "query_id": "0f31e4de-86a9-4e47-812f-6c5c0f71d396"
+    },
+    {
+      "collection": "curev1_en/psychiatry_and_psychology",
+      "query_id": "96574f6c-b1e1-45cc-8fd1-befc744a7629"
+    },
+    {
+      "collection": "curev1_en/pulmonology",
+      "query_id": "363bda51-12c8-485f-99b5-2a59156278c1"
+    },
+    {
+      "collection": "curev1_en/pulmonology",
+      "query_id": "6e8a55ee-0829-4622-9339-518717a4da80"
+    },
+    {
+      "collection": "curev1_en/pulmonology",
+      "query_id": "3f9d5aa5-65b8-48d2-b445-40501ce90386"
+    }
+  ],
+  "nfcorpus_pilot": [
+    {
+      "collection": "nfcorpus_dev",
+      "query_id": "PLAIN-3180"
+    },
+    {
+      "collection": "nfcorpus_dev",
+      "query_id": "PLAIN-2990"
+    },
+    {
+      "collection": "nfcorpus_dev",
+      "query_id": "PLAIN-467"
+    },
+    {
+      "collection": "nfcorpus_dev",
+      "query_id": "PLAIN-2300"
+    },
+    {
+      "collection": "nfcorpus_dev",
+      "query_id": "PLAIN-2395"
+    },
+    {
+      "collection": "nfcorpus_dev",
+      "query_id": "PLAIN-826"
+    },
+    {
+      "collection": "nfcorpus_dev",
+      "query_id": "PLAIN-996"
+    },
+    {
+      "collection": "nfcorpus_dev",
+      "query_id": "PLAIN-2039"
+    },
+    {
+      "collection": "nfcorpus_dev",
+      "query_id": "PLAIN-2969"
+    },
+    {
+      "collection": "nfcorpus_dev",
+      "query_id": "PLAIN-406"
+    },
+    {
+      "collection": "nfcorpus_dev",
+      "query_id": "PLAIN-2709"
+    },
+    {
+      "collection": "nfcorpus_dev",
+      "query_id": "PLAIN-1655"
+    },
+    {
+      "collection": "nfcorpus_dev",
+      "query_id": "PLAIN-2849"
+    },
+    {
+      "collection": "nfcorpus_dev",
+      "query_id": "PLAIN-912"
+    },
+    {
+      "collection": "nfcorpus_dev",
+      "query_id": "PLAIN-2144"
+    },
+    {
+      "collection": "nfcorpus_dev",
+      "query_id": "PLAIN-881"
+    },
+    {
+      "collection": "nfcorpus_dev",
+      "query_id": "PLAIN-550"
+    },
+    {
+      "collection": "nfcorpus_dev",
+      "query_id": "PLAIN-1982"
+    },
+    {
+      "collection": "nfcorpus_dev",
+      "query_id": "PLAIN-1017"
+    },
+    {
+      "collection": "nfcorpus_dev",
+      "query_id": "PLAIN-1961"
+    }
+  ]
+}

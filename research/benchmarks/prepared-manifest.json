@@ -1,0 +1,1962 @@
+{
+  "prepared_at": "2026-10-15T14:32:56.623093+00:00",
+  "status": "data_and_candidates_prepared; model adapters, shared context tokenization, training overlap and native BioASQ archive validation remain",
+  "core_benchmark_families": 2,
+  "core_test_queries": 2340,
+  "development_queries": 324,
+  "collections": [
+    {
+      "name": "bioasq13b_curated",
+      "benchmark": "bioasq13b_curated",
+      "domain": null,
+      "scope": "BioASQ 13B retrospective curated-corpus adaptation; public gold mirror; not full-PubMed competition reproduction",
+      "queries": 340,
+      "documents": 44128,
+      "positive_qrel_rows": 8566,
+      "judge_counts": {
+        "expert_13b_gold_mirror": 8566
+      },
+      "positive_grade_counts": {
+        "1": 8566
+      },
+      "expertise_counts": {
+        "unspecified": 340
+      },
+      "raw_corpus_documents": 44183,
+      "empty_document_ids_excluded": [
+        "20301293",
+        "20301308",
+        "20301331",
+        "20301420",
+        "20301427",
+        "20301454",
+        "20301462",
+        "20301466",
+        "20301494",
+        "20301577",
+        "20301585",
+        "20301588",
+        "20301628",
+        "20301779",
+        "20639591",
+        "20641567",
+        "21249951",
+        "21250223",
+        "21413253",
+        "21473027",
+        "21473029",
+        "21952424",
+        "22787616",
+        "22787626",
+        "22855961",
+        "23104528",
+        "23304742",
+        "23658991",
+        "23689657",
+        "23833797",
+        "23890950",
+        "23986914",
+        "24144986",
+        "24212220",
+        "24305278",
+        "24305403",
+        "24960551",
+        "26989023",
+        "27399411",
+        "27399455",
+        "27742610",
+        "27924029",
+        "27940438",
+        "28976850",
+        "29653952",
+        "29676625",
+        "29934319",
+        "30242068",
+        "33097476",
+        "33409349",
+        "34468351",
+        "34766984",
+        "34788240",
+        "36459075",
+        "37800882"
+      ],
+      "title_only_documents": 2,
+      "qrel_pairs_outside_corpus": 1158,
+      "queries_without_gold_in_corpus": 1,
+      "queries_without_gold_in_candidates": 1,
+      "empty_or_out_of_vocabulary_queries": 0,
+      "corpus_positive_recall_macro": 0.8949477587803117,
+      "candidate_recall@100_macro": 0.8432939681264795,
+      "corpus_ids_sha256": "5b133db51cda08de7ba065e54c1c29c28237c75c5fcb3cae7f9db588b9008c8b",
+      "query_ids_sha256": "d77d26114dd514b61d06ca62adfd71b7c6d09f7474d1df0fdb2317e734b5d017",
+      "files": {
+        "corpus": {
+          "path": "data/benchmarks/bioasq13b_curated/corpus.jsonl",
+          "sha256": "efca00a6d49e020934ab6a49b1d0e7da55596b2ec6d6cae6f78eb689da975784",
+          "bytes": 70272492
+        },
+        "queries": {
+          "path": "data/benchmarks/bioasq13b_curated/queries.jsonl",
+          "sha256": "166eebcabed8f08ff7be41c9b9347f4b78296e1b1d8ab6acfc1cd40c102509c9",
+          "bytes": 34871
+        },
+        "query_metadata": {
+          "path": "data/benchmarks/bioasq13b_curated/query-metadata.jsonl",
+          "sha256": "16d648d64efdb2c4b937f33108e73b09af57c9a2cde4119ce3fc0eb78c0e41c2",
+          "bytes": 22027
+        },
+        "qrels": {
+          "path": "data/benchmarks/bioasq13b_curated/labels/qrels.jsonl",
+          "sha256": "0a7ca428ed59c638958f431c6f2c3e32c421ebd222933287396b75f008ed729b",
+          "bytes": 881802
+        },
+        "candidates": {
+          "path": "data/benchmarks/bioasq13b_curated/candidates/bm25-top100.jsonl",
+          "sha256": "51bb00b00a7853b03b48554087f55e09aaf15626007ca6d6cb99e205f5930808",
+          "bytes": 2332657
+        },
+        "diagnostics": {
+          "path": "data/benchmarks/bioasq13b_curated/labels/candidate-diagnostics.jsonl",
+          "sha256": "556d60a05882d41ead5fc1514412d02acae622df1db94e7d70e3e7dc6a43c0f9",
+          "bytes": 120072
+        }
+      },
+      "sources": [
+        {
+          "dataset": "DinoStackAI/bioasq-rag-13b-resplit",
+          "revision": "ade805f1df0b16dbf19385597861146bdb0d9904",
+          "upstream_path": "corpus/train-00000-of-00001.parquet",
+          "path": "data/bioasq/DinoStackAI--bioasq-rag-13b-resplit/corpus/train-00000-of-00001.parquet",
+          "url": "https://huggingface.co/datasets/DinoStackAI/bioasq-rag-13b-resplit/resolve/ade805f1df0b16dbf19385597861146bdb0d9904/corpus/train-00000-of-00001.parquet",
+          "expected_bytes": 39341606,
+          "expected_sha256": "33c539d0c1a8b6dd80854862b8dda6b9f4d1995d18c86c94f17281d8aa61471c",
+          "checked_at": "2026-10-15T11:50:47.145432+00:00",
+          "status": "obtained",
+          "sha256": "33c539d0c1a8b6dd80854862b8dda6b9f4d1995d18c86c94f17281d8aa61471c",
+          "bytes": 39341606
+        },
+        {
+          "dataset": "ssswwwxxx/bioasq-13b-golden",
+          "revision": "b27b8b791b77d2f044d03beb200d8cfcc08677fc",
+          "upstream_path": "data/all.parquet",
+          "path": "data/bioasq/ssswwwxxx--bioasq-13b-golden/data/all.parquet",
+          "url": "https://huggingface.co/datasets/ssswwwxxx/bioasq-13b-golden/resolve/b27b8b791b77d2f044d03beb200d8cfcc08677fc/data/all.parquet",
+          "expected_bytes": 4732061,
+          "expected_sha256": "b850c60497e9a89c24672fc2e88a45d9a38507668b0cdb10124a445c005ab608",
+          "checked_at": "2026-10-15T11:50:49.194860+00:00",
+          "status": "obtained",
+          "sha256": "b850c60497e9a89c24672fc2e88a45d9a38507668b0cdb10124a445c005ab608",
+          "bytes": 4732061
+        }
+      ],
+      "retriever": {
+        "implementation": "bm25s",
+        "version": "0.3.13",
+        "method": "lucene",
+        "k1": 0.9,
+        "b": 0.4,
+        "dtype": "float64",
+        "depth": 100,
+        "indexed_fields": [
+          "title",
+          "text"
+        ],
+        "evidence_indexing": "full supplied text; model context truncation is a later shared adapter step",
+        "tokenizer": {
+          "lower": true,
+          "splitter": "(?u)\\b\\w\\w+\\b",
+          "stemmer": "Snowball english via PyStemmer 3.1.0",
+          "stopwords": [
+            "a",
+            "an",
+            "and",
+            "are",
+            "as",
+            "at",
+            "be",
+            "but",
+            "by",
+            "for",
+            "if",
+            "in",
+            "into",
+            "is",
+            "it",
+            "no",
+            "not",
+            "of",
+            "on",
+            "or",
+            "such",
+            "that",
+            "the",
+            "their",
+            "then",
+            "there",
+            "these",
+            "they",
+            "this",
+            "to",
+            "was",
+            "will",
+            "with"
+          ]
+        },
+        "ties": "score descending, doc_id lexicographically ascending",
+        "force_include_gold": false,
+        "read_supplied_runs": false
+      },
+      "build_seconds": 5.28
+    },
+    {
+      "name": "curev1_en/dentistry_and_oral_health",
+      "benchmark": "curev1_en",
+      "domain": "dentistry_and_oral_health",
+      "scope": "Native CUREv1 English specialty corpus; mixed human/model qrels",
+      "queries": 200,
+      "documents": 29352,
+      "positive_qrel_rows": 7966,
+      "judge_counts": {
+        "model": 7706,
+        "human": 260
+      },
+      "positive_grade_counts": {
+        "2": 1672,
+        "1": 6294
+      },
+      "expertise_counts": {
+        "expert": 150,
+        "layman": 50
+      },
+      "raw_corpus_documents": 29352,
+      "empty_document_ids_excluded": [],
+      "title_only_documents": 0,
+      "qrel_pairs_outside_corpus": 0,
+      "queries_without_gold_in_corpus": 0,
+      "queries_without_gold_in_candidates": 1,
+      "empty_or_out_of_vocabulary_queries": 0,
+      "corpus_positive_recall_macro": 1.0,
+      "candidate_recall@100_macro": 0.5297564222735615,
+      "corpus_ids_sha256": "39968bd5b9d6dd964064392616f05589ce5406e4a020bd6dbc462eac43ceff99",
+      "query_ids_sha256": "00b1b867f3016fd8cba1a273821f6df7efc5516df676c8a52f1310f708061ef8",
+      "files": {
+        "corpus": {
+          "path": "data/benchmarks/curev1_en/dentistry_and_oral_health/corpus.jsonl",
+          "sha256": "b9bb08adc264edbd2b1feca5ae14993c3bd3a3bc37f13e69ec9f0c354f0ef036",
+          "bytes": 19377599
+        },
+        "queries": {
+          "path": "data/benchmarks/curev1_en/dentistry_and_oral_health/queries.jsonl",
+          "sha256": "32847198182a28f56669c134d9de7a0df042c4bc595260882900ce1df485696a",
+          "bytes": 26378
+        },
+        "query_metadata": {
+          "path": "data/benchmarks/curev1_en/dentistry_and_oral_health/query-metadata.jsonl",
+          "sha256": "1d396e7ca0c3637155c513a328ad50b526f97572e31af47777ee45df6d979385",
+          "bytes": 22600
+        },
+        "qrels": {
+          "path": "data/benchmarks/curev1_en/dentistry_and_oral_health/labels/qrels.jsonl",
+          "sha256": "97880eaa220d53b7c65c3bcdd59b745a33514ce39148781f30db8a935691ea3a",
+          "bytes": 1003716
+        },
+        "candidates": {
+          "path": "data/benchmarks/curev1_en/dentistry_and_oral_health/candidates/bm25-top100.jsonl",
+          "sha256": "3dd8a4e6962c94b4fc0238afa9775f4327ac28bf539f50bd5f1a9ff6fc6a8a03",
+          "bytes": 1933412
+        },
+        "diagnostics": {
+          "path": "data/benchmarks/curev1_en/dentistry_and_oral_health/labels/candidate-diagnostics.jsonl",
+          "sha256": "6db9f8ee8b4b445beb90dea72352da38c1418bcf8dc3c4c5786456d73c34a4a8",
+          "bytes": 81571
+        }
+      },
+      "sources": [
+        {
+          "dataset": "clinia/CUREv1",
+          "revision": "072343ca2353c3dc832cf18cf0fef7c9a5a207b7",
+          "path": "data/raw/cure/dentistry_and_oral_health/corpus.jsonl",
+          "url": "https://huggingface.co/datasets/clinia/CUREv1/resolve/072343ca2353c3dc832cf18cf0fef7c9a5a207b7/dentistry_and_oral_health/corpus.jsonl",
+          "expected_bytes": 19408415,
+          "expected_sha256": "0d6b2cabe77b158b821f3798e1b136abc68a025e63a85c3b1ccaf558b3a5fb31",
+          "checked_at": "2026-10-15T14:27:12.039546+00:00",
+          "status": "obtained",
+          "bytes": 19408415,
+          "sha256": "0d6b2cabe77b158b821f3798e1b136abc68a025e63a85c3b1ccaf558b3a5fb31"
+        },
+        {
+          "dataset": "clinia/CUREv1",
+          "revision": "072343ca2353c3dc832cf18cf0fef7c9a5a207b7",
+          "path": "data/raw/cure/dentistry_and_oral_health/queries-en.jsonl",
+          "url": "https://huggingface.co/datasets/clinia/CUREv1/resolve/072343ca2353c3dc832cf18cf0fef7c9a5a207b7/dentistry_and_oral_health/queries-en.jsonl",
+          "expected_bytes": 30781,
+          "expected_sha256": null,
+          "checked_at": "2026-10-15T14:27:12.519932+00:00",
+          "status": "obtained",
+          "bytes": 30781,
+          "sha256": "6f635275edafb24561a094686aaf51bfeb0251b2b6da3d767541e0189ea4137f"
+        },
+        {
+          "dataset": "clinia/CUREv1",
+          "revision": "072343ca2353c3dc832cf18cf0fef7c9a5a207b7",
+          "path": "data/raw/cure/dentistry_and_oral_health/qrels.jsonl",
+          "url": "https://huggingface.co/datasets/clinia/CUREv1/resolve/072343ca2353c3dc832cf18cf0fef7c9a5a207b7/dentistry_and_oral_health/qrels.jsonl",
+          "expected_bytes": 6861590,
+          "expected_sha256": "3389b3ae19f654b49cb75dbf2299411896a4904094d1200e4d14a6804a537419",
+          "checked_at": "2026-10-15T14:27:12.039630+00:00",
+          "status": "obtained",
+          "bytes": 6861590,
+          "sha256": "3389b3ae19f654b49cb75dbf2299411896a4904094d1200e4d14a6804a537419"
+        }
+      ],
+      "retriever": {
+        "implementation": "bm25s",
+        "version": "0.3.13",
+        "method": "lucene",
+        "k1": 0.9,
+        "b": 0.4,
+        "dtype": "float64",
+        "depth": 100,
+        "indexed_fields": [
+          "title",
+          "text"
+        ],
+        "evidence_indexing": "full supplied text; model context truncation is a later shared adapter step",
+        "tokenizer": {
+          "lower": true,
+          "splitter": "(?u)\\b\\w\\w+\\b",
+          "stemmer": "Snowball english via PyStemmer 3.1.0",
+          "stopwords": [
+            "a",
+            "an",
+            "and",
+            "are",
+            "as",
+            "at",
+            "be",
+            "but",
+            "by",
+            "for",
+            "if",
+            "in",
+            "into",
+            "is",
+            "it",
+            "no",
+            "not",
+            "of",
+            "on",
+            "or",
+            "such",
+            "that",
+            "the",
+            "their",
+            "then",
+            "there",
+            "these",
+            "they",
+            "this",
+            "to",
+            "was",
+            "will",
+            "with"
+          ]
+        },
+        "ties": "score descending, doc_id lexicographically ascending",
+        "force_include_gold": false,
+        "read_supplied_runs": false
+      },
+      "build_seconds": 1.591
+    },
+    {
+      "name": "curev1_en/dermatology",
+      "benchmark": "curev1_en",
+      "domain": "dermatology",
+      "scope": "Native CUREv1 English specialty corpus; mixed human/model qrels",
+      "queries": 200,
+      "documents": 15687,
+      "positive_qrel_rows": 2692,
+      "judge_counts": {
+        "model": 2452,
+        "human": 240
+      },
+      "positive_grade_counts": {
+        "1": 1814,
+        "2": 878
+      },
+      "expertise_counts": {
+        "expert": 150,
+        "layman": 50
+      },
+      "raw_corpus_documents": 15687,
+      "empty_document_ids_excluded": [],
+      "title_only_documents": 0,
+      "qrel_pairs_outside_corpus": 0,
+      "queries_without_gold_in_corpus": 0,
+      "queries_without_gold_in_candidates": 1,
+      "empty_or_out_of_vocabulary_queries": 0,
+      "corpus_positive_recall_macro": 1.0,
+      "candidate_recall@100_macro": 0.7813200432847311,
+      "corpus_ids_sha256": "b64ceb999e4e37bdd138a8fd7eae93411fd925c05f42f0be5a6dc005a17fb590",
+      "query_ids_sha256": "fecc59798dc2b2aedeef8451b1f42ede0f86bdf97a46847dc45c2a45a8a8a226",
+      "files": {
+        "corpus": {
+          "path": "data/benchmarks/curev1_en/dermatology/corpus.jsonl",
+          "sha256": "e0f32d4d4d4198c4e67763aaee1fb422612abd1d2cd50064d520a6dd74b5c884",
+          "bytes": 10362161
+        },
+        "queries": {
+          "path": "data/benchmarks/curev1_en/dermatology/queries.jsonl",
+          "sha256": "51a77093932ca6fdfeb8379ed081553cd406bfc6133ca86ecd273afc0b3ff41b",
+          "bytes": 22929
+        },
+        "query_metadata": {
+          "path": "data/benchmarks/curev1_en/dermatology/query-metadata.jsonl",
+          "sha256": "0a8b335661c62352e61438d722a5d9b7a0b84ccb7a42647471bb22c1909defd7",
+          "bytes": 19800
+        },
+        "qrels": {
+          "path": "data/benchmarks/curev1_en/dermatology/labels/qrels.jsonl",
+          "sha256": "ba13b8ff5dbe6ff16ea9bebd6afe725a92f9d46418aaa0b2bbb9c740e7968412",
+          "bytes": 339192
+        },
+        "candidates": {
+          "path": "data/benchmarks/curev1_en/dermatology/candidates/bm25-top100.jsonl",
+          "sha256": "85eb6461bcdf6c7b9e9b38cbcd9203d70c5c6218168f1373d71ad923114df49f",
+          "bytes": 1934293
+        },
+        "diagnostics": {
+          "path": "data/benchmarks/curev1_en/dermatology/labels/candidate-diagnostics.jsonl",
+          "sha256": "09738640b2b97b1af7cb086644eacf8cb1d5b110ed8f4acd4fd5a599f4cceecb",
+          "bytes": 78526
+        }
+      },
+      "sources": [
+        {
+          "dataset": "clinia/CUREv1",
+          "revision": "072343ca2353c3dc832cf18cf0fef7c9a5a207b7",
+          "path": "data/raw/cure/dermatology/corpus.jsonl",
+          "url": "https://huggingface.co/datasets/clinia/CUREv1/resolve/072343ca2353c3dc832cf18cf0fef7c9a5a207b7/dermatology/corpus.jsonl",
+          "expected_bytes": 10379324,
+          "expected_sha256": "bf569b9c17021d761fd19b58fbad07ce9d005130fc87e1fbb90d82a6639c863c",
+          "checked_at": "2026-10-15T14:27:12.765702+00:00",
+          "status": "obtained",
+          "bytes": 10379324,
+          "sha256": "bf569b9c17021d761fd19b58fbad07ce9d005130fc87e1fbb90d82a6639c863c"
+        },
+        {
+          "dataset": "clinia/CUREv1",
+          "revision": "072343ca2353c3dc832cf18cf0fef7c9a5a207b7",
+          "path": "data/raw/cure/dermatology/queries-en.jsonl",
+          "url": "https://huggingface.co/datasets/clinia/CUREv1/resolve/072343ca2353c3dc832cf18cf0fef7c9a5a207b7/dermatology/queries-en.jsonl",
+          "expected_bytes": 27330,
+          "expected_sha256": null,
+          "checked_at": "2026-10-15T14:27:14.131643+00:00",
+          "status": "obtained",
+          "bytes": 27330,
+          "sha256": "15ab3b0263eddba58c78470c0e246d371964d2a26440fdcf8d7734a09c9b3e0d"
+        },
+        {
+          "dataset": "clinia/CUREv1",
+          "revision": "072343ca2353c3dc832cf18cf0fef7c9a5a207b7",
+          "path": "data/raw/cure/dermatology/qrels.jsonl",
+          "url": "https://huggingface.co/datasets/clinia/CUREv1/resolve/072343ca2353c3dc832cf18cf0fef7c9a5a207b7/dermatology/qrels.jsonl",
+          "expected_bytes": 2092058,
+          "expected_sha256": "697138af7cbabe341e972f64aadbc5ff371735289ab5489b207ee25ead19741f",
+          "checked_at": "2026-10-15T14:27:12.860806+00:00",
+          "status": "obtained",
+          "bytes": 2092058,
+          "sha256": "697138af7cbabe341e972f64aadbc5ff371735289ab5489b207ee25ead19741f"
+        }
+      ],
+      "retriever": {
+        "implementation": "bm25s",
+        "version": "0.3.13",
+        "method": "lucene",
+        "k1": 0.9,
+        "b": 0.4,
+        "dtype": "float64",
+        "depth": 100,
+        "indexed_fields": [
+          "title",
+          "text"
+        ],
+        "evidence_indexing": "full supplied text; model context truncation is a later shared adapter step",
+        "tokenizer": {
+          "lower": true,
+          "splitter": "(?u)\\b\\w\\w+\\b",
+          "stemmer": "Snowball english via PyStemmer 3.1.0",
+          "stopwords": [
+            "a",
+            "an",
+            "and",
+            "are",
+            "as",
+            "at",
+            "be",
+            "but",
+            "by",
+            "for",
+            "if",
+            "in",
+            "into",
+            "is",
+            "it",
+            "no",
+            "not",
+            "of",
+            "on",
+            "or",
+            "such",
+            "that",
+            "the",
+            "their",
+            "then",
+            "there",
+            "these",
+            "they",
+            "this",
+            "to",
+            "was",
+            "will",
+            "with"
+          ]
+        },
+        "ties": "score descending, doc_id lexicographically ascending",
+        "force_include_gold": false,
+        "read_supplied_runs": false
+      },
+      "build_seconds": 0.853
+    },
+    {
+      "name": "curev1_en/gastroenterology",
+      "benchmark": "curev1_en",
+      "domain": "gastroenterology",
+      "scope": "Native CUREv1 English specialty corpus; mixed human/model qrels",
+      "queries": 200,
+      "documents": 23068,
+      "positive_qrel_rows": 10665,
+      "judge_counts": {
+        "model": 10459,
+        "human": 206
+      },
+      "positive_grade_counts": {
+        "1": 8103,
+        "2": 2562
+      },
+      "expertise_counts": {
+        "layman": 50,
+        "expert": 150
+      },
+      "raw_corpus_documents": 23068,
+      "empty_document_ids_excluded": [],
+      "title_only_documents": 0,
+      "qrel_pairs_outside_corpus": 0,
+      "queries_without_gold_in_corpus": 0,
+      "queries_without_gold_in_candidates": 4,
+      "empty_or_out_of_vocabulary_queries": 0,
+      "corpus_positive_recall_macro": 1.0,
+      "candidate_recall@100_macro": 0.5358463806959337,
+      "corpus_ids_sha256": "9d0f0367dd6c6df8caedfb0729de5357fd0b9edee4bcb9ca805034b76ee04387",
+      "query_ids_sha256": "eaaa40ac5d6b622f0cad0b53de3ae93e1fddfa9cdb92e75c177d9c43118b1da7",
+      "files": {
+        "corpus": {
+          "path": "data/benchmarks/curev1_en/gastroenterology/corpus.jsonl",
+          "sha256": "a7daca48ba921b52b723ea8f66ef70da2f8346c6dc36d9aa992987e3c3d8406a",
+          "bytes": 15421860
+        },
+        "queries": {
+          "path": "data/benchmarks/curev1_en/gastroenterology/queries.jsonl",
+          "sha256": "81cc03bb33f5b299539c2fcb27d0c9bf0e58572f21cd067aaba503fab925847e",
+          "bytes": 27409
+        },
+        "query_metadata": {
+          "path": "data/benchmarks/curev1_en/gastroenterology/query-metadata.jsonl",
+          "sha256": "27631877f0b41fc957dded1e64e12e902971ce567469926b3dcc00d0a2763dc7",
+          "bytes": 20800
+        },
+        "qrels": {
+          "path": "data/benchmarks/curev1_en/gastroenterology/labels/qrels.jsonl",
+          "sha256": "cd0af3dc8ec1ff84dd0dce54ffe7c54fe2c9d78a41a356a47621c1ef3ba6d6a6",
+          "bytes": 1343790
+        },
+        "candidates": {
+          "path": "data/benchmarks/curev1_en/gastroenterology/candidates/bm25-top100.jsonl",
+          "sha256": "3fe49e899df7d1413744bf2d05f04659ffb3be02196567488b3550cefe9a5581",
+          "bytes": 1932739
+        },
+        "diagnostics": {
+          "path": "data/benchmarks/curev1_en/gastroenterology/labels/candidate-diagnostics.jsonl",
+          "sha256": "f94ab6082c01912f5cd44354f48bfdf8d71a599bfa9bba45ab269e58ed91ce28",
+          "bytes": 81475
+        }
+      },
+      "sources": [
+        {
+          "dataset": "clinia/CUREv1",
+          "revision": "072343ca2353c3dc832cf18cf0fef7c9a5a207b7",
+          "path": "data/raw/cure/gastroenterology/corpus.jsonl",
+          "url": "https://huggingface.co/datasets/clinia/CUREv1/resolve/072343ca2353c3dc832cf18cf0fef7c9a5a207b7/gastroenterology/corpus.jsonl",
+          "expected_bytes": 15446727,
+          "expected_sha256": "536192c2f02f5885489fdc39803b872d37f05dacc44ddeca8adff47743d7e87e",
+          "checked_at": "2026-10-15T14:27:14.218400+00:00",
+          "status": "obtained",
+          "bytes": 15446727,
+          "sha256": "536192c2f02f5885489fdc39803b872d37f05dacc44ddeca8adff47743d7e87e"
+        },
+        {
+          "dataset": "clinia/CUREv1",
+          "revision": "072343ca2353c3dc832cf18cf0fef7c9a5a207b7",
+          "path": "data/raw/cure/gastroenterology/queries-en.jsonl",
+          "url": "https://huggingface.co/datasets/clinia/CUREv1/resolve/072343ca2353c3dc832cf18cf0fef7c9a5a207b7/gastroenterology/queries-en.jsonl",
+          "expected_bytes": 31809,
+          "expected_sha256": null,
+          "checked_at": "2026-10-15T14:27:17.399285+00:00",
+          "status": "obtained",
+          "bytes": 31809,
+          "sha256": "e3a7f8b2f40229862fdd294368c58c5b4de233c2c4e67de3aa2f7635dd5ebbe5"
+        },
+        {
+          "dataset": "clinia/CUREv1",
+          "revision": "072343ca2353c3dc832cf18cf0fef7c9a5a207b7",
+          "path": "data/raw/cure/gastroenterology/qrels.jsonl",
+          "url": "https://huggingface.co/datasets/clinia/CUREv1/resolve/072343ca2353c3dc832cf18cf0fef7c9a5a207b7/gastroenterology/qrels.jsonl",
+          "expected_bytes": 9613909,
+          "expected_sha256": "6abcf21c5402ed263ca831dd059e16dead39eec1b7435ab822544886da186c57",
+          "checked_at": "2026-10-15T14:27:15.851134+00:00",
+          "status": "obtained",
+          "bytes": 9613909,
+          "sha256": "6abcf21c5402ed263ca831dd059e16dead39eec1b7435ab822544886da186c57"
+        }
+      ],
+      "retriever": {
+        "implementation": "bm25s",
+        "version": "0.3.13",
+        "method": "lucene",
+        "k1": 0.9,
+        "b": 0.4,
+        "dtype": "float64",
+        "depth": 100,
+        "indexed_fields": [
+          "title",
+          "text"
+        ],
+        "evidence_indexing": "full supplied text; model context truncation is a later shared adapter step",
+        "tokenizer": {
+          "lower": true,
+          "splitter": "(?u)\\b\\w\\w+\\b",
+          "stemmer": "Snowball english via PyStemmer 3.1.0",
+          "stopwords": [
+            "a",
+            "an",
+            "and",
+            "are",
+            "as",
+            "at",
+            "be",
+            "but",
+            "by",
+            "for",
+            "if",
+            "in",
+            "into",
+            "is",
+            "it",
+            "no",
+            "not",
+            "of",
+            "on",
+            "or",
+            "such",
+            "that",
+            "the",
+            "their",
+            "then",
+            "there",
+            "these",
+            "they",
+            "this",
+            "to",
+            "was",
+            "will",
+            "with"
+          ]
+        },
+        "ties": "score descending, doc_id lexicographically ascending",
+        "force_include_gold": false,
+        "read_supplied_runs": false
+      },
+      "build_seconds": 1.277
+    },
+    {
+      "name": "curev1_en/genetics",
+      "benchmark": "curev1_en",
+      "domain": "genetics",
+      "scope": "Native CUREv1 English specialty corpus; mixed human/model qrels",
+      "queries": 200,
+      "documents": 26996,
+      "positive_qrel_rows": 13605,
+      "judge_counts": {
+        "human": 209,
+        "model": 13396
+      },
+      "positive_grade_counts": {
+        "2": 4287,
+        "1": 9318
+      },
+      "expertise_counts": {
+        "layman": 50,
+        "expert": 150
+      },
+      "raw_corpus_documents": 26996,
+      "empty_document_ids_excluded": [],
+      "title_only_documents": 0,
+      "qrel_pairs_outside_corpus": 0,
+      "queries_without_gold_in_corpus": 0,
+      "queries_without_gold_in_candidates": 4,
+      "empty_or_out_of_vocabulary_queries": 0,
+      "corpus_positive_recall_macro": 1.0,
+      "candidate_recall@100_macro": 0.5612241034472782,
+      "corpus_ids_sha256": "324e60d49d4fc9762f65aaf6af0621c088d048cf409a20d33a060d0481ffafdb",
+      "query_ids_sha256": "089501d77a01fbe507fe20fbc8dc1341c811b67fa3404c85f1ad72d37eef30ce",
+      "files": {
+        "corpus": {
+          "path": "data/benchmarks/curev1_en/genetics/corpus.jsonl",
+          "sha256": "cb3a57964dbc4b8b042cbd212d1ef91e2637c636217c76d9065592c9a38b876b",
+          "bytes": 20225638
+        },
+        "queries": {
+          "path": "data/benchmarks/curev1_en/genetics/queries.jsonl",
+          "sha256": "415deca9e4541b0cd60b6f428d6f9f70b4cb6135d549323252d018fcbd6d4b4f",
+          "bytes": 25652
+        },
+        "query_metadata": {
+          "path": "data/benchmarks/curev1_en/genetics/query-metadata.jsonl",
+          "sha256": "f04d8414930bf93e22e0f7a7826876b91a1a2766d70d019f1ba432d9155df7a3",
+          "bytes": 19200
+        },
+        "qrels": {
+          "path": "data/benchmarks/curev1_en/genetics/labels/qrels.jsonl",
+          "sha256": "ba8c687c206f27bfd3054b3e24660f99e0611fd3d104d5dd6b94b15723740186",
+          "bytes": 1714230
+        },
+        "candidates": {
+          "path": "data/benchmarks/curev1_en/genetics/candidates/bm25-top100.jsonl",
+          "sha256": "62f61217baf04e53cdad110763173703f6ff8584002f69ed60d3c291b3c2bbf0",
+          "bytes": 1933512
+        },
+        "diagnostics": {
+          "path": "data/benchmarks/curev1_en/genetics/labels/candidate-diagnostics.jsonl",
+          "sha256": "0dfd30f10e8596b24285f208879c1408b5a33e49a93c25dbf99d1c9275bb07c8",
+          "bytes": 80732
+        }
+      },
+      "sources": [
+        {
+          "dataset": "clinia/CUREv1",
+          "revision": "072343ca2353c3dc832cf18cf0fef7c9a5a207b7",
+          "path": "data/raw/cure/genetics/corpus.jsonl",
+          "url": "https://huggingface.co/datasets/clinia/CUREv1/resolve/072343ca2353c3dc832cf18cf0fef7c9a5a207b7/genetics/corpus.jsonl",
+          "expected_bytes": 20254569,
+          "expected_sha256": "94c3b978228a9daaa620e41e023135b6ab072f747fde306e6809eb221c167572",
+          "checked_at": "2026-10-15T14:27:17.669013+00:00",
+          "status": "obtained",
+          "bytes": 20254569,
+          "sha256": "94c3b978228a9daaa620e41e023135b6ab072f747fde306e6809eb221c167572"
+        },
+        {
+          "dataset": "clinia/CUREv1",
+          "revision": "072343ca2353c3dc832cf18cf0fef7c9a5a207b7",
+          "path": "data/raw/cure/genetics/queries-en.jsonl",
+          "url": "https://huggingface.co/datasets/clinia/CUREv1/resolve/072343ca2353c3dc832cf18cf0fef7c9a5a207b7/genetics/queries-en.jsonl",
+          "expected_bytes": 30052,
+          "expected_sha256": null,
+          "checked_at": "2026-10-15T14:27:19.571732+00:00",
+          "status": "obtained",
+          "bytes": 30052,
+          "sha256": "e2e6de37984dbcd974c2518730d05d9f67197299d4bd05790c0822d38da5c029"
+        },
+        {
+          "dataset": "clinia/CUREv1",
+          "revision": "072343ca2353c3dc832cf18cf0fef7c9a5a207b7",
+          "path": "data/raw/cure/genetics/qrels.jsonl",
+          "url": "https://huggingface.co/datasets/clinia/CUREv1/resolve/072343ca2353c3dc832cf18cf0fef7c9a5a207b7/genetics/qrels.jsonl",
+          "expected_bytes": 12244464,
+          "expected_sha256": "af6f07a04511e13c30311d1f20faacd35fe0cf8b6255910fde90e921ab075870",
+          "checked_at": "2026-10-15T14:27:17.950915+00:00",
+          "status": "obtained",
+          "bytes": 12244464,
+          "sha256": "af6f07a04511e13c30311d1f20faacd35fe0cf8b6255910fde90e921ab075870"
+        }
+      ],
+      "retriever": {
+        "implementation": "bm25s",
+        "version": "0.3.13",
+        "method": "lucene",
+        "k1": 0.9,
+        "b": 0.4,
+        "dtype": "float64",
+        "depth": 100,
+        "indexed_fields": [
+          "title",
+          "text"
+        ],
+        "evidence_indexing": "full supplied text; model context truncation is a later shared adapter step",
+        "tokenizer": {
+          "lower": true,
+          "splitter": "(?u)\\b\\w\\w+\\b",
+          "stemmer": "Snowball english via PyStemmer 3.1.0",
+          "stopwords": [
+            "a",
+            "an",
+            "and",
+            "are",
+            "as",
+            "at",
+            "be",
+            "but",
+            "by",
+            "for",
+            "if",
+            "in",
+            "into",
+            "is",
+            "it",
+            "no",
+            "not",
+            "of",
+            "on",
+            "or",
+            "such",
+            "that",
+            "the",
+            "their",
+            "then",
+            "there",
+            "these",
+            "they",
+            "this",
+            "to",
+            "was",
+            "will",
+            "with"
+          ]
+        },
+        "ties": "score descending, doc_id lexicographically ascending",
+        "force_include_gold": false,
+        "read_supplied_runs": false
+      },
+      "build_seconds": 1.664
+    },
+    {
+      "name": "curev1_en/neuroscience_and_neurology",
+      "benchmark": "curev1_en",
+      "domain": "neuroscience_and_neurology",
+      "scope": "Native CUREv1 English specialty corpus; mixed human/model qrels",
+      "queries": 200,
+      "documents": 30388,
+      "positive_qrel_rows": 8409,
+      "judge_counts": {
+        "human": 219,
+        "model": 8190
+      },
+      "positive_grade_counts": {
+        "2": 2313,
+        "1": 6096
+      },
+      "expertise_counts": {
+        "expert": 150,
+        "layman": 50
+      },
+      "raw_corpus_documents": 30388,
+      "empty_document_ids_excluded": [],
+      "title_only_documents": 0,
+      "qrel_pairs_outside_corpus": 0,
+      "queries_without_gold_in_corpus": 0,
+      "queries_without_gold_in_candidates": 9,
+      "empty_or_out_of_vocabulary_queries": 0,
+      "corpus_positive_recall_macro": 1.0,
+      "candidate_recall@100_macro": 0.497733905793812,
+      "corpus_ids_sha256": "bcf534e704dcc93ac81d03ccba85ac238cd245fe72fba49635cd16e0aa8457e6",
+      "query_ids_sha256": "21bba644b4f8bd552d032ae06d436c51d194fbc1682405fc9d064b2b0d340216",
+      "files": {
+        "corpus": {
+          "path": "data/benchmarks/curev1_en/neuroscience_and_neurology/corpus.jsonl",
+          "sha256": "7fe3f5fded3c6ba7a2c2933cf106d502de5ea0abc9b140cde3bec8e8de916314",
+          "bytes": 21244659
+        },
+        "queries": {
+          "path": "data/benchmarks/curev1_en/neuroscience_and_neurology/queries.jsonl",
+          "sha256": "2c1205e720ee9437e747545aea680c691529b575a575914fdf758af30bc6458f",
+          "bytes": 27274
+        },
+        "query_metadata": {
+          "path": "data/benchmarks/curev1_en/neuroscience_and_neurology/query-metadata.jsonl",
+          "sha256": "deff8d703e785e92faa6d7b0e46834edb8c45e82502081d82968bcb02d0c67a2",
+          "bytes": 22800
+        },
+        "qrels": {
+          "path": "data/benchmarks/curev1_en/neuroscience_and_neurology/labels/qrels.jsonl",
+          "sha256": "d28cdb30903d1efbd66c0b16d533b02e9dcb5e3f80ee99ee22e59935e791b8d5",
+          "bytes": 1059534
+        },
+        "candidates": {
+          "path": "data/benchmarks/curev1_en/neuroscience_and_neurology/candidates/bm25-top100.jsonl",
+          "sha256": "04ffd4fa621ea9cf818f5043f53dc98caed662fcc68c341adefed1edf869c264",
+          "bytes": 1933362
+        },
+        "diagnostics": {
+          "path": "data/benchmarks/curev1_en/neuroscience_and_neurology/labels/candidate-diagnostics.jsonl",
+          "sha256": "f8eef361e8f8385e34b991e8d842a391efa84e36038717ff7c49fc49519e6959",
+          "bytes": 80981
+        }
+      },
+      "sources": [
+        {
+          "dataset": "clinia/CUREv1",
+          "revision": "072343ca2353c3dc832cf18cf0fef7c9a5a207b7",
+          "path": "data/raw/cure/neuroscience_and_neurology/corpus.jsonl",
+          "url": "https://huggingface.co/datasets/clinia/CUREv1/resolve/072343ca2353c3dc832cf18cf0fef7c9a5a207b7/neuroscience_and_neurology/corpus.jsonl",
+          "expected_bytes": 21277160,
+          "expected_sha256": "5647d215cbe6449863890c410c927fd2efbf42970e47064c932cfacae79c9fff",
+          "checked_at": "2026-10-15T14:27:19.957446+00:00",
+          "status": "obtained",
+          "bytes": 21277160,
+          "sha256": "5647d215cbe6449863890c410c927fd2efbf42970e47064c932cfacae79c9fff"
+        },
+        {
+          "dataset": "clinia/CUREv1",
+          "revision": "072343ca2353c3dc832cf18cf0fef7c9a5a207b7",
+          "path": "data/raw/cure/neuroscience_and_neurology/queries-en.jsonl",
+          "url": "https://huggingface.co/datasets/clinia/CUREv1/resolve/072343ca2353c3dc832cf18cf0fef7c9a5a207b7/neuroscience_and_neurology/queries-en.jsonl",
+          "expected_bytes": 31674,
+          "expected_sha256": null,
+          "checked_at": "2026-10-15T14:27:20.880598+00:00",
+          "status": "obtained",
+          "bytes": 31674,
+          "sha256": "95021e3bfd818e8457785ff6c7524f7a0d462e18e1f3e5ea3489bc72492fd469"
+        },
+        {
+          "dataset": "clinia/CUREv1",
+          "revision": "072343ca2353c3dc832cf18cf0fef7c9a5a207b7",
+          "path": "data/raw/cure/neuroscience_and_neurology/qrels.jsonl",
+          "url": "https://huggingface.co/datasets/clinia/CUREv1/resolve/072343ca2353c3dc832cf18cf0fef7c9a5a207b7/neuroscience_and_neurology/qrels.jsonl",
+          "expected_bytes": 7572688,
+          "expected_sha256": "45e6223266bafd98a3992e6fb27e63a19eb30fa24d397329bd58983b241a212c",
+          "checked_at": "2026-10-15T14:27:20.041108+00:00",
+          "status": "obtained",
+          "bytes": 7572688,
+          "sha256": "45e6223266bafd98a3992e6fb27e63a19eb30fa24d397329bd58983b241a212c"
+        }
+      ],
+      "retriever": {
+        "implementation": "bm25s",
+        "version": "0.3.13",
+        "method": "lucene",
+        "k1": 0.9,
+        "b": 0.4,
+        "dtype": "float64",
+        "depth": 100,
+        "indexed_fields": [
+          "title",
+          "text"
+        ],
+        "evidence_indexing": "full supplied text; model context truncation is a later shared adapter step",
+        "tokenizer": {
+          "lower": true,
+          "splitter": "(?u)\\b\\w\\w+\\b",
+          "stemmer": "Snowball english via PyStemmer 3.1.0",
+          "stopwords": [
+            "a",
+            "an",
+            "and",
+            "are",
+            "as",
+            "at",
+            "be",
+            "but",
+            "by",
+            "for",
+            "if",
+            "in",
+            "into",
+            "is",
+            "it",
+            "no",
+            "not",
+            "of",
+            "on",
+            "or",
+            "such",
+            "that",
+            "the",
+            "their",
+            "then",
+            "there",
+            "these",
+            "they",
+            "this",
+            "to",
+            "was",
+            "will",
+            "with"
+          ]
+        },
+        "ties": "score descending, doc_id lexicographically ascending",
+        "force_include_gold": false,
+        "read_supplied_runs": false
+      },
+      "build_seconds": 1.705
+    },
+    {
+      "name": "curev1_en/orthopedic_surgery",
+      "benchmark": "curev1_en",
+      "domain": "orthopedic_surgery",
+      "scope": "Native CUREv1 English specialty corpus; mixed human/model qrels",
+      "queries": 200,
+      "documents": 24910,
+      "positive_qrel_rows": 3002,
+      "judge_counts": {
+        "model": 2773,
+        "human": 229
+      },
+      "positive_grade_counts": {
+        "1": 2229,
+        "2": 773
+      },
+      "expertise_counts": {
+        "expert": 150,
+        "layman": 50
+      },
+      "raw_corpus_documents": 24910,
+      "empty_document_ids_excluded": [],
+      "title_only_documents": 0,
+      "qrel_pairs_outside_corpus": 0,
+      "queries_without_gold_in_corpus": 0,
+      "queries_without_gold_in_candidates": 2,
+      "empty_or_out_of_vocabulary_queries": 0,
+      "corpus_positive_recall_macro": 1.0,
+      "candidate_recall@100_macro": 0.6374784627057605,
+      "corpus_ids_sha256": "c9837ad957b4888fa6c511ea50189512f5afea431c78d65161895b161ed5bd90",
+      "query_ids_sha256": "34a197c57b1ec1410fb86d78492794476f454dac6fc9d740f37b562af96803e4",
+      "files": {
+        "corpus": {
+          "path": "data/benchmarks/curev1_en/orthopedic_surgery/corpus.jsonl",
+          "sha256": "1b70e0d63de39f52d1cf0a77bbb331b1d592f478761df1b852f8de2004f03916",
+          "bytes": 16980326
+        },
+        "queries": {
+          "path": "data/benchmarks/curev1_en/orthopedic_surgery/queries.jsonl",
+          "sha256": "4f8bc4e87babf618b8ba974264cfb456ced3fd4a5eb69a8aa3ff3d65410b816b",
+          "bytes": 28487
+        },
+        "query_metadata": {
+          "path": "data/benchmarks/curev1_en/orthopedic_surgery/query-metadata.jsonl",
+          "sha256": "a9c3a0b60233badd20724938ea667056919202cba7226e260cfe745f29ecb02d",
+          "bytes": 21200
+        },
+        "qrels": {
+          "path": "data/benchmarks/curev1_en/orthopedic_surgery/labels/qrels.jsonl",
+          "sha256": "d8284933c15cd94d3a2e4916f89224e4a71fad24d662b24ecbeb60674168ea1b",
+          "bytes": 378252
+        },
+        "candidates": {
+          "path": "data/benchmarks/curev1_en/orthopedic_surgery/candidates/bm25-top100.jsonl",
+          "sha256": "b660e342df1920827a0a196d163496a1105dcab55f9f3fb484fd8e0aa7f6be76",
+          "bytes": 1933539
+        },
+        "diagnostics": {
+          "path": "data/benchmarks/curev1_en/orthopedic_surgery/labels/candidate-diagnostics.jsonl",
+          "sha256": "8c91e627ce6d2ccdc2e212d9468b55d108fb95bfaaea0aa97af16d40319743b2",
+          "bytes": 79426
+        }
+      },
+      "sources": [
+        {
+          "dataset": "clinia/CUREv1",
+          "revision": "072343ca2353c3dc832cf18cf0fef7c9a5a207b7",
+          "path": "data/raw/cure/orthopedic_surgery/corpus.jsonl",
+          "url": "https://huggingface.co/datasets/clinia/CUREv1/resolve/072343ca2353c3dc832cf18cf0fef7c9a5a207b7/orthopedic_surgery/corpus.jsonl",
+          "expected_bytes": 17006392,
+          "expected_sha256": "a0f8b71e71583d2df56b6f28d49c11bcd6b98e0e5a189f57db9d83c03d1a6787",
+          "checked_at": "2026-10-15T14:27:21.545004+00:00",
+          "status": "obtained",
+          "bytes": 17006392,
+          "sha256": "a0f8b71e71583d2df56b6f28d49c11bcd6b98e0e5a189f57db9d83c03d1a6787"
+        },
+        {
+          "dataset": "clinia/CUREv1",
+          "revision": "072343ca2353c3dc832cf18cf0fef7c9a5a207b7",
+          "path": "data/raw/cure/orthopedic_surgery/queries-en.jsonl",
+          "url": "https://huggingface.co/datasets/clinia/CUREv1/resolve/072343ca2353c3dc832cf18cf0fef7c9a5a207b7/orthopedic_surgery/queries-en.jsonl",
+          "expected_bytes": 32888,
+          "expected_sha256": null,
+          "checked_at": "2026-10-15T14:27:23.250163+00:00",
+          "status": "obtained",
+          "bytes": 32888,
+          "sha256": "90072610b3fe0fbfb6d66c5ad092a3ce813fe69333d2f83680ba5b13f49af427"
+        },
+        {
+          "dataset": "clinia/CUREv1",
+          "revision": "072343ca2353c3dc832cf18cf0fef7c9a5a207b7",
+          "path": "data/raw/cure/orthopedic_surgery/qrels.jsonl",
+          "url": "https://huggingface.co/datasets/clinia/CUREv1/resolve/072343ca2353c3dc832cf18cf0fef7c9a5a207b7/orthopedic_surgery/qrels.jsonl",
+          "expected_bytes": 2544135,
+          "expected_sha256": "524eda1052ed397d477bbcbdbd34d6077085a18de508ed36cccdbc49e6ed4387",
+          "checked_at": "2026-10-15T14:27:22.162883+00:00",
+          "status": "obtained",
+          "bytes": 2544135,
+          "sha256": "524eda1052ed397d477bbcbdbd34d6077085a18de508ed36cccdbc49e6ed4387"
+        }
+      ],
+      "retriever": {
+        "implementation": "bm25s",
+        "version": "0.3.13",
+        "method": "lucene",
+        "k1": 0.9,
+        "b": 0.4,
+        "dtype": "float64",
+        "depth": 100,
+        "indexed_fields": [
+          "title",
+          "text"
+        ],
+        "evidence_indexing": "full supplied text; model context truncation is a later shared adapter step",
+        "tokenizer": {
+          "lower": true,
+          "splitter": "(?u)\\b\\w\\w+\\b",
+          "stemmer": "Snowball english via PyStemmer 3.1.0",
+          "stopwords": [
+            "a",
+            "an",
+            "and",
+            "are",
+            "as",
+            "at",
+            "be",
+            "but",
+            "by",
+            "for",
+            "if",
+            "in",
+            "into",
+            "is",
+            "it",
+            "no",
+            "not",
+            "of",
+            "on",
+            "or",
+            "such",
+            "that",
+            "the",
+            "their",
+            "then",
+            "there",
+            "these",
+            "they",
+            "this",
+            "to",
+            "was",
+            "will",
+            "with"
+          ]
+        },
+        "ties": "score descending, doc_id lexicographically ascending",
+        "force_include_gold": false,
+        "read_supplied_runs": false
+      },
+      "build_seconds": 1.366
+    },
+    {
+      "name": "curev1_en/otorhinolaryngology",
+      "benchmark": "curev1_en",
+      "domain": "otorhinolaryngology",
+      "scope": "Native CUREv1 English specialty corpus; mixed human/model qrels",
+      "queries": 200,
+      "documents": 24192,
+      "positive_qrel_rows": 7342,
+      "judge_counts": {
+        "model": 7098,
+        "human": 244
+      },
+      "positive_grade_counts": {
+        "2": 1680,
+        "1": 5662
+      },
+      "expertise_counts": {
+        "expert": 150,
+        "layman": 50
+      },
+      "raw_corpus_documents": 24192,
+      "empty_document_ids_excluded": [],
+      "title_only_documents": 0,
+      "qrel_pairs_outside_corpus": 0,
+      "queries_without_gold_in_corpus": 0,
+      "queries_without_gold_in_candidates": 4,
+      "empty_or_out_of_vocabulary_queries": 0,
+      "corpus_positive_recall_macro": 1.0,
+      "candidate_recall@100_macro": 0.5111688733572523,
+      "corpus_ids_sha256": "313e3c7239e06afdb4559f2991a37782b4c87b8880ea376398d1dfffd8834b82",
+      "query_ids_sha256": "86c70f3fca76d87459c6ae0f886403d6b6da790cefde1397e9a8dd29cbff6785",
+      "files": {
+        "corpus": {
+          "path": "data/benchmarks/curev1_en/otorhinolaryngology/corpus.jsonl",
+          "sha256": "dd102d03db6ab9f6fe0817cefe8e1455782535d309bc46c7c94cd7d016dc5c38",
+          "bytes": 15509120
+        },
+        "queries": {
+          "path": "data/benchmarks/curev1_en/otorhinolaryngology/queries.jsonl",
+          "sha256": "3e4852ff4682ad06031ff8b6c5cd5f06cd9f915cfe9bfb2e6f154c4c37b34779",
+          "bytes": 27025
+        },
+        "query_metadata": {
+          "path": "data/benchmarks/curev1_en/otorhinolaryngology/query-metadata.jsonl",
+          "sha256": "0dacf001e5df51087843f21abda21cb555e2b2d5fd20c0af334723cc3f91fd3e",
+          "bytes": 21400
+        },
+        "qrels": {
+          "path": "data/benchmarks/curev1_en/otorhinolaryngology/labels/qrels.jsonl",
+          "sha256": "3743baf65fd21323a6abbf6c05f00525a557987fbcd1c0039814313d71f73e34",
+          "bytes": 925092
+        },
+        "candidates": {
+          "path": "data/benchmarks/curev1_en/otorhinolaryngology/candidates/bm25-top100.jsonl",
+          "sha256": "cff94328fee6312f8a0e9fae3f87ddcddc8555460a31467c6e510e52e8e5066c",
+          "bytes": 1932801
+        },
+        "diagnostics": {
+          "path": "data/benchmarks/curev1_en/otorhinolaryngology/labels/candidate-diagnostics.jsonl",
+          "sha256": "c23b139e28626af564694366c25407f9380614654bc13ed2ec5d048262102d81",
+          "bytes": 81587
+        }
+      },
+      "sources": [
+        {
+          "dataset": "clinia/CUREv1",
+          "revision": "072343ca2353c3dc832cf18cf0fef7c9a5a207b7",
+          "path": "data/raw/cure/otorhinolaryngology/corpus.jsonl",
+          "url": "https://huggingface.co/datasets/clinia/CUREv1/resolve/072343ca2353c3dc832cf18cf0fef7c9a5a207b7/otorhinolaryngology/corpus.jsonl",
+          "expected_bytes": 15534972,
+          "expected_sha256": "ea9219407768834e82b08712ce5dcc028387f7ff8b7b342ed848d005f115cd79",
+          "checked_at": "2026-10-15T14:27:23.739473+00:00",
+          "status": "obtained",
+          "bytes": 15534972,
+          "sha256": "ea9219407768834e82b08712ce5dcc028387f7ff8b7b342ed848d005f115cd79"
+        },
+        {
+          "dataset": "clinia/CUREv1",
+          "revision": "072343ca2353c3dc832cf18cf0fef7c9a5a207b7",
+          "path": "data/raw/cure/otorhinolaryngology/queries-en.jsonl",
+          "url": "https://huggingface.co/datasets/clinia/CUREv1/resolve/072343ca2353c3dc832cf18cf0fef7c9a5a207b7/otorhinolaryngology/queries-en.jsonl",
+          "expected_bytes": 31425,
+          "expected_sha256": null,
+          "checked_at": "2026-10-15T14:27:26.900682+00:00",
+          "status": "obtained",
+          "bytes": 31425,
+          "sha256": "23cd5ad71a72b878ca6a8fef6665e8da2b3b3f3e8b347c6c775da1bea5998b15"
+        },
+        {
+          "dataset": "clinia/CUREv1",
+          "revision": "072343ca2353c3dc832cf18cf0fef7c9a5a207b7",
+          "path": "data/raw/cure/otorhinolaryngology/qrels.jsonl",
+          "url": "https://huggingface.co/datasets/clinia/CUREv1/resolve/072343ca2353c3dc832cf18cf0fef7c9a5a207b7/otorhinolaryngology/qrels.jsonl",
+          "expected_bytes": 6357705,
+          "expected_sha256": "d47284ed760ff6e731c8dafe8226b33b7ee8826288361c3047b22d32ec94e8d3",
+          "checked_at": "2026-10-15T14:27:26.149239+00:00",
+          "status": "obtained",
+          "bytes": 6357705,
+          "sha256": "d47284ed760ff6e731c8dafe8226b33b7ee8826288361c3047b22d32ec94e8d3"
+        }
+      ],
+      "retriever": {
+        "implementation": "bm25s",
+        "version": "0.3.13",
+        "method": "lucene",
+        "k1": 0.9,
+        "b": 0.4,
+        "dtype": "float64",
+        "depth": 100,
+        "indexed_fields": [
+          "title",
+          "text"
+        ],
+        "evidence_indexing": "full supplied text; model context truncation is a later shared adapter step",
+        "tokenizer": {
+          "lower": true,
+          "splitter": "(?u)\\b\\w\\w+\\b",
+          "stemmer": "Snowball english via PyStemmer 3.1.0",
+          "stopwords": [
+            "a",
+            "an",
+            "and",
+            "are",
+            "as",
+            "at",
+            "be",
+            "but",
+            "by",
+            "for",
+            "if",
+            "in",
+            "into",
+            "is",
+            "it",
+            "no",
+            "not",
+            "of",
+            "on",
+            "or",
+            "such",
+            "that",
+            "the",
+            "their",
+            "then",
+            "there",
+            "these",
+            "they",
+            "this",
+            "to",
+            "was",
+            "will",
+            "with"
+          ]
+        },
+        "ties": "score descending, doc_id lexicographically ascending",
+        "force_include_gold": false,
+        "read_supplied_runs": false
+      },
+      "build_seconds": 1.285
+    },
+    {
+      "name": "curev1_en/plastic_surgery",
+      "benchmark": "curev1_en",
+      "domain": "plastic_surgery",
+      "scope": "Native CUREv1 English specialty corpus; mixed human/model qrels",
+      "queries": 200,
+      "documents": 26605,
+      "positive_qrel_rows": 5085,
+      "judge_counts": {
+        "human": 254,
+        "model": 4831
+      },
+      "positive_grade_counts": {
+        "1": 3784,
+        "2": 1301
+      },
+      "expertise_counts": {
+        "expert": 150,
+        "layman": 50
+      },
+      "raw_corpus_documents": 26605,
+      "empty_document_ids_excluded": [],
+      "title_only_documents": 0,
+      "qrel_pairs_outside_corpus": 0,
+      "queries_without_gold_in_corpus": 0,
+      "queries_without_gold_in_candidates": 0,
+      "empty_or_out_of_vocabulary_queries": 0,
+      "corpus_positive_recall_macro": 1.0,
+      "candidate_recall@100_macro": 0.6110136773299017,
+      "corpus_ids_sha256": "9bd9a192b672ae2bc3997cd1f694ea43abe270174116d33c74b2c954d94dabe9",
+      "query_ids_sha256": "2dab3d9847f6f359f80f78fe9d9d3efa21ee01055dbb6860c34f4a84ef3f8477",
+      "files": {
+        "corpus": {
+          "path": "data/benchmarks/curev1_en/plastic_surgery/corpus.jsonl",
+          "sha256": "05d5ef7fd51d41bcd7e6ce04de95765dff5fa93deed29ec914c0703b1388b9c4",
+          "bytes": 16862839
+        },
+        "queries": {
+          "path": "data/benchmarks/curev1_en/plastic_surgery/queries.jsonl",
+          "sha256": "27ac40da689d1eac3cee38377d060307ff01231cde386cfc81d22b487fab7b8c",
+          "bytes": 27722
+        },
+        "query_metadata": {
+          "path": "data/benchmarks/curev1_en/plastic_surgery/query-metadata.jsonl",
+          "sha256": "c9f8ed98c6401d1a1f37818e5f7a85385b5df6000ec4f8bb3a4d9769e1d370ab",
+          "bytes": 20600
+        },
+        "qrels": {
+          "path": "data/benchmarks/curev1_en/plastic_surgery/labels/qrels.jsonl",
+          "sha256": "43a1dbc4e47cc5d559fa16a361b9417e7ce2af9d6a6c781536dc1afab272775c",
+          "bytes": 640710
+        },
+        "candidates": {
+          "path": "data/benchmarks/curev1_en/plastic_surgery/candidates/bm25-top100.jsonl",
+          "sha256": "662009cffeffa09de7698482c1e248113ff73929e3c9b47d59805342abcd5fb0",
+          "bytes": 1934313
+        },
+        "diagnostics": {
+          "path": "data/benchmarks/curev1_en/plastic_surgery/labels/candidate-diagnostics.jsonl",
+          "sha256": "9728d7c4a81ed93a57a07b0b3dd660d7655b5457f79bb361b5f7a02125e382de",
+          "bytes": 81357
+        }
+      },
+      "sources": [
+        {
+          "dataset": "clinia/CUREv1",
+          "revision": "072343ca2353c3dc832cf18cf0fef7c9a5a207b7",
+          "path": "data/raw/cure/plastic_surgery/corpus.jsonl",
+          "url": "https://huggingface.co/datasets/clinia/CUREv1/resolve/072343ca2353c3dc832cf18cf0fef7c9a5a207b7/plastic_surgery/corpus.jsonl",
+          "expected_bytes": 16890552,
+          "expected_sha256": "e162725b91285cc1ebab1a5dad9e71b8b36e4d5877283f4dd02904d34ae96fc6",
+          "checked_at": "2026-10-15T14:27:27.447084+00:00",
+          "status": "obtained",
+          "bytes": 16890552,
+          "sha256": "e162725b91285cc1ebab1a5dad9e71b8b36e4d5877283f4dd02904d34ae96fc6"
+        },
+        {
+          "dataset": "clinia/CUREv1",
+          "revision": "072343ca2353c3dc832cf18cf0fef7c9a5a207b7",
+          "path": "data/raw/cure/plastic_surgery/queries-en.jsonl",
+          "url": "https://huggingface.co/datasets/clinia/CUREv1/resolve/072343ca2353c3dc832cf18cf0fef7c9a5a207b7/plastic_surgery/queries-en.jsonl",
+          "expected_bytes": 32122,
+          "expected_sha256": null,
+          "checked_at": "2026-10-15T14:27:28.015331+00:00",
+          "status": "obtained",
+          "bytes": 32122,
+          "sha256": "70b7c7ee8b20be167fb27efe2d3631466da5e1f48b6144ac36428efbfcda8c61"
+        },
+        {
+          "dataset": "clinia/CUREv1",
+          "revision": "072343ca2353c3dc832cf18cf0fef7c9a5a207b7",
+          "path": "data/raw/cure/plastic_surgery/qrels.jsonl",
+          "url": "https://huggingface.co/datasets/clinia/CUREv1/resolve/072343ca2353c3dc832cf18cf0fef7c9a5a207b7/plastic_surgery/qrels.jsonl",
+          "expected_bytes": 4306473,
+          "expected_sha256": "8eb247d31762039e07d95eb16fde81b6604e3df6788733fdd9ba7ed322f9687d",
+          "checked_at": "2026-10-15T14:27:27.600082+00:00",
+          "status": "obtained",
+          "bytes": 4306473,
+          "sha256": "8eb247d31762039e07d95eb16fde81b6604e3df6788733fdd9ba7ed322f9687d"
+        }
+      ],
+      "retriever": {
+        "implementation": "bm25s",
+        "version": "0.3.13",
+        "method": "lucene",
+        "k1": 0.9,
+        "b": 0.4,
+        "dtype": "float64",
+        "depth": 100,
+        "indexed_fields": [
+          "title",
+          "text"
+        ],
+        "evidence_indexing": "full supplied text; model context truncation is a later shared adapter step",
+        "tokenizer": {
+          "lower": true,
+          "splitter": "(?u)\\b\\w\\w+\\b",
+          "stemmer": "Snowball english via PyStemmer 3.1.0",
+          "stopwords": [
+            "a",
+            "an",
+            "and",
+            "are",
+            "as",
+            "at",
+            "be",
+            "but",
+            "by",
+            "for",
+            "if",
+            "in",
+            "into",
+            "is",
+            "it",
+            "no",
+            "not",
+            "of",
+            "on",
+            "or",
+            "such",
+            "that",
+            "the",
+            "their",
+            "then",
+            "there",
+            "these",
+            "they",
+            "this",
+            "to",
+            "was",
+            "will",
+            "with"
+          ]
+        },
+        "ties": "score descending, doc_id lexicographically ascending",
+        "force_include_gold": false,
+        "read_supplied_runs": false
+      },
+      "build_seconds": 1.394
+    },
+    {
+      "name": "curev1_en/psychiatry_and_psychology",
+      "benchmark": "curev1_en",
+      "domain": "psychiatry_and_psychology",
+      "scope": "Native CUREv1 English specialty corpus; mixed human/model qrels",
+      "queries": 200,
+      "documents": 35756,
+      "positive_qrel_rows": 13753,
+      "judge_counts": {
+        "model": 13548,
+        "human": 205
+      },
+      "positive_grade_counts": {
+        "1": 11107,
+        "2": 2646
+      },
+      "expertise_counts": {
+        "layman": 50,
+        "expert": 150
+      },
+      "raw_corpus_documents": 35756,
+      "empty_document_ids_excluded": [],
+      "title_only_documents": 0,
+      "qrel_pairs_outside_corpus": 0,
+      "queries_without_gold_in_corpus": 0,
+      "queries_without_gold_in_candidates": 7,
+      "empty_or_out_of_vocabulary_queries": 0,
+      "corpus_positive_recall_macro": 1.0,
+      "candidate_recall@100_macro": 0.49162168372329246,
+      "corpus_ids_sha256": "bbbbc45f43e7e3b0d4626bc83f108ff7d342cdb77044d47b8ee2434064a2a786",
+      "query_ids_sha256": "074bc1c4be69e1e18ef23c1b1dc674f3075b18c8ae1036d9bfe3a9b8eb190d24",
+      "files": {
+        "corpus": {
+          "path": "data/benchmarks/curev1_en/psychiatry_and_psychology/corpus.jsonl",
+          "sha256": "da5d03a817976296097c7d63556f6c53f8e163ce3351e5637560081663b30493",
+          "bytes": 26523642
+        },
+        "queries": {
+          "path": "data/benchmarks/curev1_en/psychiatry_and_psychology/queries.jsonl",
+          "sha256": "528dba4d0d653bd38dbc5703271d9bce933fe0850009c9cc8e671aef44373f30",
+          "bytes": 29731
+        },
+        "query_metadata": {
+          "path": "data/benchmarks/curev1_en/psychiatry_and_psychology/query-metadata.jsonl",
+          "sha256": "cbcf3ff2c5ce69c707b2278515d706d529132a6d39d961b3f3cb99bd32bf238b",
+          "bytes": 22600
+        },
+        "qrels": {
+          "path": "data/benchmarks/curev1_en/psychiatry_and_psychology/labels/qrels.jsonl",
+          "sha256": "ded6739fe6f6f885671505bbc01299adf3f529be2a169240244317b50e2a63ff",
+          "bytes": 1732878
+        },
+        "candidates": {
+          "path": "data/benchmarks/curev1_en/psychiatry_and_psychology/candidates/bm25-top100.jsonl",
+          "sha256": "62fe4367308a38bf8ce15812095407c26bedf86e062f86f9f792cdb2158246d3",
+          "bytes": 1934001
+        },
+        "diagnostics": {
+          "path": "data/benchmarks/curev1_en/psychiatry_and_psychology/labels/candidate-diagnostics.jsonl",
+          "sha256": "3f99a073cd25dfda0ea294497e5b8765a7f6dbb5addf4761102c95799305fd19",
+          "bytes": 81602
+        }
+      },
+      "sources": [
+        {
+          "dataset": "clinia/CUREv1",
+          "revision": "072343ca2353c3dc832cf18cf0fef7c9a5a207b7",
+          "path": "data/raw/cure/psychiatry_and_psychology/corpus.jsonl",
+          "url": "https://huggingface.co/datasets/clinia/CUREv1/resolve/072343ca2353c3dc832cf18cf0fef7c9a5a207b7/psychiatry_and_psychology/corpus.jsonl",
+          "expected_bytes": 26561243,
+          "expected_sha256": "c322bcc5e2e1126a0d5088a7e41b60b00a52301f742013ed790e387c44b2c079",
+          "checked_at": "2026-10-15T14:27:28.164195+00:00",
+          "status": "obtained",
+          "bytes": 26561243,
+          "sha256": "c322bcc5e2e1126a0d5088a7e41b60b00a52301f742013ed790e387c44b2c079"
+        },
+        {
+          "dataset": "clinia/CUREv1",
+          "revision": "072343ca2353c3dc832cf18cf0fef7c9a5a207b7",
+          "path": "data/raw/cure/psychiatry_and_psychology/queries-en.jsonl",
+          "url": "https://huggingface.co/datasets/clinia/CUREv1/resolve/072343ca2353c3dc832cf18cf0fef7c9a5a207b7/psychiatry_and_psychology/queries-en.jsonl",
+          "expected_bytes": 34132,
+          "expected_sha256": null,
+          "checked_at": "2026-10-15T14:27:29.734305+00:00",
+          "status": "obtained",
+          "bytes": 34132,
+          "sha256": "1fb856fe6cc01b88ed26c5ae100c400e04f1863b5aede828dd8eec6cf335117c"
+        },
+        {
+          "dataset": "clinia/CUREv1",
+          "revision": "072343ca2353c3dc832cf18cf0fef7c9a5a207b7",
+          "path": "data/raw/cure/psychiatry_and_psychology/qrels.jsonl",
+          "url": "https://huggingface.co/datasets/clinia/CUREv1/resolve/072343ca2353c3dc832cf18cf0fef7c9a5a207b7/psychiatry_and_psychology/qrels.jsonl",
+          "expected_bytes": 12565397,
+          "expected_sha256": "0ad1d8d6d246768e2464e67f7eb2dc65ca097071267c284751a12829ba267704",
+          "checked_at": "2026-10-15T14:27:28.563944+00:00",
+          "status": "obtained",
+          "bytes": 12565397,
+          "sha256": "0ad1d8d6d246768e2464e67f7eb2dc65ca097071267c284751a12829ba267704"
+        }
+      ],
+      "retriever": {
+        "implementation": "bm25s",
+        "version": "0.3.13",
+        "method": "lucene",
+        "k1": 0.9,
+        "b": 0.4,
+        "dtype": "float64",
+        "depth": 100,
+        "indexed_fields": [
+          "title",
+          "text"
+        ],
+        "evidence_indexing": "full supplied text; model context truncation is a later shared adapter step",
+        "tokenizer": {
+          "lower": true,
+          "splitter": "(?u)\\b\\w\\w+\\b",
+          "stemmer": "Snowball english via PyStemmer 3.1.0",
+          "stopwords": [
+            "a",
+            "an",
+            "and",
+            "are",
+            "as",
+            "at",
+            "be",
+            "but",
+            "by",
+            "for",
+            "if",
+            "in",
+            "into",
+            "is",
+            "it",
+            "no",
+            "not",
+            "of",
+            "on",
+            "or",
+            "such",
+            "that",
+            "the",
+            "their",
+            "then",
+            "there",
+            "these",
+            "they",
+            "this",
+            "to",
+            "was",
+            "will",
+            "with"
+          ]
+        },
+        "ties": "score descending, doc_id lexicographically ascending",
+        "force_include_gold": false,
+        "read_supplied_runs": false
+      },
+      "build_seconds": 2.23
+    },
+    {
+      "name": "curev1_en/pulmonology",
+      "benchmark": "curev1_en",
+      "domain": "pulmonology",
+      "scope": "Native CUREv1 English specialty corpus; mixed human/model qrels",
+      "queries": 200,
+      "documents": 32317,
+      "positive_qrel_rows": 8197,
+      "judge_counts": {
+        "model": 7978,
+        "human": 219
+      },
+      "positive_grade_counts": {
+        "1": 6449,
+        "2": 1748
+      },
+      "expertise_counts": {
+        "expert": 150,
+        "layman": 50
+      },
+      "raw_corpus_documents": 32317,
+      "empty_document_ids_excluded": [],
+      "title_only_documents": 0,
+      "qrel_pairs_outside_corpus": 0,
+      "queries_without_gold_in_corpus": 0,
+      "queries_without_gold_in_candidates": 4,
+      "empty_or_out_of_vocabulary_queries": 0,
+      "corpus_positive_recall_macro": 1.0,
+      "candidate_recall@100_macro": 0.5474739725328264,
+      "corpus_ids_sha256": "ec93b2b02227bf82a783edbbc6082a97832bac52a044cab54dba4f7c4e681668",
+      "query_ids_sha256": "d1382ed60ed092f13003966f7d341d330dacb35b49a67df45be8597779a90f71",
+      "files": {
+        "corpus": {
+          "path": "data/benchmarks/curev1_en/pulmonology/corpus.jsonl",
+          "sha256": "eb24232a459a01766a2dcf152af84c505a930d919205637f3bd6e0e19c17797e",
+          "bytes": 21469491
+        },
+        "queries": {
+          "path": "data/benchmarks/curev1_en/pulmonology/queries.jsonl",
+          "sha256": "6d6b3a81b636bd28ea5d2ce0bb29f07307f64b9f46f35571de1b9c1d4713f93c",
+          "bytes": 27313
+        },
+        "query_metadata": {
+          "path": "data/benchmarks/curev1_en/pulmonology/query-metadata.jsonl",
+          "sha256": "97eaac1cdeda7cb67a710cd52c304b9d215927939184c43dca72a075251f93cf",
+          "bytes": 19800
+        },
+        "qrels": {
+          "path": "data/benchmarks/curev1_en/pulmonology/labels/qrels.jsonl",
+          "sha256": "3cf9ad749c42452c2fffaeb80663525c40e5a1937a78114fd3d63f56c5f17cc5",
+          "bytes": 1032822
+        },
+        "candidates": {
+          "path": "data/benchmarks/curev1_en/pulmonology/candidates/bm25-top100.jsonl",
+          "sha256": "eb51f607b906d6131d1617f4bb27683c66b206b66e5a77c7f1a5f70ec79ca2f4",
+          "bytes": 1933702
+        },
+        "diagnostics": {
+          "path": "data/benchmarks/curev1_en/pulmonology/labels/candidate-diagnostics.jsonl",
+          "sha256": "3eff5ef44e7fdd414f5e8d4d5945160e69a98f00906254fb3fe0aaf9a6de6c6c",
+          "bytes": 80361
+        }
+      },
+      "sources": [
+        {
+          "dataset": "clinia/CUREv1",
+          "revision": "072343ca2353c3dc832cf18cf0fef7c9a5a207b7",
+          "path": "data/raw/cure/pulmonology/corpus.jsonl",
+          "url": "https://huggingface.co/datasets/clinia/CUREv1/resolve/072343ca2353c3dc832cf18cf0fef7c9a5a207b7/pulmonology/corpus.jsonl",
+          "expected_bytes": 21504036,
+          "expected_sha256": "8427be7b38c348220bbb316d37f85569d45353de137b4e9d28e927c77ca15a52",
+          "checked_at": "2026-10-15T14:27:30.115397+00:00",
+          "status": "obtained",
+          "bytes": 21504036,
+          "sha256": "8427be7b38c348220bbb316d37f85569d45353de137b4e9d28e927c77ca15a52"
+        },
+        {
+          "dataset": "clinia/CUREv1",
+          "revision": "072343ca2353c3dc832cf18cf0fef7c9a5a207b7",
+          "path": "data/raw/cure/pulmonology/queries-en.jsonl",
+          "url": "https://huggingface.co/datasets/clinia/CUREv1/resolve/072343ca2353c3dc832cf18cf0fef7c9a5a207b7/pulmonology/queries-en.jsonl",
+          "expected_bytes": 31714,
+          "expected_sha256": null,
+          "checked_at": "2026-10-15T14:27:32.171795+00:00",
+          "status": "obtained",
+          "bytes": 31714,
+          "sha256": "e526c2c442d0f671aa25754835bfa75e630829e25b25128bcb6bfaa34dec230d"
+        },
+        {
+          "dataset": "clinia/CUREv1",
+          "revision": "072343ca2353c3dc832cf18cf0fef7c9a5a207b7",
+          "path": "data/raw/cure/pulmonology/qrels.jsonl",
+          "url": "https://huggingface.co/datasets/clinia/CUREv1/resolve/072343ca2353c3dc832cf18cf0fef7c9a5a207b7/pulmonology/qrels.jsonl",
+          "expected_bytes": 7200727,
+          "expected_sha256": "39425612c3d036ae2864769bc6242d2eebe3e4a7b8d9878ee0876dff91dbc545",
+          "checked_at": "2026-10-15T14:27:32.039587+00:00",
+          "status": "obtained",
+          "bytes": 7200727,
+          "sha256": "39425612c3d036ae2864769bc6242d2eebe3e4a7b8d9878ee0876dff91dbc545"
+        }
+      ],
+      "retriever": {
+        "implementation": "bm25s",
+        "version": "0.3.13",
+        "method": "lucene",
+        "k1": 0.9,
+        "b": 0.4,
+        "dtype": "float64",
+        "depth": 100,
+        "indexed_fields": [
+          "title",
+          "text"
+        ],
+        "evidence_indexing": "full supplied text; model context truncation is a later shared adapter step",
+        "tokenizer": {
+          "lower": true,
+          "splitter": "(?u)\\b\\w\\w+\\b",
+          "stemmer": "Snowball english via PyStemmer 3.1.0",
+          "stopwords": [
+            "a",
+            "an",
+            "and",
+            "are",
+            "as",
+            "at",
+            "be",
+            "but",
+            "by",
+            "for",
+            "if",
+            "in",
+            "into",
+            "is",
+            "it",
+            "no",
+            "not",
+            "of",
+            "on",
+            "or",
+            "such",
+            "that",
+            "the",
+            "their",
+            "then",
+            "there",
+            "these",
+            "they",
+            "this",
+            "to",
+            "was",
+            "will",
+            "with"
+          ]
+        },
+        "ties": "score descending, doc_id lexicographically ascending",
+        "force_include_gold": false,
+        "read_supplied_runs": false
+      },
+      "build_seconds": 1.789
+    },
+    {
+      "name": "nfcorpus_dev",
+      "benchmark": "nfcorpus_dev",
+      "domain": null,
+      "scope": "Development only; never report as third core benchmark",
+      "queries": 324,
+      "documents": 3633,
+      "positive_qrel_rows": 11385,
+      "judge_counts": {
+        "nfcorpus_native": 11385
+      },
+      "positive_grade_counts": {
+        "2": 521,
+        "1": 10864
+      },
+      "expertise_counts": {
+        "unspecified": 324
+      },
+      "raw_corpus_documents": 3633,
+      "empty_document_ids_excluded": [],
+      "title_only_documents": 0,
+      "qrel_pairs_outside_corpus": 0,
+      "queries_without_gold_in_corpus": 0,
+      "queries_without_gold_in_candidates": 77,
+      "empty_or_out_of_vocabulary_queries": 0,
+      "corpus_positive_recall_macro": 1.0,
+      "candidate_recall@100_macro": 0.2272880865812655,
+      "corpus_ids_sha256": "c8b34f119068978b747d644abf7bcea4cee1910db35ad0bb0838adf06444294f",
+      "query_ids_sha256": "102783ad8dbcc2db8c89bcf418eb24bf26a0f15feddcc65d05908213fd909369",
+      "files": {
+        "corpus": {
+          "path": "data/benchmarks/nfcorpus_dev/corpus.jsonl",
+          "sha256": "a829792870535e0f68ed98469b9209a1de090f66808a7407b5e4b48b2397c039",
+          "bytes": 5926426
+        },
+        "queries": {
+          "path": "data/benchmarks/nfcorpus_dev/queries.jsonl",
+          "sha256": "ee66e9d90f797219fbb11ffe57adb523fbd8035c10a0754f6406811a35bb10b5",
+          "bytes": 16860
+        },
+        "query_metadata": {
+          "path": "data/benchmarks/nfcorpus_dev/query-metadata.jsonl",
+          "sha256": "3917843ad92d785e8b2c6ca60a72f72eef3723803eea32c6a4f17aa2130e6ca2",
+          "bytes": 12858
+        },
+        "qrels": {
+          "path": "data/benchmarks/nfcorpus_dev/labels/qrels.jsonl",
+          "sha256": "7808494533e3ba55c06fed720389b4469abb321434e45769cffe62c05b6dd6a3",
+          "bytes": 929907
+        },
+        "candidates": {
+          "path": "data/benchmarks/nfcorpus_dev/candidates/bm25-top100.jsonl",
+          "sha256": "525e363ce9ed4ec06db5dc9bdcd299edcfb90fb6a2ed819df35cd5eaa5765c46",
+          "bytes": 2069748
+        },
+        "diagnostics": {
+          "path": "data/benchmarks/nfcorpus_dev/labels/candidate-diagnostics.jsonl",
+          "sha256": "05457606bd35d4c31058ad07d0289d9986a8b87d7780502668a9be6dbd37b12f",
+          "bytes": 109006
+        }
+      },
+      "sources": [
+        {
+          "dataset": "BEIR/nfcorpus",
+          "path": "data/raw/nfcorpus.zip",
+          "url": "https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/nfcorpus.zip",
+          "status": "obtained",
+          "bytes": 2448432,
+          "sha256": "efe5be03f8c5b86a5870102d0599d227c8c6e2484328e68c6522560385671b0b",
+          "checked_at": "2026-10-15T14:27:39.021661+00:00"
+        }
+      ],
+      "retriever": {
+        "implementation": "bm25s",
+        "version": "0.3.13",
+        "method": "lucene",
+        "k1": 0.9,
+        "b": 0.4,
+        "dtype": "float64",
+        "depth": 100,
+        "indexed_fields": [
+          "title",
+          "text"
+        ],
+        "evidence_indexing": "full supplied text; model context truncation is a later shared adapter step",
+        "tokenizer": {
+          "lower": true,
+          "splitter": "(?u)\\b\\w\\w+\\b",
+          "stemmer": "Snowball english via PyStemmer 3.1.0",
+          "stopwords": [
+            "a",
+            "an",
+            "and",
+            "are",
+            "as",
+            "at",
+            "be",
+            "but",
+            "by",
+            "for",
+            "if",
+            "in",
+            "into",
+            "is",
+            "it",
+            "no",
+            "not",
+            "of",
+            "on",
+            "or",
+            "such",
+            "that",
+            "the",
+            "their",
+            "then",
+            "there",
+            "these",
+            "they",
+            "this",
+            "to",
+            "was",
+            "will",
+            "with"
+          ]
+        },
+        "ties": "score descending, doc_id lexicographically ascending",
+        "force_include_gold": false,
+        "read_supplied_runs": false
+      },
+      "build_seconds": 0.5
+    }
+  ],
+  "dependencies": {
+    "bm25s": "0.3.13",
+    "PyStemmer": "3.1.0",
+    "numpy": "2.5.4",
+    "duckdb": "1.5.6"
+  },
+  "algorithm_panel_file": {
+    "path": "research/benchmarks/query-panels.json",
+    "sha256": "caaa7bd551d06b201bd84d32a517b7c3043626a785b61d750fb747e38a9d31fe",
+    "bytes": 8360
+  },
+  "evaluation_policy": {
+    "ndcg_gain": "linear qrel grade, TREC/MTEB convention",
+    "bioasq_AP_denominator": "min(10,total positive labels), including labels absent from curated corpus",
+    "missing_test_queries": "error; never silently average a subset",
+    "cross_benchmark_macro": false,
+    "inference_calls": 0
+  },
+  "model_inference_calls": 0
+}
