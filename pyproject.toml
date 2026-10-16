@@ -19,11 +19,8 @@ models = [
     "transformers==5.10.2",
 ]
 
-test = ["pytrec-eval-terrier==0.5.10"]
 notebooks = [
-    "ipywidgets>=8.1.9",
     "jupyterlab>=4.6.4",
-    "matplotlib>=3.11.2",
 ]
 cpu = [
     "torch==2.11.0",
