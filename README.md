@@ -4,7 +4,8 @@ Collect biomedical reranking results with a simple benchmark × method notebook.
 
 [Open the collector in Google Colab](https://colab.research.google.com/github/ellimilial/decision-rerank/blob/main/notebooks/01_collect_results.ipynb).
 
-1. Choose a GPU runtime for GPU methods, then run **Setup**. It clones this repository when needed and installs locked dependencies with uv. No bundle upload is required.
+1. Choose a GPU runtime for GPU methods, then run **Setup**. It clones this repository when needed and installs locked dependencies with uv. Automatic cloning requires public GitHub access. For a private repository, upload a `decision-rerank-colab*.tar.gz` bundle in the Files panel before Setup instead.
+   If Setup replaces NumPy/SciPy already loaded by the kernel, it stops and asks for **Runtime → Restart session**. Restart, rerun Setup, then continue.
 2. Uncomment the desired entries in `BENCHMARKS` and `METHODS`. The default is five NFCorpus development queries and BM25.
 3. Run `collect_results(BENCHMARKS, METHODS, output='results')`, then download the ZIP from the final cell.
 

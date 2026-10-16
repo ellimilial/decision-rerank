@@ -1,6 +1,7 @@
 """Install the locked model dependencies into the notebook kernel."""
 from pathlib import Path
 import importlib.util
+from importlib.metadata import version
 import os
 import shutil
 import subprocess
@@ -31,6 +32,8 @@ def ensure_uv():
 def setup_notebook():
     if not (3, 12) <= sys.version_info[:2] < (3, 15):
         raise RuntimeError('Use Python 3.12–3.14.')
+    loaded = {name: getattr(sys.modules.get(name), '__version__', None)
+              for name in ('numpy', 'scipy')}
     root = Path(__file__).resolve().parents[1]
     uv = ensure_uv()
     command = [uv, "export", "--locked", "--no-default-groups", "--no-emit-project", "--group", "models"]
@@ -45,6 +48,13 @@ def setup_notebook():
         [uv, "pip", "install", "--python", sys.executable, "--no-deps", "--editable", str(root)],
         check=True,
     )
+    changed = [name for name, previous in loaded.items() if previous and previous != version(name)]
+    if changed:
+        raise RuntimeError(
+            f"Setup replaced already loaded {', '.join(changed)}. "
+            "In Colab, choose Runtime > Restart session, then rerun Setup and the remaining cells. "
+            "Do not disconnect and delete the runtime."
+        )
     # Use this checkout even if the kernel started with another editable install.
     sys.path.insert(0, str(root / 'src'))
     importlib.invalidate_caches()
