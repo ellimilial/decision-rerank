@@ -20,6 +20,23 @@ def benchmark(name, *, panel=None, limit=None, root=None, offline=False):
     return load_benchmark(root, name, panel=panel, limit=limit, offline=offline)
 
 
+def _ensure_api_key(name):
+    key = {'jev': 'OPENROUTER_API_KEY', 'openai-decisions': 'OPENAI_API_KEY'}.get(name)
+    if key is None or os.environ.get(key):
+        return
+    try:
+        from google.colab import userdata
+        os.environ[key] = userdata.get(key)
+    except Exception:
+        pass  # Missing/inaccessible Colab Secrets fall back to a hidden prompt.
+    if not os.environ.get(key):
+        from getpass import getpass
+        value = getpass(key + ' (hidden): ').strip()
+        if not value:
+            raise ValueError('No value supplied for ' + key)
+        os.environ[key] = value
+
+
 @dataclass(frozen=True)
 class MethodChoice:
     """Defer model loading and credential lookup until this method actually runs."""
@@ -53,18 +70,8 @@ class MethodChoice:
         if self.name not in {'jev', 'openai-decisions'}:
             raise ValueError(f'Unknown method: {self.name}')
         from .hosted import HostedDecisions
+        _ensure_api_key(self.name)
         provider = 'jev' if self.name == 'jev' else 'openai'
-        key = 'OPENROUTER_API_KEY' if provider == 'jev' else 'OPENAI_API_KEY'
-        if not os.environ.get(key):
-            try:
-                from google.colab import userdata
-                os.environ[key] = userdata.get(key)
-            except Exception:
-                # Missing or inaccessible Colab Secrets fall back to a hidden prompt.
-                pass
-            if not os.environ.get(key):
-                from getpass import getpass
-                os.environ[key] = getpass(key + ': ')
         return HostedDecisions(provider, calls=Path(folder) / 'calls.jsonl', **self.options)
 
 
@@ -89,6 +96,9 @@ def collect_results(benchmarks, methods, *, output='results', max_seconds=None):
         raise ValueError('Duplicate benchmark selections.')
     if len({m.name for m in methods}) != len(methods):
         raise ValueError('Duplicate methods; use a separate output folder for different settings.')
+    for choice in methods:
+        if isinstance(choice, MethodChoice):
+            _ensure_api_key(choice.name)
     output = Path(output).resolve()
     print(f'{len(benchmarks)} benchmarks × {len(methods)} methods = {len(benchmarks) * len(methods)} runs')
     selections = []

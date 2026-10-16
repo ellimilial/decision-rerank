@@ -20,7 +20,7 @@ Missing datasets and weights download automatically from pinned sources. Every m
 
 BioASQ uses a curated corpus with some gold articles missing; this is not full-PubMed competition reproduction. CURE includes model-generated judgments. Keep benchmark/subset results separate. Full GPU inference and memory fit still need validation on the selected hardware.
 
-Results contain `run.json` (rankings, settings and resume checkpoint), `run.evaluation.json` (aggregate and per-query metrics), optional hosted `calls.jsonl`, and one shared `session.json` with queries/statuses. Reuse the output folder to resume; use a mounted Drive folder to retain work across Colab resets. Hosted methods make paid API calls, read keys from environment variables, Colab Secrets or a hidden prompt, and cache successful responses. Keys are not saved.
+Results contain `run.json` (rankings, settings and resume checkpoint), `run.evaluation.json` (aggregate and per-query metrics), optional hosted `calls.jsonl`, and one shared `session.json` with queries/statuses. Reuse the output folder to resume; use a mounted Drive folder to retain work across Colab resets. Hosted methods make paid API calls and cache successful responses. Before any selected model runs, the collector reads `OPENROUTER_API_KEY` (JEV) / `OPENAI_API_KEY` (OpenAI Decisions) from environment variables or Colab Secrets, or asks through a hidden prompt. CPU/GPU-only selections need no keys. Keys are not saved.
 
 Use uv ≥0.13.1 and Python 3.12–3.14. For a local notebook session:
 
