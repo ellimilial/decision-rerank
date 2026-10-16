@@ -17,6 +17,8 @@ dependencies = [
 # than replacing it with a platform-dependent PyTorch distribution here.
 models = [
     "transformers==5.10.2",
+    "peft==0.21.2",
+    "accelerate==1.15.0",
 ]
 
 notebooks = [

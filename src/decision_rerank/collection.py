@@ -11,7 +11,7 @@ from . import evaluate, load_benchmark, run
 from .results import write_json
 
 SUPPORTED_METHODS = {'bm25', 'tfidf-cpu', 'medcpt-cpu', 'qwen3-4b', 'qwen3-8b', 'medcpt',
-                     'jina-v35', 'biodecision', 'qwen35-base', 'clef-flash', 'jev', 'openai-decisions'}
+                     'jina-v35', 'biodecision', 'qwen35-base', 'kev-4b', 'jev', 'openai-decisions'}
 
 
 def benchmark(name, *, panel=None, limit=None, root=None, offline=False):
@@ -64,9 +64,9 @@ class MethodChoice:
         if self.name == 'jina-v35':
             from .native_models import JinaReranker
             return JinaReranker(**self.options)
-        if self.name == 'clef-flash':
-            from .native_models import ClefFlash
-            return ClefFlash(**self.options)
+        if self.name == 'kev-4b':
+            from .native_models import Kev4B
+            return Kev4B(**self.options)
         if self.name not in {'jev', 'openai-decisions'}:
             raise ValueError(f'Unknown method: {self.name}')
         from .hosted import HostedDecisions

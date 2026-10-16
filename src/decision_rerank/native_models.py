@@ -1,7 +1,9 @@
-"""Pinned native listwise Jina and native-head Clef adapters."""
+"""Pinned native Jina reranking and Kev decision-head adapters."""
 import importlib.util
 from pathlib import Path
+import re
 import sys
+from urllib.request import urlopen
 
 from .hosted import expected_grade, request_body
 from .inference import runtime
@@ -41,41 +43,84 @@ class JinaReranker(Pointwise):
         return [indexed[i] for i in range(len(texts))]
 
 
-class ClefFlash(Pointwise):
+KEV_CODE_REVISION = '1f04cfa28e6a708485b28a9585010b9e436b776e'
+
+
+def kev_runtime():
+    """Load only the publisher's checkpoint/model modules from a pinned commit."""
+    from huggingface_hub import cached_assets_path
+    directory = Path(cached_assets_path('decision-rerank', namespace='kev', subfolder=KEV_CODE_REVISION))
+    for name in ('model.py', 'checkpoint.py'):
+        target = directory / name
+        if not target.exists():
+            url = f'https://raw.githubusercontent.com/jaredpalmer/kev/{KEV_CODE_REVISION}/kev/{name}'
+            with urlopen(url, timeout=60) as response:
+                source = response.read()
+            target.write_bytes(source)
+    name = '_decision_rerank_kev_' + KEV_CODE_REVISION[:12]
+    if name not in sys.modules:
+        spec = importlib.util.spec_from_file_location(name, directory/'checkpoint.py',
+                                                     submodule_search_locations=[str(directory)])
+        module = importlib.util.module_from_spec(spec)
+        sys.modules[name] = module
+        try:
+            spec.loader.exec_module(module)
+        except BaseException:
+            del sys.modules[name]
+            raise
+    return sys.modules[name]
+
+
+class Kev4B(Pointwise):
     def __init__(self, *, batch_size=1, device='cuda', dtype='float16'):
         if batch_size < 1:
             raise ValueError('Use a positive batch size')
         self._torch, self._dtype, settings = runtime(device, dtype)
         self._device, self._batch_size = device, batch_size
-        self._model = self._processor = self._native = None
-        super().__init__('clef_flash_pointwise', self._score, {
-            'model': 'Cloudflare/clef-flash', 'revision': '8b2e5fd17c09fd49bc2880b805d5323ec7ff4ff3',
-            **settings, 'batch_size': batch_size, 'score': 'expected_grade_native_schema_head',
-            'max_input_tokens': 16384, 'schema': request_body('jev', 'Cloudflare/clef-flash', '', '')['questions'],
+        self._model = self._tokenizer = None
+        super().__init__('kev_4b_pointwise', self._score, {
+            'model': 'jaredpalmer/kev-4b', 'revision': '6cfce5c2fa4b4bd64026336ab649c5ca78857d52',
+            'base_model': 'Qwen/Qwen3.5-4B-Base', 'base_revision': '1001bb4d826a52d1f399e183466143f4da7b741b',
+            **settings, 'batch_size': batch_size, 'code_revision': KEV_CODE_REVISION,
+            'score': 'expected_grade_native_pointer_head', 'temperature': 2.406050072164233,
+            'max_input_tokens': 8192, 'schema': request_body('jev', 'jaredpalmer/kev-4b', '', '')['questions'],
+            'load_device': 'cpu', 'merge_lora': True, 'fused_kernels': False, 'cuda_graphs': False,
         })
 
     def _score(self, query, candidates):
         if self._model is None:
             from huggingface_hub import snapshot_download
-            path = Path(snapshot_download(self.parameters['model'], revision=self.parameters['revision'], token=False))
-            spec = importlib.util.spec_from_file_location('decision_rerank_clef_native', path/'joint_schema_model.py')
-            self._native = importlib.util.module_from_spec(spec)
-            sys.modules[spec.name] = self._native
-            spec.loader.exec_module(self._native)
-            self._model, self._processor = self._native.load_release_model(path, device=self._device, dtype=self._dtype)
+            native = kev_runtime()
+            path = snapshot_download(self.parameters['model'], revision=self.parameters['revision'],
+                                     allow_patterns=['adapter_config.json', 'adapter_model.safetensors', 'head.pt'])
+            checkpoint = native.Checkpoint(path)
+            if (checkpoint.meta.base, checkpoint.meta.base_revision, checkpoint.meta.temperature) != (
+                self.parameters['base_model'], self.parameters['base_revision'], self.parameters['temperature']
+            ):
+                raise ValueError('Kev checkpoint base or calibration differs from recorded settings')
+            # Merge on CPU so the temporary LoRA merge buffers never consume VRAM.
+            self._tokenizer, model = checkpoint.load('cpu', native.LoadOptions(
+                dtype=self._dtype, merge=True, backend='torch', fused=False, cuda_graphs=False,
+                attn='sdpa' if self._device == 'cuda' else 'eager',
+            ))
+            self._model = model.to(self._device).eval()
+            self._model.device = self._device
         scores = []
         for start in range(0, len(candidates), self._batch_size):
-            records = [request_body('jev', self.parameters['model'], query, doc.text)
-                       for doc in candidates[start:start+self._batch_size]]
-            # Encode without state cropping, then enforce the declared context limit.
-            encoded = [self._native.encode_record(self._processor.tokenizer, r, processor=self._processor, max_length=1_000_000)
-                       for r in records]
-            if any(len(row.input_ids) > 16384 for row in encoded):
-                raise ValueError('Shared evidence exceeds Clef context; refusing state truncation')
-            batch = self._native.collate_records(encoded, self._processor.tokenizer.pad_token_id, self._torch.device(self._device))
+            encoded = []
+            for document in candidates[start:start+self._batch_size]:
+                body = request_body('jev', self.parameters['model'], query, document.text)
+                # The native encoder rewrites special-token strings; reject rather than alter shared evidence.
+                if re.search(r'<\|[A-Za-z0-9_]+\|>', body['state']):
+                    raise ValueError('Evidence contains special token strings rewritten by the native Kev formatter')
+                question = body['questions']['relevance']
+                record = {'state': body['state'], 'questions': [{
+                    'instr': question['instructions'], 'options': question['criteria'], 'label': 0,
+                }]}
+                encoded.append(self._model.encode(self._tokenizer, record, max_state=8192, max_branch=8192, strict=True))
             with self._torch.inference_mode():
-                outputs = self._model(batch)
-            for row, record in zip(outputs, records):
+                outputs = self._model.forward_batch(encoded)
+            for row in outputs:
                 probabilities = row[0].float().softmax(-1).cpu().tolist()
                 scores.append(expected_grade('jev', {'answers': {'relevance': {
                     'type': 'score', 'probabilities': {str(i): p for i, p in enumerate(probabilities)},

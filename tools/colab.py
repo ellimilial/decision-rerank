@@ -39,9 +39,11 @@ def setup_notebook():
     command = [uv, "export", "--locked", "--no-default-groups", "--no-emit-project", "--group", "models"]
     if importlib.util.find_spec('torch') is None:
         command += ["--group", "cpu"]
+    else:
+        command += ["--prune", "torch"]  # Keep the runtime's CUDA build and its dependencies.
     exported = subprocess.run(command, cwd=root, check=True, capture_output=True, text=True)
     subprocess.run(
-        [uv, "pip", "install", "--python", sys.executable, "--require-hashes", "-r", "-"],
+        [uv, "pip", "install", "--python", sys.executable, "--no-deps", "--require-hashes", "-r", "-"],
         input=exported.stdout, check=True, text=True,
     )
     subprocess.run(
