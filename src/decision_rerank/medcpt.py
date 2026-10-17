@@ -1,4 +1,4 @@
-"""Pinned biomedical cross-encoder on CPU or GPU, imported only when selected."""
+"""Pinned biomedical cross-encoder, imported only when selected."""
 from .methods import Pointwise
 from .inference import runtime
 
@@ -14,7 +14,7 @@ class MedCPT(Pointwise):
         self._device = device
         self._batch_size = batch_size
         self._model = self._tokenizer = None
-        super().__init__("medcpt_cpu" if device == "cpu" else "medcpt", self._score, {
+        super().__init__("medcpt", self._score, {
             "model": MODEL, "revision": REVISION, "batch_size": batch_size, "dtype": dtype,
             **settings,
         })

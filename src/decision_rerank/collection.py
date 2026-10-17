@@ -10,7 +10,7 @@ import zipfile
 from . import evaluate, load_benchmark, run
 from .results import write_json
 
-SUPPORTED_METHODS = {'bm25', 'tfidf-cpu', 'medcpt-cpu', 'qwen3-4b', 'medcpt',
+SUPPORTED_METHODS = {'bm25', 'tfidf-cpu', 'qwen3-4b', 'medcpt',
                      'jina-v35', 'biodecision', 'qwen35-base', 'kev-4b', 'jev', 'openai-decisions'}
 
 
@@ -50,10 +50,9 @@ class MethodChoice:
         if self.name == 'tfidf-cpu':
             from .methods import CandidateTfidf
             return CandidateTfidf(**self.options)
-        if self.name in {'medcpt', 'medcpt-cpu'}:
+        if self.name == 'medcpt':
             from .medcpt import MedCPT
-            device = 'cpu' if self.name == 'medcpt-cpu' else 'cuda'
-            return MedCPT(**{'device': device, 'dtype': 'float32', 'batch_size': 16, **self.options})
+            return MedCPT(**{'device': 'cuda', 'dtype': 'float32', 'batch_size': 16, **self.options})
         if self.name == 'qwen3-4b':
             from .qwen import QwenReranker
             return QwenReranker(**self.options)
