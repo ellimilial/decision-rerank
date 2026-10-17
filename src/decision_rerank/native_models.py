@@ -10,22 +10,62 @@ from .inference import runtime
 from .methods import Pointwise
 
 
+JINA_ATTENTION_CHUNK = 256
+
+
+def jina_attention(module, query, key, value, attention_mask, *, scaling=None,
+                   sliding_window=None, dropout=0., **kwargs):
+    """Exact causal attention in query blocks; documents remain one joint sequence."""
+    import torch
+    if attention_mask is not None or query.shape[0] != 1 or query.shape[2] != key.shape[2] or dropout:
+        raise ValueError('Jina attention requires one unpadded sequence, without cache or dropout')
+    key = key.repeat_interleave(module.num_key_value_groups, dim=1)
+    value = value.repeat_interleave(module.num_key_value_groups, dim=1)
+    output = torch.empty_like(query)
+    for start in range(0, query.shape[2], JINA_ATTENTION_CHUNK):
+        end = min(start + JINA_ATTENTION_CHUNK, query.shape[2])
+        left = max(0, start - sliding_window + 1) if sliding_window else 0
+        q_positions = torch.arange(start, end, device=query.device)[:, None]
+        k_positions = torch.arange(left, end, device=query.device)[None, :]
+        mask = k_positions <= q_positions
+        if sliding_window:
+            mask &= k_positions > q_positions - sliding_window
+        output[:, :, start:end] = torch.nn.functional.scaled_dot_product_attention(
+            query[:, :, start:end], key[:, :, left:end], value[:, :, left:end],
+            attn_mask=mask, scale=scaling, dropout_p=0.,
+        )
+    return output.transpose(1, 2).contiguous(), None
+
+
+def jina_attention_mask(*, batch_size, q_length, kv_length, q_offset, kv_offset,
+                        attention_mask=None, **kwargs):
+    """Validate the native single-sequence input without allocating square masks."""
+    if (batch_size != 1 or q_length != kv_length or q_offset != 0 or kv_offset != 0
+        or (attention_mask is not None and not attention_mask.all())):
+        raise ValueError('Jina attention requires one unpadded sequence, without cache')
+    return None
+
+
 class JinaReranker(Pointwise):
     def __init__(self, *, device='cuda', dtype='float16'):
         self._torch, self._dtype, settings = runtime(device, dtype)
         self._device, self._model = device, None
         super().__init__('jina_v35', self._score, {
             'model': 'jinaai/jina-reranker-v3.5', 'revision': 'e8a93f33f0b22108f8c2364f8484ce3422552fbc',
-            **settings, 'score': 'native_listwise_cosine', 'code_revision': 'e8a93f33f0b22108f8c2364f8484ce3422552fbc',
+            **settings, 'attention': 'query_chunked_sdpa_v1', 'attention_query_chunk': JINA_ATTENTION_CHUNK,
+            'score': 'native_listwise_cosine', 'code_revision': 'e8a93f33f0b22108f8c2364f8484ce3422552fbc',
             'evidence_policy': 'reject native truncation or sanitization; preserve original strings',
         })
 
     def _score(self, query, candidates):
         if self._model is None:
-            from transformers import AutoModel, AutoTokenizer
+            from transformers import AttentionInterface, AttentionMaskInterface, AutoModel, AutoTokenizer
+            AttentionInterface.register('decision_rerank_jina', jina_attention)
+            AttentionMaskInterface.register('decision_rerank_jina', jina_attention_mask)
             model, revision = self.parameters['model'], self.parameters['revision']
             self._model = AutoModel.from_pretrained(model, revision=revision, code_revision=revision,
-                trust_remote_code=True, dtype=self._dtype, token=False, attn_implementation='sdpa').to(self._device).eval()
+                trust_remote_code=True, dtype=self._dtype, token=False,
+                attn_implementation='decision_rerank_jina').to(self._device).eval()
             # The publisher's lazy tokenizer otherwise follows the moving main branch.
             self._model._tokenizer = AutoTokenizer.from_pretrained(model, revision=revision, token=False, padding_side='left')
         tokenizer = self._model._tokenizer
