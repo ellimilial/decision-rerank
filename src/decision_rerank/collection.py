@@ -93,7 +93,8 @@ def collect_results(benchmarks, methods, *, output='results', max_seconds=None):
     """Run benchmarks × methods, checkpoint each pair and export one portable ZIP.
 
     Methods can be lazy choices from method() or existing Method implementations.
-    Each local model is loaded once and reused across all benchmarks, then released.
+    Lazy local choices load once across all benchmarks, then close their assets.
+    Prebuilt method instances remain caller-owned.
     Hosted clients keep separate call logs per benchmark. Completed work is reused.
     A failed pair is recorded while remaining pairs run.
     """
@@ -145,10 +146,17 @@ def collect_results(benchmarks, methods, *, output='results', max_seconds=None):
                 finally:
                     write_json(folder / 'session.json', session)
         finally:
+            # Release our loaded assets even if a notebook/debugger retains the wrapper.
+            if isinstance(choice, MethodChoice) and hasattr(algorithm, 'close'):
+                algorithm.close()
             del algorithm
             gc.collect()
             if 'torch' in sys.modules and sys.modules['torch'].cuda.is_available():
-                sys.modules['torch'].cuda.empty_cache()
+                cuda = sys.modules['torch'].cuda
+                cuda.synchronize()
+                cuda.empty_cache()
+                print(f'  PyTorch GPU after cleanup: {cuda.memory_allocated() / 2**30:.2f} GiB allocated, '
+                      f'{cuda.memory_reserved() / 2**30:.2f} GiB reserved', flush=True)
     archive = export_results(output, output.with_name(output.name + '.zip'))
     print(f'Results: {output}\nArchive: {archive}')
     return archive

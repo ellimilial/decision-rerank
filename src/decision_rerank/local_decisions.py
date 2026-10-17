@@ -2,8 +2,7 @@
 import json
 
 from .hosted import INSTRUCTIONS, LEVELS
-from .inference import runtime
-from .methods import Pointwise
+from .inference import LocalPointwise, runtime
 
 MODELS = {
     'biodecision': ('lighteternal/biodecision-v2-4b', 'f146e2afbd3c07add8791c74d7d2448d18e68b9a'),
@@ -33,7 +32,7 @@ def grade_logits(logits, label_ids, *, temperature=1.0):
     return (probabilities * weights).sum(dim=-1)
 
 
-class LocalDecisions(Pointwise):
+class LocalDecisions(LocalPointwise):
     def __init__(self, variant='biodecision', *, batch_size=2, device='cuda', dtype='float16', temperature=1.0):
         if variant not in MODELS or batch_size < 1 or temperature <= 0:
             raise ValueError('Choose biodecision/qwen35-base, positive batch size and temperature')
@@ -56,8 +55,8 @@ class LocalDecisions(Pointwise):
             self._tokenizer = AutoTokenizer.from_pretrained(self._model_id, revision=self._revision, token=False, padding_side='left')
             self._model = Qwen3_5ForConditionalGeneration.from_pretrained(
                 self._model_id, revision=self._revision, token=False, dtype=self._dtype,
-                attn_implementation='sdpa',
-            ).to(self._device).eval()
+                attn_implementation='sdpa', device_map=self._device,
+            ).eval()
         tokenizer = self._tokenizer
         labels = [tokenizer.encode(letter, add_special_tokens=False) for letter in 'ABCD']
         if any(len(ids) != 1 for ids in labels):

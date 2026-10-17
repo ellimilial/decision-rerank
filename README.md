@@ -11,6 +11,8 @@ Collect biomedical reranking results with a simple benchmark × method notebook.
 
 Each local model loads once, runs across all selected benchmarks, then releases its weights before the next method starts. Hosted methods retain separate call logs and caches per benchmark. Choices are listed roughly from heavier to lighter: BioDecision 4B and the general Qwen3.5 relevance baseline, Kev-4B, Qwen3 reranker 4B, Jina v3.5, MedCPT, then lexical CPU controls and hosted JEV/OpenAI Decisions and GPT-6.1 Sol.
 
+BioDecision, Qwen3.5 and the Qwen3 reranker load weights directly onto the GPU, avoiding a full CPU model staging copy. After each local method, the collector explicitly clears its loaded model/tokenizer, runs garbage collection, synchronizes CUDA and releases its cache. Remaining allocated/reserved GPU memory is printed before the next method. Existing inference settings and checkpoints remain compatible.
+
 Kev-4B uses the native pointer head and shipped calibration, with FP16 and batch size 1 by default. The backbone loads directly onto the GPU; LoRA layers visit CPU one at a time for merging, avoiding a full host copy of the model. Full-model Colab memory fit still needs validation. Setup removes optional torchao, which these unquantized runs do not use, to avoid conflicts with Colab’s preinstalled version.
 
 Jina scores the full candidate list jointly, using query-token blocks for attention to avoid square attention tensors on small GPUs. This preserves cross-document attention and the native scoring rule; it can be slower than optimized fused kernels. The attention implementation is recorded in results.

@@ -1,6 +1,5 @@
 """Pinned Qwen3 reranker using the publisher's yes/no scoring format."""
-from .methods import Pointwise
-from .inference import runtime
+from .inference import LocalPointwise, runtime
 
 MODEL = 'Qwen/Qwen3-Reranker-4B'
 REVISION = '22e683669bc0f0bd69640a1354a6d0aebcfeede5'
@@ -9,7 +8,7 @@ PREFIX = '<|im_start|>system\nJudge whether the Document meets the requirements 
 SUFFIX = '<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n'
 
 
-class QwenReranker(Pointwise):
+class QwenReranker(LocalPointwise):
     def __init__(self, *, batch_size=2, dtype='float16'):
         if batch_size < 1 or dtype not in {'float16', 'bf16'}:
             raise ValueError('Use a positive batch size and float16/bf16 precision')
@@ -29,8 +28,8 @@ class QwenReranker(Pointwise):
             self._tokenizer = AutoTokenizer.from_pretrained(MODEL, revision=REVISION, padding_side='left', token=False)
             self._model = AutoModelForCausalLM.from_pretrained(
                 MODEL, revision=REVISION, dtype=self._dtype, token=False,
-                attn_implementation='sdpa',
-            ).to('cuda').eval()
+                attn_implementation='sdpa', device_map='cuda',
+            ).eval()
         tokenizer = self._tokenizer
         yes, no = [tokenizer.encode(word, add_special_tokens=False) for word in ['yes', 'no']]
         if len(yes) != 1 or len(no) != 1:

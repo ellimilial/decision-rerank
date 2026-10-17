@@ -6,8 +6,7 @@ import sys
 from urllib.request import urlopen
 
 from .hosted import expected_grade, request_body
-from .inference import runtime
-from .methods import Pointwise
+from .inference import LocalPointwise, runtime
 
 
 JINA_ATTENTION_CHUNK = 256
@@ -46,7 +45,7 @@ def jina_attention_mask(*, batch_size, q_length, kv_length, q_offset, kv_offset,
     return None
 
 
-class JinaReranker(Pointwise):
+class JinaReranker(LocalPointwise):
     def __init__(self, *, device='cuda', dtype='float16'):
         self._torch, self._dtype, settings = runtime(device, dtype)
         self._device, self._model = device, None
@@ -139,7 +138,7 @@ def load_kev_model(native, checkpoint, device, dtype):
     return tokenizer, model.eval()
 
 
-class Kev4B(Pointwise):
+class Kev4B(LocalPointwise):
     def __init__(self, *, batch_size=1, device='cuda', dtype='float16'):
         if batch_size < 1:
             raise ValueError('Use a positive batch size')

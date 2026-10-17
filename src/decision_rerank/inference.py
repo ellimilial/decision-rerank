@@ -1,4 +1,13 @@
-"""Shared device/precision policy for optional local model adapters."""
+"""Shared loading, cleanup and precision policy for optional local models."""
+from .methods import Pointwise
+
+
+class LocalPointwise(Pointwise):
+    def close(self):
+        """Drop loaded assets without making a CPU copy; rank() can reload them."""
+        self._model = self._tokenizer = None
+
+
 def runtime(device='cuda', dtype='float16'):
     import torch
     import transformers

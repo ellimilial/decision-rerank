@@ -1,12 +1,11 @@
 """Pinned biomedical cross-encoder, imported only when selected."""
-from .methods import Pointwise
-from .inference import runtime
+from .inference import LocalPointwise, runtime
 
 MODEL = "ncbi/MedCPT-Cross-Encoder"
 REVISION = "71caf65d4927987813984f54c284405a13fcca49"
 
 
-class MedCPT(Pointwise):
+class MedCPT(LocalPointwise):
     def __init__(self, *, batch_size: int = 32, dtype: str = "bf16", device: str = "cuda"):
         if batch_size < 1:
             raise ValueError("Use a positive batch size")
