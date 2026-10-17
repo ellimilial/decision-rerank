@@ -111,6 +111,34 @@ def kev_runtime():
     return sys.modules[name]
 
 
+def load_kev_model(native, checkpoint, device, dtype):
+    """Load weights onto the target device; stage only one LoRA layer on CPU."""
+    import torch
+    from peft import PeftModel
+    from peft.tuners.lora.layer import LoraLayer
+
+    meta = checkpoint.meta
+    if checkpoint.full or meta.weights_dtype != 'fp32' or checkpoint.adapter_config().get('trainable_token_indices'):
+        raise ValueError('Expected the pinned Kev FP32 LoRA checkpoint without trained token embeddings')
+    tokenizer = native.load_tokenizer(meta.base, revision=meta.base_revision)
+    model = native.DecisionModel(meta.base, tokenizer, device, revision=meta.base_revision,
+        head_dim=meta.head_dim, option_isolation=meta.option_isolation, dtype=dtype,
+        attn='sdpa' if device == 'cuda' else 'eager', direct_load=True)
+    # Keep PEFT's normal FP32 adapter loading; meta loading can round adapter values to FP16.
+    model.lm = PeftModel.from_pretrained(model.lm, checkpoint.path, torch_device=device)
+    # Keep the original CPU merge arithmetic without a full host copy of the backbone.
+    with torch.no_grad():
+        for layer in model.lm.modules():
+            if isinstance(layer, LoraLayer):
+                layer.to('cpu')
+                layer.merge()
+                layer.to(device)
+    model.lm = model.lm.unload().to(dtype)
+    model.head.load_state_dict(meta.head)
+    model.head.temperature = meta.temperature
+    return tokenizer, model.eval()
+
+
 class Kev4B(Pointwise):
     def __init__(self, *, batch_size=1, device='cuda', dtype='float16'):
         if batch_size < 1:
@@ -124,7 +152,8 @@ class Kev4B(Pointwise):
             **settings, 'batch_size': batch_size, 'code_revision': KEV_CODE_REVISION,
             'score': 'expected_grade_native_pointer_head', 'temperature': 2.406050072164233,
             'max_input_tokens': 8192, 'schema': request_body('jev', 'jaredpalmer/kev-4b', '', '')['questions'],
-            'load_device': 'cpu', 'merge_lora': True, 'fused_kernels': False, 'cuda_graphs': False,
+            'load_device': device, 'merge_lora': True, 'merge_device': 'cpu', 'merge_scope': 'one_lora_layer',
+            'fused_kernels': False, 'cuda_graphs': False,
         })
 
     def _score(self, query, candidates):
@@ -138,13 +167,7 @@ class Kev4B(Pointwise):
                 self.parameters['base_model'], self.parameters['base_revision'], self.parameters['temperature']
             ):
                 raise ValueError('Kev checkpoint base or calibration differs from recorded settings')
-            # Merge on CPU so the temporary LoRA merge buffers never consume VRAM.
-            self._tokenizer, model = checkpoint.load('cpu', native.LoadOptions(
-                dtype=self._dtype, merge=True, backend='torch', fused=False, cuda_graphs=False,
-                attn='sdpa' if self._device == 'cuda' else 'eager',
-            ))
-            self._model = model.to(self._device).eval()
-            self._model.device = self._device
+            self._tokenizer, self._model = load_kev_model(native, checkpoint, self._device, self._dtype)
         scores = []
         for start in range(0, len(candidates), self._batch_size):
             encoded = []

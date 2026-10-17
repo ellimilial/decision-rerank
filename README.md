@@ -11,7 +11,7 @@ Collect biomedical reranking results with a simple benchmark × method notebook.
 
 Each method runs across all selected benchmarks before the next method starts. Choices are listed roughly from heavier to lighter: BioDecision 4B and its matched Qwen3.5 backbone, Kev-4B, Qwen3 reranker 4B, Jina v3.5, MedCPT, then lexical CPU controls and hosted JEV/OpenAI Decisions.
 
-Kev-4B uses the native pointer head and shipped calibration. It merges the LoRA on CPU before moving to GPU, with FP16 and batch size 1 by default. Allow host RAM for the merge; full-model GPU fit is still unverified. Setup removes optional torchao, which these unquantized runs do not use, to avoid conflicts with Colab’s preinstalled version.
+Kev-4B uses the native pointer head and shipped calibration, with FP16 and batch size 1 by default. The backbone loads directly onto the GPU; LoRA layers visit CPU one at a time for merging, avoiding a full host copy of the model. Full-model Colab memory fit still needs validation. Setup removes optional torchao, which these unquantized runs do not use, to avoid conflicts with Colab’s preinstalled version.
 
 Jina scores the full candidate list jointly, using query-token blocks for attention to avoid square attention tensors on small GPUs. This preserves cross-document attention and the native scoring rule; it can be slower than optimized fused kernels. The attention implementation is recorded in results.
 
