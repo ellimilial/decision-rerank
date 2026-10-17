@@ -21,7 +21,7 @@ def benchmark(name, *, panel=None, limit=None, root=None, offline=False):
 
 
 def _ensure_api_key(name):
-    key = {'jev': 'OPENROUTER_API_KEY', 'openai-decisions': 'OPENAI_API_KEY'}.get(name)
+    key = 'OPENROUTER_API_KEY' if name in {'jev', 'openai-decisions'} else None
     if key is None or os.environ.get(key):
         return
     try:

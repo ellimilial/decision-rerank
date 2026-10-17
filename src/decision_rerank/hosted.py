@@ -27,39 +27,26 @@ LEVELS = (
 )
 PROVIDERS = {
     "jev": ("https://openrouter.ai/api/alpha/decisions", "typesafe/jev-1.13", "OPENROUTER_API_KEY"),
-    "openai": ("https://api.openai.com/v1/decisions", "gpt-6-luna", "OPENAI_API_KEY"),
+    "openai": ("https://openrouter.ai/api/alpha/decisions", "openai/gpt-6-luna-decisions-20261006", "OPENROUTER_API_KEY"),
 }
 
 
 def request_body(provider: str, model: str, query: str, document: str) -> dict:
     evidence = json.dumps({"query": query, "passage": document}, ensure_ascii=False, sort_keys=True)
-    if provider == "jev":
-        return {"model": model, "state": evidence, "questions": {"relevance": {
-            "type": "score", "instructions": INSTRUCTIONS, "criteria": [text for _, text in LEVELS],
-        }}}
-    if provider == "openai":
-        return {"model": model, "input": evidence, "questions": [{
-            "type": "score", "name": "relevance", "instructions": INSTRUCTIONS,
-            "levels": [{"label": label, "description": text} for label, text in LEVELS],
-        }]}
-    raise ValueError(f"Unknown provider: {provider}")
+    if provider not in PROVIDERS:
+        raise ValueError(f"Unknown provider: {provider}")
+    return {"model": model, "state": evidence, "questions": {"relevance": {
+        "type": "score", "instructions": INSTRUCTIONS, "criteria": [text for _, text in LEVELS],
+    }}}
 
 
 def expected_grade(provider: str, response: dict) -> float:
-    if provider == "jev":
-        answer = response["answers"]["relevance"]
-        probabilities = {int(index): value for index, value in answer["probabilities"].items()}
-    else:
-        answers = response["answers"]
-        if len(answers) != 1 or answers[0].get("name") != "relevance":
-            raise ValueError("Expected one named relevance answer")
-        answer = answers[0]
-        if answer.get("type") == "refusal":
-            raise ValueError("Provider refused the relevance judgment")
-        entries = answer["probabilities"]
-        probabilities = {entry["value"]: entry["probability"] for entry in entries}
-        if len(entries) != len(probabilities):
-            raise ValueError("Duplicate probability level")
+    if provider not in PROVIDERS:
+        raise ValueError(f"Unknown provider: {provider}")
+    answer = response["answers"]["relevance"]
+    if answer.get("type") == "refusal":
+        raise ValueError("Provider refused the relevance judgment")
+    probabilities = {int(index): value for index, value in answer["probabilities"].items()}
     if answer.get("type") != "score" or set(probabilities) != set(range(len(LEVELS))):
         raise ValueError("Expected all four ordered relevance probabilities")
     values = list(probabilities.values())
