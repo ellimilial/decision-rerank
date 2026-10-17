@@ -10,17 +10,14 @@ SUFFIX = '<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n'
 
 
 class QwenReranker(Pointwise):
-    def __init__(self, *, batch_size=2, dtype='float16', variant='4b'):
-        if variant not in {'4b', '8b'}:
-            raise ValueError('Choose the 4b or 8b reranker')
-        self._model_id, self._revision = (MODEL, REVISION) if variant == '4b' else ('Qwen/Qwen3-Reranker-8B', '77d193c791ed757ca307ee72715aa132723da912')
+    def __init__(self, *, batch_size=2, dtype='float16'):
         if batch_size < 1 or dtype not in {'float16', 'bf16'}:
             raise ValueError('Use a positive batch size and float16/bf16 precision')
         self._torch, self._dtype, settings = runtime('cuda', dtype)
         self._batch_size = batch_size
         self._model = self._tokenizer = None
-        super().__init__('qwen3_reranker_' + variant, self._score, {
-            'model': self._model_id, 'revision': self._revision, 'batch_size': batch_size, 'dtype': dtype,
+        super().__init__('qwen3_reranker_4b', self._score, {
+            'model': MODEL, 'revision': REVISION, 'batch_size': batch_size, 'dtype': dtype,
             'instruction': INSTRUCTION, 'prefix': PREFIX, 'suffix': SUFFIX,
             'score': 'yes_logit_minus_no_logit', 'max_input_tokens': 8192,
             **settings,
@@ -29,9 +26,9 @@ class QwenReranker(Pointwise):
     def _score(self, query, candidates):
         if self._model is None:
             from transformers import AutoModelForCausalLM, AutoTokenizer
-            self._tokenizer = AutoTokenizer.from_pretrained(self._model_id, revision=self._revision, padding_side='left', token=False)
+            self._tokenizer = AutoTokenizer.from_pretrained(MODEL, revision=REVISION, padding_side='left', token=False)
             self._model = AutoModelForCausalLM.from_pretrained(
-                self._model_id, revision=self._revision, dtype=self._dtype, token=False,
+                MODEL, revision=REVISION, dtype=self._dtype, token=False,
                 attn_implementation='sdpa',
             ).to('cuda').eval()
         tokenizer = self._tokenizer
