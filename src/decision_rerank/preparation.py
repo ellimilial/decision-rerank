@@ -7,6 +7,9 @@ import zipfile
 
 def check_dependencies(versions: dict, tokenizer_version: str) -> None:
     for name, expected in {**versions, "tokenizers": tokenizer_version}.items():
+        # NumPy follows the compatible installed runtime; other recipe dependencies stay pinned.
+        if name == 'numpy':
+            continue
         try:
             actual = importlib.metadata.version(name)
         except importlib.metadata.PackageNotFoundError:

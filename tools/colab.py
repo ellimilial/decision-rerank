@@ -1,7 +1,7 @@
-"""Install the locked model dependencies into the notebook kernel."""
+"""Install locked dependencies while retaining the notebook’s numerical stack."""
 from pathlib import Path
 import importlib.util
-from importlib.metadata import version
+from importlib.metadata import requires, version
 import os
 import shutil
 import subprocess
@@ -41,6 +41,8 @@ def setup_notebook():
         command += ["--group", "cpu"]
     else:
         command += ["--prune", "torch"]  # Keep the runtime's CUDA build and its dependencies.
+    if all(importlib.util.find_spec(name) is not None for name in ('numpy', 'scipy')):
+        command += ["--prune", "numpy", "--prune", "scipy"]
     exported = subprocess.run(command, cwd=root, check=True, capture_output=True, text=True)
     subprocess.run(
         [uv, "pip", "install", "--python", sys.executable, "--no-deps", "--require-hashes", "-r", "-"],
@@ -57,8 +59,13 @@ def setup_notebook():
             "In Colab, choose Runtime > Restart session, then rerun Setup and the remaining cells. "
             "Do not disconnect and delete the runtime."
         )
+    from packaging.requirements import Requirement
+    for text in [*requires('decision-rerank'), *requires('scipy')]:
+        requirement = Requirement(text)
+        if requirement.name in {'numpy', 'scipy'} and version(requirement.name) not in requirement.specifier:
+            raise RuntimeError(f"Installed {requirement.name}=={version(requirement.name)} does not satisfy {requirement}")
     # Use this checkout even if the kernel started with another editable install.
     sys.path.insert(0, str(root / 'src'))
     importlib.invalidate_caches()
     os.environ['DECISION_RERANK_ROOT'] = str(root)
-    print(f"Installed decision-rerank with uv {UV_VERSION}")
+    print(f"Installed decision-rerank with uv {UV_VERSION}; NumPy {version('numpy')}, SciPy {version('scipy')}")
