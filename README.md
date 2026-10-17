@@ -9,7 +9,7 @@ Collect biomedical reranking results with a simple benchmark × method notebook.
 2. Uncomment the desired entries in `BENCHMARKS` and `METHODS`. The default is five NFCorpus development queries and BM25.
 3. Run `collect_results(BENCHMARKS, METHODS, output='results')`, then download the ZIP from the final cell.
 
-Each method runs across all selected benchmarks before the next method starts. Choices are listed roughly from heavier to lighter: BioDecision 4B and its matched Qwen3.5 backbone, Kev-4B, Qwen3 reranker 4B, Jina v3.5, MedCPT, then lexical CPU controls and hosted JEV/OpenAI Decisions.
+Each local model loads once, runs across all selected benchmarks, then releases its weights before the next method starts. Hosted methods retain separate call logs and caches per benchmark. Choices are listed roughly from heavier to lighter: BioDecision 4B and its matched Qwen3.5 backbone, Kev-4B, Qwen3 reranker 4B, Jina v3.5, MedCPT, then lexical CPU controls and hosted JEV/OpenAI Decisions.
 
 Kev-4B uses the native pointer head and shipped calibration, with FP16 and batch size 1 by default. The backbone loads directly onto the GPU; LoRA layers visit CPU one at a time for merging, avoiding a full host copy of the model. Full-model Colab memory fit still needs validation. Setup removes optional torchao, which these unquantized runs do not use, to avoid conflicts with Colab’s preinstalled version.
 

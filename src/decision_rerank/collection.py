@@ -84,7 +84,8 @@ def collect_results(benchmarks, methods, *, output='results', max_seconds=None):
     """Run benchmarks × methods, checkpoint each pair and export one portable ZIP.
 
     Methods can be lazy choices from method() or existing Method implementations.
-    Methods run in list order, each across all benchmarks. Completed work is reused.
+    Each local model is loaded once and reused across all benchmarks, then released.
+    Hosted clients keep separate call logs per benchmark. Completed work is reused.
     A failed pair is recorded while remaining pairs run.
     """
     benchmarks, methods = tuple(benchmarks), tuple(methods)
@@ -112,28 +113,33 @@ def collect_results(benchmarks, methods, *, output='results', max_seconds=None):
         write_json(session_path, session)
         selections.append((selected, folder, session))
     for choice in methods:
-        for selected, folder, session in selections:
-            statuses = session['status']
-            algorithm = None
-            print(f'{selected.name} ({len(selected.inputs())} queries) → {choice.name}', flush=True)
-            try:
-                algorithm = choice.build(folder / choice.name) if isinstance(choice, MethodChoice) else choice
-                result = collect(selected, algorithm, folder / choice.name, max_seconds=max_seconds)
-                statuses[choice.name] = 'complete' if len(result.results) == len(selected.inputs()) else 'partial'
-                print(' ', statuses[choice.name], f'({len(result.results)}/{len(selected.inputs())} queries)', flush=True)
-            except Exception as error:
-                statuses[choice.name] = 'failed'
-                message = str(error)
-                for key in ['OPENAI_API_KEY', 'OPENROUTER_API_KEY']:
-                    if os.environ.get(key):
-                        message = message.replace(os.environ[key], '[REDACTED]')
-                print(f'  failed: {type(error).__name__}: {message[:1000]}', flush=True)
-            finally:
-                del algorithm
-                gc.collect()
-                if 'torch' in sys.modules and sys.modules['torch'].cuda.is_available():
-                    sys.modules['torch'].cuda.empty_cache()
-                write_json(folder / 'session.json', session)
+        algorithm = None
+        hosted = isinstance(choice, MethodChoice) and choice.name in {'jev', 'openai-decisions'}
+        try:
+            for selected, folder, session in selections:
+                statuses = session['status']
+                print(f'{selected.name} ({len(selected.inputs())} queries) → {choice.name}', flush=True)
+                try:
+                    # Reuse local weights; hosted clients keep benchmark-specific call logs/caches.
+                    if algorithm is None or hosted:
+                        algorithm = choice.build(folder / choice.name) if isinstance(choice, MethodChoice) else choice
+                    result = collect(selected, algorithm, folder / choice.name, max_seconds=max_seconds)
+                    statuses[choice.name] = 'complete' if len(result.results) == len(selected.inputs()) else 'partial'
+                    print(' ', statuses[choice.name], f'({len(result.results)}/{len(selected.inputs())} queries)', flush=True)
+                except Exception as error:
+                    statuses[choice.name] = 'failed'
+                    message = str(error)
+                    for key in ['OPENAI_API_KEY', 'OPENROUTER_API_KEY']:
+                        if os.environ.get(key):
+                            message = message.replace(os.environ[key], '[REDACTED]')
+                    print(f'  failed: {type(error).__name__}: {message[:1000]}', flush=True)
+                finally:
+                    write_json(folder / 'session.json', session)
+        finally:
+            del algorithm
+            gc.collect()
+            if 'torch' in sys.modules and sys.modules['torch'].cuda.is_available():
+                sys.modules['torch'].cuda.empty_cache()
     archive = export_results(output, output.with_name(output.name + '.zip'))
     print(f'Results: {output}\nArchive: {archive}')
     return archive
