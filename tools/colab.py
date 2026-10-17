@@ -38,6 +38,9 @@ def setup_notebook():
               for name in ('numpy', 'scipy')}
     root = Path(__file__).resolve().parents[1]
     uv = ensure_uv()
+    # These runs use unquantized weights; Colab's old torchao breaks PEFT's optional probe.
+    if importlib.util.find_spec('torchao') is not None:
+        subprocess.run([uv, "pip", "uninstall", "--python", sys.executable, "torchao"], check=True)
     command = [uv, "export", "--locked", "--no-default-groups", "--no-emit-project", "--group", "models"]
     if importlib.util.find_spec('torch') is None:
         command += ["--group", "cpu"]
