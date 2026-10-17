@@ -19,15 +19,11 @@ def validate_ranking(ranking: Ranking, item: RankingInput) -> None:
             raise ValueError("Ranking scores must be finite and aligned with all output IDs")
 
 
-def run(benchmark: Benchmark, method: Method, *, checkpoint: Path | None = None,
-        max_seconds: float | None = None) -> RunResult:
+def run(benchmark: Benchmark, method: Method, *, checkpoint: Path | None = None) -> RunResult:
     """Reuse validated checkpoints; fail on mismatched inputs or method parameters.
 
-    A time limit stops before the next query. An in-flight query can exceed it.
-    Partial results are valid checkpoints but cannot be evaluated as a complete run.
+    Interrupted runs keep completed queries; a successful return covers the selection.
     """
-    if max_seconds is not None and (not isfinite(max_seconds) or max_seconds <= 0):
-        raise ValueError("Time limit must be positive and finite")
     parameters = json.loads(json.dumps(dict(method.parameters), allow_nan=False))
     result = RunResult(benchmark.name, benchmark.fingerprint, method.name, parameters, ())
     if checkpoint is not None and Path(checkpoint).exists():
@@ -48,12 +44,9 @@ def run(benchmark: Benchmark, method: Method, *, checkpoint: Path | None = None,
         raise ValueError("Checkpoint has duplicate or unknown queries")
     for key, row in completed.items():
         validate_ranking(row.ranking, expected[key])
-    started = monotonic()
     for item in items:
         if item.key in completed:
             continue
-        if max_seconds is not None and monotonic() - started >= max_seconds:
-            break
         before = monotonic()
         ranking = method.rank(item)
         validate_ranking(ranking, item)

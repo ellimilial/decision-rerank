@@ -4,12 +4,12 @@ Collect biomedical reranking results with a simple benchmark × method notebook.
 
 [Open the collector in Google Colab](https://colab.research.google.com/github/ellimilial/decision-rerank/blob/main/notebooks/01_collect_results.ipynb).
 
-1. Choose a GPU runtime for GPU methods, then run **Setup**. It clones this repository when needed and installs dependencies with uv, retaining the existing NumPy/SciPy pair and CUDA PyTorch. Other dependencies use the lockfile. Automatic cloning requires public GitHub access. For a private repository, upload a `decision-rerank-colab*.tar.gz` bundle in the Files panel before Setup instead.
+1. Choose a GPU runtime for GPU methods, then run **Setup**. It clones this repository when needed and installs dependencies with uv, retaining the existing NumPy/SciPy pair and CUDA PyTorch. Other dependencies use the lockfile.
    Fresh Colab sessions should not need a restart. If an earlier Setup already replaced loaded NumPy/SciPy, restart that session once, then rerun Setup.
 2. Uncomment the desired entries in `BENCHMARKS` and `METHODS`. The default is five NFCorpus development queries and BM25.
 3. Run `collect_results(BENCHMARKS, METHODS, output='results')`, then download the ZIP from the final cell.
 
-Each local model loads once, runs across all selected benchmarks, then releases its weights before the next method starts. Hosted methods retain separate call logs and caches per benchmark. Choices are listed roughly from heavier to lighter: BioDecision 4B and the general Qwen3.5 relevance baseline, Kev-4B, Qwen3 reranker 4B, Jina v3.5, MedCPT, then lexical CPU controls and hosted JEV/OpenAI Decisions and GPT-6.1 Sol.
+Each local model loads once, runs across all selected benchmarks, then releases its weights before the next method starts. Hosted methods retain separate call logs and caches per benchmark.
 
 BioDecision, Qwen3.5, the Qwen3 reranker, Jina and MedCPT load weights directly onto the selected device, avoiding a full CPU model staging copy for GPU runs. After each local method, the collector explicitly clears its loaded model/tokenizer, runs garbage collection, synchronizes CUDA and releases its cache. Remaining allocated/reserved GPU memory is printed before the next method. Existing inference settings and checkpoints remain compatible.
 
@@ -29,7 +29,7 @@ BioASQ uses a curated corpus with some gold articles missing; this is not full-P
 
 GPT-6.1 Sol is available as `sol-pointwise-low` (generated 0–3 relevance scores), `sol-listwise-low` (one response ranking every candidate), and optional `sol-listwise-high`. Compare the two low-effort methods first; the high-effort method measures the benefit of extra reasoning. Sol uses ordinary LLM generation, not a native decision head. Listwise requests use all frozen candidates in retrieval order and require a complete permutation; malformed, refused or truncated answers fail without repair. A 100-candidate query needs 100 pointwise requests or one listwise request before retries; input tokens and reasoning tokens still determine cost. The pinned model is `openai/gpt-6.1-sol-20260929`, using OpenRouter structured outputs.
 
-Results contain `run.json` (rankings, settings and resume checkpoint), `run.evaluation.json` (aggregate and per-query metrics), optional hosted `calls.jsonl`, and one shared `session.json` with queries/statuses. Reuse the output folder to resume; use a mounted Drive folder to retain work across Colab resets. Hosted methods make paid API calls and cache successful responses. Before any selected model runs, the collector reads `OPENROUTER_API_KEY` (JEV, OpenAI Luna Decisions and Sol) from environment variables or Colab Secrets, or asks through a hidden prompt. CPU/GPU-only selections need no keys. Keys are not saved. OpenAI Luna uses the pinned `openai/gpt-6-luna-decisions-20261006` model through OpenRouter. Use a fresh output folder for this route; earlier direct-OpenAI checkpoints have different method parameters.
+Results contain `run.json` (rankings, settings and resume checkpoint), `run.evaluation.json` (aggregate and per-query metrics), optional hosted `calls.jsonl`, and one shared `session.json` with method statuses. Reuse the output folder to resume; use a mounted Drive folder to retain work across Colab resets. Hosted methods make paid API calls and cache successful responses. Before any selected model runs, the collector reads `OPENROUTER_API_KEY` (JEV, OpenAI Luna Decisions and Sol) from environment variables or Colab Secrets, or asks through a hidden prompt. CPU/GPU-only selections need no keys. Keys are not saved. OpenAI Luna uses the pinned `openai/gpt-6-luna-decisions-20261006` model through OpenRouter.
 
 Use uv ≥0.13.1 and Python 3.12–3.14. For a local notebook session:
 

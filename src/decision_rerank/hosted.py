@@ -25,25 +25,18 @@ LEVELS = (
     ("relevant", "Relevant: useful evidence that partially addresses the query."),
     ("direct", "Direct: substantial evidence that directly addresses the query."),
 )
-PROVIDERS = {
-    "jev": ("https://openrouter.ai/api/alpha/decisions", "typesafe/jev-1.13", "OPENROUTER_API_KEY"),
-    "openai": ("https://openrouter.ai/api/alpha/decisions", "openai/gpt-6-luna-decisions-20261006", "OPENROUTER_API_KEY"),
-}
+DECISION_MODELS = {"jev": "typesafe/jev-1.13", "openai": "openai/gpt-6-luna-decisions-20261006"}
 SOL_MODEL = "openai/gpt-6.1-sol-20260929"
 
 
-def request_body(provider: str, model: str, query: str, document: str) -> dict:
+def request_body(model: str, query: str, document: str) -> dict:
     evidence = json.dumps({"query": query, "passage": document}, ensure_ascii=False, sort_keys=True)
-    if provider not in PROVIDERS:
-        raise ValueError(f"Unknown provider: {provider}")
     return {"model": model, "state": evidence, "questions": {"relevance": {
         "type": "score", "instructions": INSTRUCTIONS, "criteria": [text for _, text in LEVELS],
     }}}
 
 
-def expected_grade(provider: str, response: dict) -> float:
-    if provider not in PROVIDERS:
-        raise ValueError(f"Unknown provider: {provider}")
+def expected_grade(response: dict) -> float:
     answer = response["answers"]["relevance"]
     if answer.get("type") == "refusal":
         raise ValueError("Provider refused the relevance judgment")
@@ -62,23 +55,23 @@ def expected_grade(provider: str, response: dict) -> float:
 
 class _HostedClient:
     """Only transport/retry/cache logic is shared; scoring stays in each adapter."""
-    def __init__(self, provider, endpoint, model, key_name, calls, *, timeout=60):
+    def __init__(self, provider, endpoint, model, calls, *, timeout=60):
         self.provider, self.endpoint, self.model, self.timeout = provider, endpoint, model, timeout
-        self._key = os.environ.get(key_name)
+        self._key = os.environ.get("OPENROUTER_API_KEY")
         if not self._key:
-            raise RuntimeError(f"Set {key_name} before running {provider}")
+            raise RuntimeError("Set OPENROUTER_API_KEY before running hosted methods")
         self.calls = Path(calls)
         self.calls.parent.mkdir(parents=True, exist_ok=True)
         self._lock, self._stop = Lock(), Event()
         self._cache, self._models = {}, set()
         if self.calls.exists():
-            body = self.calls.read_bytes()
-            if body and not body.endswith(b"\n"):
-                raise ValueError("Incomplete last call-log record; inspect it before resuming")
-            for line in body.splitlines():
-                row = json.loads(line)
-                if row.get("http_status") == 200:
-                    self._cache[row["request_sha256"]] = self._checked_response(row["response"])
+            with self.calls.open() as stream:
+                for line in stream:
+                    if not line.endswith("\n"):
+                        raise ValueError("Incomplete last call-log record; inspect it before resuming")
+                    row = json.loads(line)
+                    if row.get("http_status") == 200:
+                        self._cache[row["request_sha256"]] = self._checked_response(row["response"])
 
     def _checked_response(self, response):
         model = response.get("model") if isinstance(response, dict) else None
@@ -160,10 +153,9 @@ class _HostedClient:
 
 class HostedDecisions(_HostedClient):
     def __init__(self, provider: str, *, calls: Path, workers: int = 4):
-        if provider not in PROVIDERS or not 1 <= workers <= 16:
+        if provider not in DECISION_MODELS or not 1 <= workers <= 16:
             raise ValueError("Choose jev/openai and 1–16 workers")
-        endpoint, model, key_name = PROVIDERS[provider]
-        super().__init__(provider, endpoint, model, key_name, calls)
+        super().__init__(provider, "https://openrouter.ai/api/alpha/decisions", DECISION_MODELS[provider], calls)
         self.workers = workers
         self.name = "jev_pointwise" if provider == "jev" else "openai_decisions_pointwise"
         self.parameters = {"provider": provider, "model": self.model, "endpoint": self.endpoint,
@@ -173,8 +165,8 @@ class HostedDecisions(_HostedClient):
                            "workers": workers, "max_attempts_per_judgment": 3}
 
     def _score_one(self, item: RankingInput, document: Candidate) -> float:
-        body = request_body(self.provider, self.model, item.query, document.text)
-        return expected_grade(self.provider, self._request(item, body, doc_id=document.id))
+        body = request_body(self.model, item.query, document.text)
+        return expected_grade(self._request(item, body, doc_id=document.id))
 
     def rank(self, item: RankingInput) -> Ranking:
         return self._pointwise(item)
@@ -201,7 +193,7 @@ class SolReranker(_HostedClient):
         )
         self.instructions = INSTRUCTIONS + "\n" + rubric + "\n" + task
         super().__init__("openrouter", "https://openrouter.ai/api/v1/chat/completions", SOL_MODEL,
-                         "OPENROUTER_API_KEY", calls, timeout=300)
+                         calls, timeout=300)
         self.parameters = {"provider": self.provider, "model": self.model, "endpoint": self.endpoint,
                            "mode": mode, "reasoning_effort": effort, "max_tokens": max_tokens,
                            "rubric_version": "relevance-v1", "instructions": self.instructions,

@@ -150,7 +150,7 @@ class Kev4B(LocalPointwise):
             'base_model': 'Qwen/Qwen3.5-4B-Base', 'base_revision': '1001bb4d826a52d1f399e183466143f4da7b741b',
             **settings, 'batch_size': batch_size, 'code_revision': KEV_CODE_REVISION,
             'score': 'expected_grade_native_pointer_head', 'temperature': 2.406050072164233,
-            'max_input_tokens': 8192, 'schema': request_body('jev', 'jaredpalmer/kev-4b', '', '')['questions'],
+            'max_input_tokens': 8192, 'schema': request_body('jaredpalmer/kev-4b', '', '')['questions'],
             'load_device': device, 'merge_lora': True, 'merge_device': 'cpu', 'merge_scope': 'one_lora_layer',
             'fused_kernels': False, 'cuda_graphs': False,
         })
@@ -171,7 +171,7 @@ class Kev4B(LocalPointwise):
         for start in range(0, len(candidates), self._batch_size):
             encoded = []
             for document in candidates[start:start+self._batch_size]:
-                body = request_body('jev', self.parameters['model'], query, document.text)
+                body = request_body(self.parameters['model'], query, document.text)
                 # The native encoder rewrites special-token strings; reject rather than alter shared evidence.
                 if re.search(r'<\|[A-Za-z0-9_]+\|>', body['state']):
                     raise ValueError('Evidence contains special token strings rewritten by the native Kev formatter')
@@ -184,7 +184,7 @@ class Kev4B(LocalPointwise):
                 outputs = self._model.forward_batch(encoded)
             for row in outputs:
                 probabilities = row[0].float().softmax(-1).cpu().tolist()
-                scores.append(expected_grade('jev', {'answers': {'relevance': {
+                scores.append(expected_grade({'answers': {'relevance': {
                     'type': 'score', 'probabilities': {str(i): p for i, p in enumerate(probabilities)},
                 }}}))
         return scores

@@ -24,9 +24,9 @@ def benchmark(name, *, panel=None, limit=None, root=None, offline=False):
     return load_benchmark(root, name, panel=panel, limit=limit, offline=offline)
 
 
-def _ensure_api_key(name):
-    key = 'OPENROUTER_API_KEY' if name in HOSTED_METHODS else None
-    if key is None or os.environ.get(key):
+def _ensure_api_key():
+    key = 'OPENROUTER_API_KEY'
+    if os.environ.get(key):
         return
     try:
         from google.colab import userdata
@@ -71,13 +71,11 @@ class MethodChoice:
             return Kev4B(**self.options)
         if self.name in SOL_METHODS:
             from .hosted import SolReranker
-            _ensure_api_key(self.name)
             mode, effort = SOL_METHODS[self.name]
             return SolReranker(mode, effort, calls=Path(folder) / 'calls.jsonl', **self.options)
         if self.name not in {'jev', 'openai-decisions'}:
             raise ValueError(f'Unknown method: {self.name}')
         from .hosted import HostedDecisions
-        _ensure_api_key(self.name)
         provider = 'jev' if self.name == 'jev' else 'openai'
         return HostedDecisions(provider, calls=Path(folder) / 'calls.jsonl', **self.options)
 
@@ -89,7 +87,7 @@ def method(name, **options):
     return MethodChoice(name, options)
 
 
-def collect_results(benchmarks, methods, *, output='results', max_seconds=None):
+def collect_results(benchmarks, methods, *, output='results'):
     """Run benchmarks × methods, checkpoint each pair and export one portable ZIP.
 
     Methods can be lazy choices from method() or existing Method implementations.
@@ -105,9 +103,8 @@ def collect_results(benchmarks, methods, *, output='results', max_seconds=None):
         raise ValueError('Duplicate benchmark selections.')
     if len({m.name for m in methods}) != len(methods):
         raise ValueError('Duplicate methods; use a separate output folder for different settings.')
-    for choice in methods:
-        if isinstance(choice, MethodChoice):
-            _ensure_api_key(choice.name)
+    if any(isinstance(m, MethodChoice) and m.name in HOSTED_METHODS for m in methods):
+        _ensure_api_key()
     output = Path(output).resolve()
     print(f'{len(benchmarks)} benchmarks × {len(methods)} methods = {len(benchmarks) * len(methods)} runs')
     selections = []
@@ -117,9 +114,7 @@ def collect_results(benchmarks, methods, *, output='results', max_seconds=None):
         statuses = json.loads(session_path.read_text())['status'] if session_path.exists() else {}
         statuses.update(dict.fromkeys((m.name for m in methods), 'pending'))
         session = {'benchmark': selected.name, 'benchmark_fingerprint': selected.fingerprint,
-                   'status': statuses,
-                   'queries': [{'collection': item.collection, 'query_id': item.query_id, 'query': item.query}
-                               for item in selected.inputs()]}
+                   'status': statuses}
         write_json(session_path, session)
         selections.append((selected, folder, session))
     for choice in methods:
@@ -133,8 +128,8 @@ def collect_results(benchmarks, methods, *, output='results', max_seconds=None):
                     # Reuse local weights; hosted clients keep benchmark-specific call logs/caches.
                     if algorithm is None or hosted:
                         algorithm = choice.build(folder / choice.name) if isinstance(choice, MethodChoice) else choice
-                    result = collect(selected, algorithm, folder / choice.name, max_seconds=max_seconds)
-                    statuses[choice.name] = 'complete' if len(result.results) == len(selected.inputs()) else 'partial'
+                    result = collect(selected, algorithm, folder / choice.name)
+                    statuses[choice.name] = 'complete'
                     print(' ', statuses[choice.name], f'({len(result.results)}/{len(selected.inputs())} queries)', flush=True)
                 except Exception as error:
                     statuses[choice.name] = 'failed'
@@ -172,12 +167,11 @@ def download_results(archive):
         files.download(str(archive))
 
 
-def collect(benchmark, method, folder, *, max_seconds=None):
+def collect(benchmark, method, folder):
     """Resume rankings and evaluate only when every selected query is complete."""
     folder = Path(folder)
-    result = run(benchmark, method, checkpoint=folder / 'run.json', max_seconds=max_seconds)
-    if len(result.results) == len(benchmark.inputs()):
-        evaluate(benchmark, result).save(folder / 'run.evaluation.json')
+    result = run(benchmark, method, checkpoint=folder / 'run.json')
+    evaluate(benchmark, result).save(folder / 'run.evaluation.json')
     return result
 
 

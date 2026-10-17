@@ -6,6 +6,8 @@ from pathlib import Path
 import re
 import zipfile
 
+from .benchmarks import read_jsonl
+
 def check_dependencies(versions: dict, tokenizer_version: str) -> None:
     for name, expected in {**versions, "tokenizers": tokenizer_version}.items():
         # NumPy follows the compatible installed runtime; other recipe dependencies stay pinned.
@@ -17,11 +19,6 @@ def check_dependencies(versions: dict, tokenizer_version: str) -> None:
             actual = "not installed"
         if actual != expected:
             raise RuntimeError(f"Data preparation needs {name}=={expected}, found {actual}. Run uv sync --locked.")
-
-
-def read_jsonl(path: Path) -> list[dict]:
-    with path.open() as stream:
-        return [json.loads(line) for line in stream if line.strip()]
 
 
 def write_jsonl(path: Path, rows) -> None:
