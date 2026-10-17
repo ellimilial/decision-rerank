@@ -30,6 +30,8 @@ def ensure_uv():
 
 
 def setup_notebook():
+    # Optional JAX in bm25s must not reserve VRAM intended for PyTorch models.
+    os.environ["JAX_PLATFORMS"] = "cpu"
     if not (3, 12) <= sys.version_info[:2] < (3, 15):
         raise RuntimeError('Use Python 3.12–3.14.')
     loaded = {name: getattr(sys.modules.get(name), '__version__', None)

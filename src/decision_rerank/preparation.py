@@ -1,6 +1,7 @@
 """Reproduce the original frozen normalization, BM25 and short-evidence bytes."""
 import importlib.metadata
 import json
+import os
 from pathlib import Path
 import re
 import zipfile
@@ -75,6 +76,8 @@ def normalize(root: Path, collection: dict):
 
 
 def retrieve(corpus: list[dict], queries: list[dict], policy: dict) -> list[dict]:
+    # bm25s imports JAX and runs a warmup; keep that off the model GPU.
+    os.environ["JAX_PLATFORMS"] = "cpu"
     import bm25s
     from bm25s.tokenization import Tokenizer
     import numpy as np
