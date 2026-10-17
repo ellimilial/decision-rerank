@@ -10,8 +10,12 @@ import zipfile
 from . import evaluate, load_benchmark, run
 from .results import write_json
 
+SOL_METHODS = {'sol-pointwise-low': ('pointwise', 'low'),
+               'sol-listwise-low': ('listwise', 'low'),
+               'sol-listwise-high': ('listwise', 'high')}
+HOSTED_METHODS = {'jev', 'openai-decisions'} | SOL_METHODS.keys()
 SUPPORTED_METHODS = {'bm25', 'tfidf-cpu', 'qwen3-4b', 'medcpt',
-                     'jina-v35', 'biodecision', 'qwen35-base', 'kev-4b', 'jev', 'openai-decisions'}
+                     'jina-v35', 'biodecision', 'qwen35-base', 'kev-4b'} | HOSTED_METHODS
 
 
 def benchmark(name, *, panel=None, limit=None, root=None, offline=False):
@@ -21,7 +25,7 @@ def benchmark(name, *, panel=None, limit=None, root=None, offline=False):
 
 
 def _ensure_api_key(name):
-    key = 'OPENROUTER_API_KEY' if name in {'jev', 'openai-decisions'} else None
+    key = 'OPENROUTER_API_KEY' if name in HOSTED_METHODS else None
     if key is None or os.environ.get(key):
         return
     try:
@@ -65,6 +69,11 @@ class MethodChoice:
         if self.name == 'kev-4b':
             from .native_models import Kev4B
             return Kev4B(**self.options)
+        if self.name in SOL_METHODS:
+            from .hosted import SolReranker
+            _ensure_api_key(self.name)
+            mode, effort = SOL_METHODS[self.name]
+            return SolReranker(mode, effort, calls=Path(folder) / 'calls.jsonl', **self.options)
         if self.name not in {'jev', 'openai-decisions'}:
             raise ValueError(f'Unknown method: {self.name}')
         from .hosted import HostedDecisions
@@ -114,7 +123,7 @@ def collect_results(benchmarks, methods, *, output='results', max_seconds=None):
         selections.append((selected, folder, session))
     for choice in methods:
         algorithm = None
-        hosted = isinstance(choice, MethodChoice) and choice.name in {'jev', 'openai-decisions'}
+        hosted = isinstance(choice, MethodChoice) and choice.name in HOSTED_METHODS
         try:
             for selected, folder, session in selections:
                 statuses = session['status']
