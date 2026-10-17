@@ -64,7 +64,7 @@ class JinaReranker(LocalPointwise):
             model, revision = self.parameters['model'], self.parameters['revision']
             self._model = AutoModel.from_pretrained(model, revision=revision, code_revision=revision,
                 trust_remote_code=True, dtype=self._dtype, token=False,
-                attn_implementation='decision_rerank_jina').to(self._device).eval()
+                attn_implementation='decision_rerank_jina', device_map=self._device).eval()
             # The publisher's lazy tokenizer otherwise follows the moving main branch.
             self._model._tokenizer = AutoTokenizer.from_pretrained(model, revision=revision, token=False, padding_side='left')
         tokenizer = self._model._tokenizer

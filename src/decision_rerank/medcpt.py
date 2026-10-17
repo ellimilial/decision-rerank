@@ -23,8 +23,8 @@ class MedCPT(LocalPointwise):
             from transformers import AutoModelForSequenceClassification, AutoTokenizer
             self._tokenizer = AutoTokenizer.from_pretrained(MODEL, revision=REVISION, token=False)
             self._model = AutoModelForSequenceClassification.from_pretrained(
-                MODEL, revision=REVISION, token=False, dtype=self._dtype,
-            ).to(self._device).eval()
+                MODEL, revision=REVISION, token=False, dtype=self._dtype, device_map=self._device,
+            ).eval()
         scores = []
         for start in range(0, len(candidates), self._batch_size):
             batch = candidates[start:start + self._batch_size]
