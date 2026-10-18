@@ -55,4 +55,6 @@ def run(benchmark: Benchmark, method: Method, *, checkpoint: Path | None = None)
                            tuple(completed[x.key] for x in items if x.key in completed))
         if checkpoint is not None:
             result.save(checkpoint)
+        print(f'    {len(completed)}/{len(items)} queries: {item.collection}/{item.query_id} '
+              f'({completed[item.key].seconds:.1f}s)', flush=True)
     return result

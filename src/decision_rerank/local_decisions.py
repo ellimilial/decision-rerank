@@ -49,6 +49,7 @@ class LocalDecisions(LocalPointwise):
         })
 
     def _score(self, query, candidates):
+        from tqdm.auto import tqdm
         if self._model is None:
             from transformers import AutoTokenizer
             from transformers import Qwen3_5ForConditionalGeneration
@@ -62,7 +63,7 @@ class LocalDecisions(LocalPointwise):
         if any(len(ids) != 1 for ids in labels):
             raise ValueError('Expected one token for each answer letter')
         scores = []
-        for start in range(0, len(candidates), self._batch_size):
+        for start in tqdm(range(0, len(candidates), self._batch_size), desc=self.name, unit='batch', leave=False):
             prompts = [tokenizer.apply_chat_template(decision_messages(query, doc.text), tokenize=False,
                        add_generation_prompt=True, enable_thinking=False)
                        for doc in candidates[start:start+self._batch_size]]

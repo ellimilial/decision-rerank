@@ -23,6 +23,7 @@ class QwenReranker(LocalPointwise):
         })
 
     def _score(self, query, candidates):
+        from tqdm.auto import tqdm
         if self._model is None:
             from transformers import AutoModelForCausalLM, AutoTokenizer
             self._tokenizer = AutoTokenizer.from_pretrained(MODEL, revision=REVISION, padding_side='left', token=False)
@@ -37,7 +38,7 @@ class QwenReranker(LocalPointwise):
         prefix = tokenizer.encode(PREFIX, add_special_tokens=False)
         suffix = tokenizer.encode(SUFFIX, add_special_tokens=False)
         scores = []
-        for start in range(0, len(candidates), self._batch_size):
+        for start in tqdm(range(0, len(candidates), self._batch_size), desc=self.name, unit='batch', leave=False):
             pairs = [f'<Instruct>: {INSTRUCTION}\n<Query>: {query}\n<Document>: {d.text}'
                      for d in candidates[start:start + self._batch_size]]
             ids = tokenizer(pairs, add_special_tokens=False, truncation=False)['input_ids']
