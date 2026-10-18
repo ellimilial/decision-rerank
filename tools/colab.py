@@ -29,7 +29,16 @@ def ensure_uv():
     return str(binary)
 
 
-def setup_notebook():
+def setup_notebook(*, linear_kernels=False):
+    if linear_kernels:
+        import torch
+        if sys.platform != 'linux' or not torch.cuda.is_available() or torch.cuda.get_device_capability() < (8, 0):
+            raise RuntimeError('FLA trial needs Linux and an NVIDIA GPU with compute capability 8.0+ (e.g. L4/A100); T4 is unsupported.')
+        from packaging.version import Version
+        if Version(torch.__version__.split('+')[0]) < Version('2.7') or Version(version('triton')) < Version('3.3'):
+            raise RuntimeError('FLA trial needs the existing torch >=2.7 and Triton >=3.3; select a compatible runtime.')
+        if 'transformers' in sys.modules or 'fla' in sys.modules:
+            raise RuntimeError('Restart the session, then select the FLA setup before importing transformers or fla.')
     # Optional JAX in bm25s must not reserve VRAM intended for PyTorch models.
     os.environ["JAX_PLATFORMS"] = "cpu"
     if not (3, 12) <= sys.version_info[:2] < (3, 15):
@@ -42,6 +51,8 @@ def setup_notebook():
     if importlib.util.find_spec('torchao') is not None:
         subprocess.run([uv, "pip", "uninstall", "--python", sys.executable, "torchao"], check=True)
     command = [uv, "export", "--locked", "--no-default-groups", "--no-emit-project", "--group", "models"]
+    if linear_kernels:
+        command += ['--group', 'linear-kernels']
     if importlib.util.find_spec('torch') is None:
         command += ["--group", "cpu"]
     else:
@@ -69,6 +80,11 @@ def setup_notebook():
         requirement = Requirement(text)
         if requirement.name in {'numpy', 'scipy'} and version(requirement.name) not in requirement.specifier:
             raise RuntimeError(f"Installed {requirement.name}=={version(requirement.name)} does not satisfy {requirement}")
+    if linear_kernels:
+        # Verify imports in a subprocess so the notebook's Transformers cache stays fresh.
+        subprocess.run([sys.executable, '-c',
+            'from transformers.models.qwen3_5.modeling_qwen3_5 import chunk_gated_delta_rule; '
+            'assert chunk_gated_delta_rule is not None, "FLA DeltaNet kernel import unavailable"'], check=True)
     # Use this checkout even if the kernel started with another editable install.
     sys.path.insert(0, str(root / 'src'))
     importlib.invalidate_caches()

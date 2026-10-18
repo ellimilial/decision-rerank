@@ -2,7 +2,7 @@
 import json
 
 from .hosted import INSTRUCTIONS, LEVELS
-from .inference import LocalPointwise, runtime
+from .inference import LocalPointwise, qwen35_kernels, runtime
 
 MODELS = {
     'biodecision': ('lighteternal/biodecision-v2-4b', 'f146e2afbd3c07add8791c74d7d2448d18e68b9a'),
@@ -43,6 +43,7 @@ class LocalDecisions(LocalPointwise):
         super().__init__(variant + '_pointwise', self._score, {
             'model': self._model_id, 'revision': self._revision, **settings,
             'batch_size': batch_size, 'temperature': temperature, 'system': SYSTEM,
+            'qwen35_kernels': qwen35_kernels(),
             'instructions': INSTRUCTIONS, 'levels': [list(x) for x in LEVELS],
             'template': 'Tev1 JSON; enable_thinking=False', 'score': 'expected_grade_from_ABCD_logits',
             'max_input_tokens': 8192, 'calibration': 'none; same temperature for matched backbone control',

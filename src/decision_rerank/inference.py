@@ -8,6 +8,25 @@ class LocalPointwise(Pointwise):
         self._model = self._tokenizer = None
 
 
+def qwen35_kernels():
+    """Record the actual Transformers paths, including partial kernel availability."""
+    from importlib.metadata import PackageNotFoundError, version
+    from transformers.models.qwen3_5 import modeling_qwen3_5 as qwen
+    paths = {
+        'delta_rule': 'fla' if qwen.chunk_gated_delta_rule is not None else 'torch',
+        'causal_conv': 'causal_conv1d' if qwen.causal_conv1d_fn is not None else 'torch',
+        'gated_norm': 'fla' if qwen.FusedRMSNormGated is not None else 'torch',
+    }
+    packages = {}
+    for name in ('flash-linear-attention', 'fla-core', 'causal-conv1d', 'triton'):
+        try:
+            packages[name] = version(name)
+        except PackageNotFoundError:
+            pass
+    print('Qwen3.5 kernels: ' + ', '.join(f'{key}={value}' for key, value in paths.items()), flush=True)
+    return {**paths, 'versions': packages}
+
+
 def runtime(device='cuda', dtype='float16'):
     import torch
     import transformers

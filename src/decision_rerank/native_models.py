@@ -6,7 +6,7 @@ import sys
 from urllib.request import urlopen
 
 from .hosted import expected_grade, request_body
-from .inference import LocalPointwise, runtime
+from .inference import LocalPointwise, qwen35_kernels, runtime
 
 
 JINA_ATTENTION_CHUNK = 256
@@ -152,7 +152,8 @@ class Kev4B(LocalPointwise):
             'score': 'expected_grade_native_pointer_head', 'temperature': 2.406050072164233,
             'max_input_tokens': 8192, 'schema': request_body('jaredpalmer/kev-4b', '', '')['questions'],
             'load_device': device, 'merge_lora': True, 'merge_device': 'cpu', 'merge_scope': 'one_lora_layer',
-            'fused_kernels': False, 'cuda_graphs': False,
+            'fused_kernels': False, 'cuda_graphs': False,  # No publisher-specific backbone rewrite.
+            'qwen35_kernels': qwen35_kernels(),
         })
 
     def _score(self, query, candidates):
