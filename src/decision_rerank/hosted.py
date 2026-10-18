@@ -139,16 +139,6 @@ class _HostedClient:
                 sleep(attempt)
         raise RuntimeError(f"{self.provider} failed after three attempts; inspect {self.calls}")
 
-    def _pointwise(self, item: RankingInput) -> Ranking:
-        def score(document):
-            try:
-                return self._score_one(item, document)
-            except Exception:
-                self._stop.set()
-                raise
-        with ThreadPoolExecutor(max_workers=self.workers) as pool:
-            scores = list(pool.map(score, item.candidates))
-        return Pointwise(self.name, lambda query, documents: scores, self.parameters).rank(item)
 
 
 class HostedDecisions(_HostedClient):
@@ -169,24 +159,28 @@ class HostedDecisions(_HostedClient):
         return expected_grade(self._request(item, body, doc_id=document.id))
 
     def rank(self, item: RankingInput) -> Ranking:
-        return self._pointwise(item)
+        def score(document):
+            try:
+                return self._score_one(item, document)
+            except Exception:
+                self._stop.set()
+                raise
+        with ThreadPoolExecutor(max_workers=self.workers) as pool:
+            scores = list(pool.map(score, item.candidates))
+        return Pointwise(self.name, lambda query, documents: scores, self.parameters).rank(item)
 
 
 class SolReranker(_HostedClient):
-    """Generated pointwise scores or one-shot listwise ranking; no native decision head."""
-    def __init__(self, mode="pointwise", effort="low", *, calls: Path, workers=4, max_tokens=None):
-        if mode not in {"pointwise", "listwise"} or effort not in {"low", "high"} or not 1 <= workers <= 16:
-            raise ValueError("Choose pointwise/listwise, low/high effort and 1–16 workers")
-        max_tokens = max_tokens if max_tokens is not None else (4096 if mode == "pointwise" else 32768)
+    """Rank the complete candidate list in one generated response."""
+    def __init__(self, effort="low", *, calls: Path, max_tokens=32768):
+        if effort not in {"low", "high"}:
+            raise ValueError("Choose low/high reasoning effort")
         if type(max_tokens) is not int or max_tokens <= 0:
             raise ValueError("max_tokens must be a positive integer, including reasoning tokens")
-        self.mode, self.effort, self.workers, self.max_tokens = mode, effort, workers, max_tokens
-        self.name = f"gpt61_sol_{mode}_{effort}"
+        self.effort, self.max_tokens = effort, max_tokens
+        self.name = f"gpt61_sol_listwise_{effort}"
         rubric = "\n".join(f"{i}: {text}" for i, (_, text) in enumerate(LEVELS))
         task = (
-            "Return a numeric relevance score from 0 to 3. The four descriptions anchor this scale; "
-            "intermediate values are allowed. Return only the requested JSON score."
-            if mode == "pointwise" else
             "Rank all supplied passages from most to least useful as evidence for the query, using this relevance rubric. "
             "Return every integer passage id exactly once in ranking. Break equally relevant ties by the supplied order. "
             "Return only the requested JSON ranking."
@@ -195,26 +189,31 @@ class SolReranker(_HostedClient):
         super().__init__("openrouter", "https://openrouter.ai/api/v1/chat/completions", SOL_MODEL,
                          calls, timeout=300)
         self.parameters = {"provider": self.provider, "model": self.model, "endpoint": self.endpoint,
-                           "mode": mode, "reasoning_effort": effort, "max_tokens": max_tokens,
+                           "mode": "listwise", "reasoning_effort": effort, "max_tokens": max_tokens,
                            "rubric_version": "relevance-v1", "instructions": self.instructions,
-                           "score": "generated_continuous_grade_0_to_3" if mode == "pointwise" else "complete_permutation",
+                           "score": "complete_permutation",
                            "input_order": "frozen_retrieval_order", "output_format": "strict_json_schema_v1",
-                           "workers": workers if mode == "pointwise" else 1,
-                           "timeout_seconds": self.timeout, "max_attempts_per_request": 3}
+                           "workers": 1, "timeout_seconds": self.timeout, "max_attempts_per_request": 3}
 
-    def _body(self, evidence, field, schema):
+    def _body(self, item):
+        count = len(item.candidates)
+        evidence = {"query": item.query, "passages": [
+            {"id": i, "text": doc.text} for i, doc in enumerate(item.candidates, 1)]}
         return {"model": self.model, "messages": [
             {"role": "system", "content": self.instructions},
             {"role": "user", "content": json.dumps(evidence, ensure_ascii=False, sort_keys=True)},
         ], "reasoning": {"effort": self.effort, "exclude": True}, "max_tokens": self.max_tokens,
             "provider": {"require_parameters": True},
             "response_format": {"type": "json_schema", "json_schema": {
-                "name": "relevance_" + field, "strict": True, "schema": {
-                    "type": "object", "properties": {field: schema}, "required": [field], "additionalProperties": False,
+                "name": "relevance_ranking", "strict": True, "schema": {
+                    "type": "object", "properties": {"ranking": {
+                        "type": "array", "items": {"type": "integer", "minimum": 1, "maximum": count},
+                        "minItems": count, "maxItems": count}},
+                    "required": ["ranking"], "additionalProperties": False,
                 }}}}
 
     @staticmethod
-    def _answer(response, field):
+    def _answer(response):
         choices = response.get("choices", [])
         if len(choices) != 1 or choices[0].get("finish_reason") != "stop":
             raise ValueError("LLM response incomplete, filtered or missing; inspect calls.jsonl")
@@ -225,29 +224,15 @@ class SolReranker(_HostedClient):
         if not isinstance(content, str):
             raise ValueError("LLM response omitted its JSON content")
         answer = json.loads(content)
-        if not isinstance(answer, dict) or set(answer) != {field}:
-            raise ValueError(f"Expected exactly one JSON field: {field}")
-        return answer[field]
-
-    def _score_one(self, item: RankingInput, document: Candidate) -> float:
-        body = self._body({"query": item.query, "passage": document.text}, "score",
-                          {"type": "number", "minimum": 0, "maximum": 3})
-        score = self._answer(self._request(item, body, doc_id=document.id), "score")
-        if type(score) not in {int, float} or not isfinite(score) or not 0 <= score <= 3:
-            raise ValueError("LLM relevance score must be finite and between 0 and 3")
-        return float(score)
+        if not isinstance(answer, dict) or set(answer) != {"ranking"}:
+            raise ValueError("Expected exactly one JSON field: ranking")
+        return answer["ranking"]
 
     def rank(self, item: RankingInput) -> Ranking:
-        if self.mode == "pointwise":
-            return self._pointwise(item)
         count = len(item.candidates)
         if not count:
             raise ValueError("Listwise reranking requires candidates")
-        body = self._body({"query": item.query, "passages": [
-            {"id": i, "text": doc.text} for i, doc in enumerate(item.candidates, 1)
-        ]}, "ranking", {"type": "array", "items": {"type": "integer", "minimum": 1, "maximum": count},
-                        "minItems": count, "maxItems": count})
-        order = self._answer(self._request(item, body), "ranking")
+        order = self._answer(self._request(item, self._body(item)))
         if (not isinstance(order, list) or len(order) != count or any(type(i) is not int for i in order)
                 or set(order) != set(range(1, count + 1))):
             raise ValueError("LLM ranking must be a complete permutation; no repair or fallback is applied")

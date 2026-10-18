@@ -10,9 +10,7 @@ import zipfile
 from . import evaluate, load_benchmark, run
 from .results import write_json
 
-SOL_METHODS = {'sol-pointwise-low': ('pointwise', 'low'),
-               'sol-listwise-low': ('listwise', 'low'),
-               'sol-listwise-high': ('listwise', 'high')}
+SOL_METHODS = {'sol-listwise-low': 'low', 'sol-listwise-high': 'high'}
 HOSTED_METHODS = {'jev', 'openai-decisions'} | SOL_METHODS.keys()
 SUPPORTED_METHODS = {'bm25', 'tfidf-cpu', 'qwen3-4b', 'medcpt',
                      'jina-v35', 'biodecision', 'qwen35-base', 'kev-4b'} | HOSTED_METHODS
@@ -71,8 +69,7 @@ class MethodChoice:
             return Kev4B(**self.options)
         if self.name in SOL_METHODS:
             from .hosted import SolReranker
-            mode, effort = SOL_METHODS[self.name]
-            return SolReranker(mode, effort, calls=Path(folder) / 'calls.jsonl', **self.options)
+            return SolReranker(SOL_METHODS[self.name], calls=Path(folder) / 'calls.jsonl', **self.options)
         if self.name not in {'jev', 'openai-decisions'}:
             raise ValueError(f'Unknown method: {self.name}')
         from .hosted import HostedDecisions
