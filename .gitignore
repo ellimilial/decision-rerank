@@ -10,6 +10,7 @@
 !/tools/
 /tools/*
 !/tools/colab.py
+!/tools/cure200.py
 !/src/
 /src/*
 !/src/decision_rerank/
@@ -38,6 +39,8 @@
 !/research/benchmarks/prepared-manifest.json
 !/research/benchmarks/evidence-manifest.json
 !/research/benchmarks/query-panels.json
+!/research/benchmarks/cure200.json
+!/research/benchmarks/cure200-coverage.md
 __pycache__/
 *.py[cod]
 .env

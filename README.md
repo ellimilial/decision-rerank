@@ -24,8 +24,19 @@ Missing datasets and weights download automatically from pinned sources. Benchma
 | Benchmark | Full queries | Frozen panel | Primary metric |
 | --- | ---: | ---: | --- |
 | BioASQ 13B curated | 340 | 30 | Capped AP@10, query mean |
-| CUREv1 English | 2,000 | 30 | Linear-gain nDCG@10, specialty macro |
+| CUREv1 English | 2,000 | 30 (development) | Linear-gain nDCG@10, specialty macro |
+| CURE-200 (`curev1_en_200`) | 200 fixed | — | Same CURE metric and aggregation |
 | NFCorpus dev | 324 | 20 | nDCG@10, development only |
+
+Use `benchmark('curev1_en_200')` for the frozen CURE-200 evaluation: 15 expert and 5 layman queries in each of ten specialties, sampled deterministically without relevance labels or model outputs. The existing 30-query pilot is excluded. The [manifest](research/benchmarks/cure200.json) publishes all selected/excluded original IDs, expertise labels, the source revision and sampling rule; the [coverage audit](research/benchmarks/cure200-coverage.md) compares the subset with original CURE and the 1,970 eligible non-pilot queries. This is a subset of the same dataset, not an independent third benchmark. It inherits exactly the parent candidate ordering, evidence, qrels and evaluation policy; no extra corpus or retrieval index is created. Missing parent data is downloaded/prepared through the normal loader. `panel`/`limit` are rejected to keep the CURE-200 name tied to the complete fixed selection.
+
+Reproduce selection and verify source correspondence without model inference:
+
+```sh
+uv run python tools/cure200.py
+```
+
+The audit verifies all parent relevance grades against the original CURE qrels and traces selected passages to their original IDs/text. It reports the full-source and subset BM25 scores, recall, query lengths and judgment counts without using them to alter the selection. Equal specialty weighting plus 15:5 sampling preserves the original expertise mixture; after excluding the pilot, the target is the remaining population standardized to that mixture. Use paired query-level confidence intervals stratified by specialty and expertise. This protocol does not establish full-CURE leaderboard equivalence, cross-lingual validity, or sufficient power for arbitrarily small effects. Existing analysis imports CURE-200 as its own group using the saved name/fingerprint and original specialty IDs.
 
 BioASQ uses a curated corpus with some gold articles missing; this is not full-PubMed competition reproduction. CURE includes model-generated judgments. Keep benchmark/subset results separate. Full GPU inference and memory fit still need validation on the selected hardware.
 

@@ -1,0 +1,1194 @@
+{
+  "schema_version": 1,
+  "name": "curev1_en_200",
+  "display_name": "CURE-200",
+  "parent": "curev1_en",
+  "source": {
+    "dataset": "clinia/CUREv1",
+    "revision": "072343ca2353c3dc832cf18cf0fef7c9a5a207b7",
+    "language": "en",
+    "url": "https://huggingface.co/datasets/clinia/CUREv1/tree/072343ca2353c3dc832cf18cf0fef7c9a5a207b7"
+  },
+  "selection": {
+    "seed": 42,
+    "strata": [
+      "specialty",
+      "expertise"
+    ],
+    "per_specialty": {
+      "expert": 15,
+      "layman": 5
+    },
+    "algorithm": "Sort eligible IDs by SHA256(UTF-8(seed|cure200-v1|collection|expertise|query_id)), then query_id; take the stratum quota",
+    "uses_relevance_labels_or_model_outputs": false,
+    "exclusion_reason": "Existing 30-query CURE pilot reserved for development; conservative exclusion regardless of tuning history"
+  },
+  "evaluation": {
+    "primary_metric": "ndcg@10",
+    "gain": "linear",
+    "aggregation": "collection_macro",
+    "specialty_weight": 0.1,
+    "expertise_weights": {
+      "expert": 0.75,
+      "layman": 0.25
+    },
+    "candidate_depth": 100,
+    "candidate_source": "Unmodified parent BM25 lists",
+    "evidence": "Unmodified parent shared short evidence (96/384 MedCPT wordpieces for queries/documents)",
+    "estimand": "Equal-specialty, 75:25 expertise-weighted performance on non-pilot English CURE queries; not an independent dataset or full-CURE leaderboard reproduction"
+  },
+  "excluded_queries": [
+    {
+      "collection": "curev1_en/dentistry_and_oral_health",
+      "query_id": "0ceb8fb1-58e4-4a66-86db-73bff3ead564",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/dentistry_and_oral_health",
+      "query_id": "4c5cd59f-8130-40a3-9b1e-398efc62f69e",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/dentistry_and_oral_health",
+      "query_id": "e63943ed-c640-4f28-ab81-547bc6a09283",
+      "expertise": "layman"
+    },
+    {
+      "collection": "curev1_en/dermatology",
+      "query_id": "6438473e-f814-43e5-911d-ab3a9096b31d",
+      "expertise": "layman"
+    },
+    {
+      "collection": "curev1_en/dermatology",
+      "query_id": "753fe4c2-3b74-4530-8963-d2ac9037b467",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/dermatology",
+      "query_id": "c100a4d3-f3ef-4d71-b8d2-8036e0b18196",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/gastroenterology",
+      "query_id": "104a5c92-9f4a-4df5-99b0-3815e9ececfb",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/gastroenterology",
+      "query_id": "17d27231-b85b-48e3-93af-284b12fe5593",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/gastroenterology",
+      "query_id": "b689d365-e18f-4862-a452-22cc8cc35690",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/genetics",
+      "query_id": "659c8eb1-8bfb-4dc3-8c7b-b6dc3d32bfba",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/genetics",
+      "query_id": "7bf37101-4b6c-4da0-b3dd-05880db74240",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/genetics",
+      "query_id": "c40367de-a5ea-45ac-b56c-24cd404f6f9e",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/neuroscience_and_neurology",
+      "query_id": "71f486f7-5904-4df6-be01-cecb081fedd7",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/neuroscience_and_neurology",
+      "query_id": "d8606941-9d0e-4cb5-8e3f-36b6c3cce9b6",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/neuroscience_and_neurology",
+      "query_id": "f8fcec46-2672-42bc-9241-83a96d5e62c0",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/orthopedic_surgery",
+      "query_id": "51068ef0-c252-493c-becd-962e66c3a495",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/orthopedic_surgery",
+      "query_id": "ca7e5ed0-18c5-4aa3-a4c0-225004d8a8f3",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/orthopedic_surgery",
+      "query_id": "f5cc635d-547b-488f-b923-a80d0a3840da",
+      "expertise": "layman"
+    },
+    {
+      "collection": "curev1_en/otorhinolaryngology",
+      "query_id": "0e45f83b-0b7e-4506-bd7c-78f8621d3c78",
+      "expertise": "layman"
+    },
+    {
+      "collection": "curev1_en/otorhinolaryngology",
+      "query_id": "11aef413-3aa8-4906-aa68-493017289887",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/otorhinolaryngology",
+      "query_id": "d6f32b68-a101-4717-8068-a6caa4cf6f45",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/plastic_surgery",
+      "query_id": "9c806057-3e8c-4c46-a79a-27ce8ca3dd9a",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/plastic_surgery",
+      "query_id": "d6f1f5cb-c549-433a-b500-4a15a07fe943",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/plastic_surgery",
+      "query_id": "f2c9d1f5-0a59-4f22-826f-cd86c7290f9b",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/psychiatry_and_psychology",
+      "query_id": "0f31e4de-86a9-4e47-812f-6c5c0f71d396",
+      "expertise": "layman"
+    },
+    {
+      "collection": "curev1_en/psychiatry_and_psychology",
+      "query_id": "96574f6c-b1e1-45cc-8fd1-befc744a7629",
+      "expertise": "layman"
+    },
+    {
+      "collection": "curev1_en/psychiatry_and_psychology",
+      "query_id": "cb4d0534-b599-4fc0-83b8-7abb4d51997b",
+      "expertise": "layman"
+    },
+    {
+      "collection": "curev1_en/pulmonology",
+      "query_id": "363bda51-12c8-485f-99b5-2a59156278c1",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/pulmonology",
+      "query_id": "3f9d5aa5-65b8-48d2-b445-40501ce90386",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/pulmonology",
+      "query_id": "6e8a55ee-0829-4622-9339-518717a4da80",
+      "expertise": "layman"
+    }
+  ],
+  "members": [
+    {
+      "collection": "curev1_en/dentistry_and_oral_health",
+      "query_id": "0a51ed86-617d-4171-b661-440d53c40b88",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/dentistry_and_oral_health",
+      "query_id": "0c2d70bf-7e67-4508-9589-9ebe79d4b2e8",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/dentistry_and_oral_health",
+      "query_id": "12824008-29e9-407f-863e-98df542de93e",
+      "expertise": "layman"
+    },
+    {
+      "collection": "curev1_en/dentistry_and_oral_health",
+      "query_id": "2dabb5e8-b062-4db2-a20a-2e3c4f13e92d",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/dentistry_and_oral_health",
+      "query_id": "396a227d-9c3d-4730-a881-def16cce6af9",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/dentistry_and_oral_health",
+      "query_id": "41e44587-ecf1-45bc-bdd3-2776774a8f91",
+      "expertise": "layman"
+    },
+    {
+      "collection": "curev1_en/dentistry_and_oral_health",
+      "query_id": "54c89e16-e921-4eca-a23b-4d6f00e3dec4",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/dentistry_and_oral_health",
+      "query_id": "622a7696-fa54-47a2-9cb3-c1f5d6e221ba",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/dentistry_and_oral_health",
+      "query_id": "735c1fd9-1ca4-46a3-becb-a37190910156",
+      "expertise": "layman"
+    },
+    {
+      "collection": "curev1_en/dentistry_and_oral_health",
+      "query_id": "841eae4d-74e2-4cbb-88ec-55c429c0e7a7",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/dentistry_and_oral_health",
+      "query_id": "86533147-89e1-43f3-a91d-e1a09c61b2a9",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/dentistry_and_oral_health",
+      "query_id": "8aab7ef1-530f-4aa9-ad37-7a4460d91981",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/dentistry_and_oral_health",
+      "query_id": "9090ecd7-0af5-4d9c-8f85-a4455ba6d97d",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/dentistry_and_oral_health",
+      "query_id": "9b776195-aaed-4463-8a9f-185e1540c9f7",
+      "expertise": "layman"
+    },
+    {
+      "collection": "curev1_en/dentistry_and_oral_health",
+      "query_id": "b2289e87-2277-4316-823a-487263702ff7",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/dentistry_and_oral_health",
+      "query_id": "b9bc98eb-c560-4351-b1be-bb6fa06c84d2",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/dentistry_and_oral_health",
+      "query_id": "ba279740-1a5a-4cfe-810a-8f1096bc191e",
+      "expertise": "layman"
+    },
+    {
+      "collection": "curev1_en/dentistry_and_oral_health",
+      "query_id": "be654436-0728-465e-88ee-a18f3d8e9187",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/dentistry_and_oral_health",
+      "query_id": "e9a4b231-d2c8-40d5-8384-cd45912bec40",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/dentistry_and_oral_health",
+      "query_id": "f8de889c-597b-4ebc-aa17-6f77bb546209",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/dermatology",
+      "query_id": "087ac4a9-1e83-46e4-a6cd-6fd3b5139724",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/dermatology",
+      "query_id": "2369fbf0-5f6d-44bf-a999-744b4550b1b0",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/dermatology",
+      "query_id": "2e9218d8-9a54-4210-a17e-0d47bc748e88",
+      "expertise": "layman"
+    },
+    {
+      "collection": "curev1_en/dermatology",
+      "query_id": "498d25c4-5d11-445f-9e0d-8368d920535d",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/dermatology",
+      "query_id": "4bd23fa1-fe73-47c5-b3a0-7e53bd0877a3",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/dermatology",
+      "query_id": "58369e1d-4d6a-4b05-9925-7fca76689599",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/dermatology",
+      "query_id": "6310eb1e-0964-420b-85fb-a08370d9cef6",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/dermatology",
+      "query_id": "644875d9-2b2d-43c2-99d7-448a0cfdc459",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/dermatology",
+      "query_id": "679950ab-909c-4de4-a290-9e34f7837007",
+      "expertise": "layman"
+    },
+    {
+      "collection": "curev1_en/dermatology",
+      "query_id": "76abf5ca-a003-4151-b5b3-4150e5273ffd",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/dermatology",
+      "query_id": "78406f6c-1c69-4587-9d14-1d8363fa4571",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/dermatology",
+      "query_id": "87cc4aea-86d0-4f5b-bf95-be2802583285",
+      "expertise": "layman"
+    },
+    {
+      "collection": "curev1_en/dermatology",
+      "query_id": "8b62e9e6-1454-40b5-b6c3-2229eedb482b",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/dermatology",
+      "query_id": "a517bfe5-b27b-4652-b215-79482fcc4428",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/dermatology",
+      "query_id": "b260840b-e02a-4665-b366-c81d5582f32d",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/dermatology",
+      "query_id": "ceae080c-ae50-4a48-a859-b2ea6dc9b5e0",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/dermatology",
+      "query_id": "d0231304-7955-4735-bee3-a1355e5776f8",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/dermatology",
+      "query_id": "d60d0033-2ce0-4b98-8095-5301a4479788",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/dermatology",
+      "query_id": "e68e8368-f758-4993-9001-60d6c177d5b2",
+      "expertise": "layman"
+    },
+    {
+      "collection": "curev1_en/dermatology",
+      "query_id": "fdeab096-2277-4935-92cb-54f1c2a623b7",
+      "expertise": "layman"
+    },
+    {
+      "collection": "curev1_en/gastroenterology",
+      "query_id": "11125d02-180b-4347-8db0-4c7a2652532c",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/gastroenterology",
+      "query_id": "257d22f3-1a77-4b2a-934e-16d27ab0b506",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/gastroenterology",
+      "query_id": "2d5bdaec-9191-4b6a-99ce-dc8aee9912da",
+      "expertise": "layman"
+    },
+    {
+      "collection": "curev1_en/gastroenterology",
+      "query_id": "453d2980-ab95-4cd2-ac09-dda5fb1a669a",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/gastroenterology",
+      "query_id": "6ce57807-bd1a-4d74-8a81-4f874a928b69",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/gastroenterology",
+      "query_id": "70a0ddb6-6adc-4a71-9008-e3dc08f35a43",
+      "expertise": "layman"
+    },
+    {
+      "collection": "curev1_en/gastroenterology",
+      "query_id": "7f82f91b-c83e-42ba-943b-624a4c374338",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/gastroenterology",
+      "query_id": "8cef8c88-224b-4006-857e-3c9dfc9fe395",
+      "expertise": "layman"
+    },
+    {
+      "collection": "curev1_en/gastroenterology",
+      "query_id": "8d92122c-d76f-4af0-b13d-b8aa2c511b8c",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/gastroenterology",
+      "query_id": "a95da800-5314-4c59-ab59-9e1f1e0d4a15",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/gastroenterology",
+      "query_id": "b1ba702b-1fa3-4dd8-9a2c-e74ec5ca0c69",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/gastroenterology",
+      "query_id": "c4222d8d-b906-4143-9579-1fd5d948cac1",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/gastroenterology",
+      "query_id": "cad5e952-b446-43eb-8b17-11f52547319b",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/gastroenterology",
+      "query_id": "cff15163-0125-479a-8484-1da16695322b",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/gastroenterology",
+      "query_id": "d1b41217-6376-45ce-a8e0-0a691193e1ee",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/gastroenterology",
+      "query_id": "e52e1db7-9e49-4f88-b1b1-1612af53b1d0",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/gastroenterology",
+      "query_id": "e73ece0d-253e-48d9-b614-6598cd43b6cb",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/gastroenterology",
+      "query_id": "ecc65a69-9574-4a92-bf21-8408ff445565",
+      "expertise": "layman"
+    },
+    {
+      "collection": "curev1_en/gastroenterology",
+      "query_id": "f32c732e-00d5-4118-913e-d527ce8e6b8e",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/gastroenterology",
+      "query_id": "faa5b771-0dc3-4413-9eac-615e9edef4db",
+      "expertise": "layman"
+    },
+    {
+      "collection": "curev1_en/genetics",
+      "query_id": "10cf2852-4a5f-4fc7-8557-952bccbb52cd",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/genetics",
+      "query_id": "16db86fe-18fa-47de-8401-f918a05e9614",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/genetics",
+      "query_id": "1d5f4acf-72c8-4ded-bdee-c952eefeb5fa",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/genetics",
+      "query_id": "252bbe78-47a6-4b75-8716-948e4e369a22",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/genetics",
+      "query_id": "25d9cb17-9941-49bd-9b3c-e18a385120f5",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/genetics",
+      "query_id": "41ef8363-6c11-4c1c-925c-21b47b6db122",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/genetics",
+      "query_id": "5012f9a1-e00b-49b7-8072-68d448606c4b",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/genetics",
+      "query_id": "554b43a1-6ca6-4400-bb8f-3959e0598ad4",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/genetics",
+      "query_id": "617c6ecb-4323-4bb4-ac8e-c902fd4d5949",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/genetics",
+      "query_id": "6eb20245-9473-499b-8ab8-d6ee6608e0b3",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/genetics",
+      "query_id": "847fc7ab-c72e-4903-b9c2-df0f41b1f90c",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/genetics",
+      "query_id": "98fbc54e-e68a-4e18-93a1-ee6d6a1ab688",
+      "expertise": "layman"
+    },
+    {
+      "collection": "curev1_en/genetics",
+      "query_id": "9fa24759-0374-4d4c-a4a2-d67e0ceadaac",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/genetics",
+      "query_id": "a7df9064-9ca9-4bec-a152-ae1ce3186090",
+      "expertise": "layman"
+    },
+    {
+      "collection": "curev1_en/genetics",
+      "query_id": "bb977ffd-5c47-4049-805c-0129b9edf2f9",
+      "expertise": "layman"
+    },
+    {
+      "collection": "curev1_en/genetics",
+      "query_id": "cee08044-a2df-472b-86f0-4033914a06be",
+      "expertise": "layman"
+    },
+    {
+      "collection": "curev1_en/genetics",
+      "query_id": "dd25c32a-346a-4fb9-961c-c7520b45124c",
+      "expertise": "layman"
+    },
+    {
+      "collection": "curev1_en/genetics",
+      "query_id": "e93ce954-9fdc-42fe-b43e-6d2f9152e391",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/genetics",
+      "query_id": "f1b3a613-12e3-4ebf-909e-1ed6b136e97c",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/genetics",
+      "query_id": "f82d614d-418f-41a4-bed5-9b66e1da404d",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/neuroscience_and_neurology",
+      "query_id": "05cc2b65-d94d-4d46-b2c1-9b9ae67fc73c",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/neuroscience_and_neurology",
+      "query_id": "23daf24c-185e-4171-a0af-e85ccefe4d34",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/neuroscience_and_neurology",
+      "query_id": "3c0a3421-cbc0-43e0-b60f-e0af8ae5a35f",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/neuroscience_and_neurology",
+      "query_id": "3e769bf5-0272-486d-8cc2-238d4ad11f03",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/neuroscience_and_neurology",
+      "query_id": "47f2732d-dad4-4bde-bfdf-e164c9b1fdf0",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/neuroscience_and_neurology",
+      "query_id": "573fa4f0-a369-48d5-9e66-7e373471259a",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/neuroscience_and_neurology",
+      "query_id": "5918bd92-4ca0-4dc9-9025-54ae9ae3830a",
+      "expertise": "layman"
+    },
+    {
+      "collection": "curev1_en/neuroscience_and_neurology",
+      "query_id": "7575b308-4e92-4272-a2fb-0c35b15dd2c5",
+      "expertise": "layman"
+    },
+    {
+      "collection": "curev1_en/neuroscience_and_neurology",
+      "query_id": "923f3939-6803-45e0-a984-835b6313823c",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/neuroscience_and_neurology",
+      "query_id": "aa0938a1-0ded-40a2-be42-cff529d3941f",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/neuroscience_and_neurology",
+      "query_id": "abf721c3-381d-4096-9e4a-375a9a37176e",
+      "expertise": "layman"
+    },
+    {
+      "collection": "curev1_en/neuroscience_and_neurology",
+      "query_id": "bc3fc1a9-d825-44e4-ad17-95a097a56da8",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/neuroscience_and_neurology",
+      "query_id": "c14231ae-c06f-4805-9dc8-d6f6c850507b",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/neuroscience_and_neurology",
+      "query_id": "c7be8570-ce7f-424b-868d-b1be1fd9b6e3",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/neuroscience_and_neurology",
+      "query_id": "ce325634-b9ce-432a-aa27-239303ad7e45",
+      "expertise": "layman"
+    },
+    {
+      "collection": "curev1_en/neuroscience_and_neurology",
+      "query_id": "dd2b23e2-f1be-42b4-96e0-3e25328cf26e",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/neuroscience_and_neurology",
+      "query_id": "df7bced8-9089-43d3-bca1-695048c0f25c",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/neuroscience_and_neurology",
+      "query_id": "ebc8777a-6f64-4e78-ad4c-4bc51fdaf33b",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/neuroscience_and_neurology",
+      "query_id": "f87805fd-82a0-4517-bf0e-eeb4a44b3f09",
+      "expertise": "layman"
+    },
+    {
+      "collection": "curev1_en/neuroscience_and_neurology",
+      "query_id": "fa48c7d7-cd33-4e9f-9d89-2976ea4b841c",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/orthopedic_surgery",
+      "query_id": "17e3be0d-debd-4fec-bfcd-69ba88563ca7",
+      "expertise": "layman"
+    },
+    {
+      "collection": "curev1_en/orthopedic_surgery",
+      "query_id": "2184dc8f-0992-4bd4-9afc-779143ba34b3",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/orthopedic_surgery",
+      "query_id": "3bf010cf-a89c-4528-938c-59d1fe972629",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/orthopedic_surgery",
+      "query_id": "657822a5-e74e-4090-99f8-c8d939be060b",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/orthopedic_surgery",
+      "query_id": "6815414b-bb0a-4c62-aa52-1abcc6032cf7",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/orthopedic_surgery",
+      "query_id": "71c99065-8a07-4eeb-89ab-47ee192f87c6",
+      "expertise": "layman"
+    },
+    {
+      "collection": "curev1_en/orthopedic_surgery",
+      "query_id": "762fb033-a154-4872-b01b-693c6fa71823",
+      "expertise": "layman"
+    },
+    {
+      "collection": "curev1_en/orthopedic_surgery",
+      "query_id": "77064767-c5f0-4828-8737-a2019c7a1898",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/orthopedic_surgery",
+      "query_id": "797992e0-8a8e-4388-a616-f9d19f7b84ee",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/orthopedic_surgery",
+      "query_id": "8b4b1a6f-0f50-4c84-b365-117ac5a73cd6",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/orthopedic_surgery",
+      "query_id": "9c4c53d9-39e8-4616-a809-c36ae1b34b38",
+      "expertise": "layman"
+    },
+    {
+      "collection": "curev1_en/orthopedic_surgery",
+      "query_id": "9f9957f1-2bb5-4b51-ac03-b9c4d1da43de",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/orthopedic_surgery",
+      "query_id": "a41f943e-3ff3-43da-8cf2-2166e7782122",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/orthopedic_surgery",
+      "query_id": "adff5887-a7b8-425e-85e2-1735ec77132f",
+      "expertise": "layman"
+    },
+    {
+      "collection": "curev1_en/orthopedic_surgery",
+      "query_id": "b3eab365-45af-4f52-8a54-680d1216bf57",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/orthopedic_surgery",
+      "query_id": "b888ebc2-548c-459f-9202-2f46f1b3064d",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/orthopedic_surgery",
+      "query_id": "bcdfe4c6-0404-4d3a-9ba3-99df8be1e948",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/orthopedic_surgery",
+      "query_id": "e3ca350b-a680-47ba-8e75-afe0377b443c",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/orthopedic_surgery",
+      "query_id": "f6e881be-ab2d-435c-b7d0-05e0afe471f0",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/orthopedic_surgery",
+      "query_id": "f813327f-0747-4019-8a93-ed49726a4508",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/otorhinolaryngology",
+      "query_id": "1fc66edb-92a5-4635-927c-56d0f285fcf0",
+      "expertise": "layman"
+    },
+    {
+      "collection": "curev1_en/otorhinolaryngology",
+      "query_id": "3179f2fd-47ac-4133-ad4c-433c68d3c402",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/otorhinolaryngology",
+      "query_id": "318edcdf-fb7e-4a80-9159-aa92dc95a065",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/otorhinolaryngology",
+      "query_id": "3a5841b0-1487-4ce7-b97a-2c4f114d67d2",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/otorhinolaryngology",
+      "query_id": "48c5aff6-8386-4f6a-839d-ea7e43c4c876",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/otorhinolaryngology",
+      "query_id": "4ea80f9d-4d27-407f-9150-2ee8da2f34b4",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/otorhinolaryngology",
+      "query_id": "557ec5cc-a5cc-4015-bd28-cb5e43daaeb8",
+      "expertise": "layman"
+    },
+    {
+      "collection": "curev1_en/otorhinolaryngology",
+      "query_id": "569c2bef-25e9-4e58-9d5b-39590517af75",
+      "expertise": "layman"
+    },
+    {
+      "collection": "curev1_en/otorhinolaryngology",
+      "query_id": "607523be-8590-4ec2-9ee1-d7aea48b51eb",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/otorhinolaryngology",
+      "query_id": "64e7bd02-db4f-422c-afa0-c4aad14b6264",
+      "expertise": "layman"
+    },
+    {
+      "collection": "curev1_en/otorhinolaryngology",
+      "query_id": "70e8bf95-9033-44a8-b08e-22e84ebaa4f0",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/otorhinolaryngology",
+      "query_id": "90b8da5c-93cd-4584-bc6f-e2ac91b39526",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/otorhinolaryngology",
+      "query_id": "90d8d02a-4778-4a45-ae3a-8429d5eb2e73",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/otorhinolaryngology",
+      "query_id": "a062ea25-ef74-4d9d-a763-38e18ff1dc7a",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/otorhinolaryngology",
+      "query_id": "a4e1de91-2d48-4b1b-953f-f86a6a286362",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/otorhinolaryngology",
+      "query_id": "ac764510-7370-4599-ba7c-98a8e096eaa6",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/otorhinolaryngology",
+      "query_id": "b9adc7e6-c47e-4c66-9f69-94a213fdd770",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/otorhinolaryngology",
+      "query_id": "e017bcc1-fd3d-4da8-969f-befb7acc29f6",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/otorhinolaryngology",
+      "query_id": "edeb1f76-701c-4db0-ae8e-f454bf02fb17",
+      "expertise": "layman"
+    },
+    {
+      "collection": "curev1_en/otorhinolaryngology",
+      "query_id": "ee330201-7eeb-440d-8c50-01b74c20b941",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/plastic_surgery",
+      "query_id": "0d9a4a7e-fc4b-4cec-8f3e-760b013feb59",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/plastic_surgery",
+      "query_id": "16056c17-1142-4c2a-b9c8-4d0fde864642",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/plastic_surgery",
+      "query_id": "1de95ef8-12ec-4b07-a330-b5206584db92",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/plastic_surgery",
+      "query_id": "38cbfabb-98d8-45b1-b09d-7ff367a3b73b",
+      "expertise": "layman"
+    },
+    {
+      "collection": "curev1_en/plastic_surgery",
+      "query_id": "437198af-946f-4c84-9c5d-480a754b12d3",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/plastic_surgery",
+      "query_id": "647701f8-0821-4cea-8b5b-2bddb902a6c5",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/plastic_surgery",
+      "query_id": "64a5e834-8778-4d5e-a0aa-b58f85e0c4ef",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/plastic_surgery",
+      "query_id": "6bb298d3-bcde-436f-8cd1-2f82042abe97",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/plastic_surgery",
+      "query_id": "70d738f7-0a95-423b-a7d4-33e3602dfff7",
+      "expertise": "layman"
+    },
+    {
+      "collection": "curev1_en/plastic_surgery",
+      "query_id": "7b07201d-ec8a-4009-928e-ab149abfe505",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/plastic_surgery",
+      "query_id": "8134e683-59e9-4cfc-a6dc-e14cd7715fca",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/plastic_surgery",
+      "query_id": "91b4eca2-f674-422f-a45d-894b974ad354",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/plastic_surgery",
+      "query_id": "973b4907-69e2-489b-8b4d-d55b46b2b49a",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/plastic_surgery",
+      "query_id": "9b394f56-9502-451d-91ef-300cb8dec94a",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/plastic_surgery",
+      "query_id": "aaf9a28e-0de1-4e60-8705-77fd784112e4",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/plastic_surgery",
+      "query_id": "c24bd4e0-5a9b-4ea7-a33d-27fc29889974",
+      "expertise": "layman"
+    },
+    {
+      "collection": "curev1_en/plastic_surgery",
+      "query_id": "c264011b-4c3b-486e-ad0c-4bc9a91f0864",
+      "expertise": "layman"
+    },
+    {
+      "collection": "curev1_en/plastic_surgery",
+      "query_id": "c4ba9f52-29c2-492f-b56d-1a2213468374",
+      "expertise": "layman"
+    },
+    {
+      "collection": "curev1_en/plastic_surgery",
+      "query_id": "c571692a-55c2-4416-9b1b-fd9ed8599b73",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/plastic_surgery",
+      "query_id": "ea5534f2-1a9b-49fd-9050-7a6cb8d916b9",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/psychiatry_and_psychology",
+      "query_id": "033e0102-dde3-4f79-b5be-9b3a3a1d9781",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/psychiatry_and_psychology",
+      "query_id": "18e98098-2873-42cc-af5d-ea95cc43b9fd",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/psychiatry_and_psychology",
+      "query_id": "19233f32-aa45-49d3-87de-d17df2430493",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/psychiatry_and_psychology",
+      "query_id": "23e0308a-0311-46aa-a668-6266a91d76d9",
+      "expertise": "layman"
+    },
+    {
+      "collection": "curev1_en/psychiatry_and_psychology",
+      "query_id": "27405bbd-e419-4135-98da-1db345112856",
+      "expertise": "layman"
+    },
+    {
+      "collection": "curev1_en/psychiatry_and_psychology",
+      "query_id": "45d1c92f-28a0-41cc-9cc9-c9055ad71839",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/psychiatry_and_psychology",
+      "query_id": "60ea6e1f-3ea5-48c5-bb93-57ab1079f02e",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/psychiatry_and_psychology",
+      "query_id": "6615cc8a-802a-4a59-bc32-61df21236d20",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/psychiatry_and_psychology",
+      "query_id": "6f8ab404-f8b0-4d0c-b0cc-76ba11e5421c",
+      "expertise": "layman"
+    },
+    {
+      "collection": "curev1_en/psychiatry_and_psychology",
+      "query_id": "7d6d090e-4995-416f-a028-d508487c185b",
+      "expertise": "layman"
+    },
+    {
+      "collection": "curev1_en/psychiatry_and_psychology",
+      "query_id": "808e94d0-f59d-48d1-9daf-f86437628f64",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/psychiatry_and_psychology",
+      "query_id": "827469de-6479-40d2-92ad-6003bd085e42",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/psychiatry_and_psychology",
+      "query_id": "8cb23547-f99c-4bf1-b539-985a67f6c9fa",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/psychiatry_and_psychology",
+      "query_id": "91e89a42-d41a-421a-8a14-af2d52c0cf17",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/psychiatry_and_psychology",
+      "query_id": "a119426a-a88c-4414-8dad-3a9ffa21e0c4",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/psychiatry_and_psychology",
+      "query_id": "aa4542a9-9748-4674-a642-72ee168c7c00",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/psychiatry_and_psychology",
+      "query_id": "b1ef381e-d13c-4ae0-a0bd-49d12dacb533",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/psychiatry_and_psychology",
+      "query_id": "b93ed14d-64c3-4a4e-803e-d6351dd11d3b",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/psychiatry_and_psychology",
+      "query_id": "f040a29b-211e-4e79-9b0c-80080ac7f94e",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/psychiatry_and_psychology",
+      "query_id": "fb7e5f7f-4311-41fe-94b3-688394dbc9a4",
+      "expertise": "layman"
+    },
+    {
+      "collection": "curev1_en/pulmonology",
+      "query_id": "05325dc0-be62-4549-8f17-1eb50be7ea03",
+      "expertise": "layman"
+    },
+    {
+      "collection": "curev1_en/pulmonology",
+      "query_id": "0f39c9c2-ef89-4f76-8335-116ecb3c1ef0",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/pulmonology",
+      "query_id": "152b01e2-4e90-4267-8d13-449938bd7f9a",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/pulmonology",
+      "query_id": "209a2566-3cf3-488b-9700-0c5ac234bea0",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/pulmonology",
+      "query_id": "2b2122b2-8633-46b9-b6d8-6a0cb3a124db",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/pulmonology",
+      "query_id": "3db62c7b-64bf-4d80-8e9b-6dee608e8285",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/pulmonology",
+      "query_id": "4b1b37cb-5a59-4346-8021-bca6a1c9f7f3",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/pulmonology",
+      "query_id": "55cb2f5e-b2ff-497a-a215-063ecff44ca9",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/pulmonology",
+      "query_id": "61530708-5b4c-4c42-8445-0bd4bb810a22",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/pulmonology",
+      "query_id": "63fa2af3-d896-4975-b74d-129dd43b5b8b",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/pulmonology",
+      "query_id": "73b823ec-140f-4564-be85-49163347393a",
+      "expertise": "layman"
+    },
+    {
+      "collection": "curev1_en/pulmonology",
+      "query_id": "764259ce-24a2-4460-97c0-2b05ed7c4cc3",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/pulmonology",
+      "query_id": "7b03469f-9818-4b1e-886a-b981ec891f36",
+      "expertise": "layman"
+    },
+    {
+      "collection": "curev1_en/pulmonology",
+      "query_id": "88dcca27-f24f-4d0f-8c2b-c0228a8e7b30",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/pulmonology",
+      "query_id": "8b08d5c8-dbbb-49da-9496-84c99b3b1ddb",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/pulmonology",
+      "query_id": "cf106725-f91c-43b4-b05b-3bce741b7b97",
+      "expertise": "layman"
+    },
+    {
+      "collection": "curev1_en/pulmonology",
+      "query_id": "da90932f-59af-42fb-9738-ae16e176e369",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/pulmonology",
+      "query_id": "e85576a1-3fa4-480b-8925-986982ab3bf4",
+      "expertise": "expert"
+    },
+    {
+      "collection": "curev1_en/pulmonology",
+      "query_id": "fa5dfe9a-e45f-4221-ba8c-f983078cfd8a",
+      "expertise": "layman"
+    },
+    {
+      "collection": "curev1_en/pulmonology",
+      "query_id": "fec9abd5-f5c6-4216-b6ec-bddcf4e2b6ab",
+      "expertise": "expert"
+    }
+  ]
+}

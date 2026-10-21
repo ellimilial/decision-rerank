@@ -1,5 +1,5 @@
 """Load frozen benchmarks, acquiring missing data on first use."""
-from collections import defaultdict
+from collections import Counter, defaultdict
 from collections.abc import Iterable
 from dataclasses import dataclass, replace
 from hashlib import sha256
@@ -65,6 +65,28 @@ def load_benchmark(root: Path, name: str, *, panel: str | None = None, limit: in
     root = Path(root).resolve()
     directory = root / "research/benchmarks"
     prepared = json.loads((directory / "prepared-manifest.json").read_text())
+    if name == "curev1_en_200":
+        if panel is not None or limit is not None:
+            raise ValueError("CURE-200 is a fixed 200-query benchmark; use the parent CURE pilot for smoke tests")
+        spec = json.loads((directory / "cure200.json").read_text())
+        source_collections = [c for c in prepared["collections"] if c["benchmark"] == "curev1_en"]
+        expected = Counter({(c["name"], level): count for c in source_collections
+                            for level, count in [("expert", 15), ("layman", 5)]})
+        members = spec["members"]
+        keys = [(r["collection"], r["query_id"]) for r in members]
+        excluded = {(r["collection"], r["query_id"]) for r in spec["excluded_queries"]}
+        origins = {(s["dataset"], s["revision"]) for c in source_collections for s in c["sources"]}
+        if (spec["name"] != name or spec["parent"] != "curev1_en" or spec["schema_version"] != 1
+            or len(source_collections) != 10 or len(keys) != 200 or len(set(keys)) != 200
+            or len(excluded) != 30 or len(spec["excluded_queries"]) != 30 or set(keys) & excluded
+            or Counter((r["collection"], r["expertise"]) for r in members) != expected
+            or origins != {(spec["source"]["dataset"], spec["source"]["revision"])}):
+            raise ValueError("CURE-200 source, strata or development exclusions differ from its protocol")
+        parent = load_benchmark(root, "curev1_en", offline=offline)
+        if not excluded <= {item.key for item in parent.inputs()}:
+            raise ValueError("CURE-200 excludes unknown development queries")
+        return replace(parent.select(keys), name=name,
+                       _package_fingerprint=digest([parent._package_fingerprint, spec]))
     evidence = json.loads((directory / "evidence-manifest.json").read_text())
     collections = [c for c in prepared["collections"] if c["benchmark"] == name]
     if not collections:
